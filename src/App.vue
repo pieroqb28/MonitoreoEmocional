@@ -1,28 +1,31 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <!--TopNav /-->
+    <Sidebar />
+    <v-content>
+      <router-view></router-view>
+    </v-content>
+
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import Sidebar from '@/components/Sidebar.vue'
 
 export default {
-  name: 'App',
+  name: 'app',
   components: {
-    HelloWorld
-  }
+    Sidebar
+  },
+
+  data () {
+      return {
+        items: [
+          { title: 'Home', icon: 'mdi-home-city' },
+          { title: 'My Account', icon: 'mdi-account' },
+          { title: 'Users', icon: 'mdi-account-group-outline' },
+        ],
+      }}
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
