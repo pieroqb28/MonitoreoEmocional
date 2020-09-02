@@ -1,9 +1,9 @@
-<template>
+<template >
   <v-container>
 
      <v-row justify="center">
     <v-col cols="12" sm="15">
-      <v-card>
+      <v-card >
         
 
         <v-list>
@@ -70,7 +70,6 @@
               <v-list-item-title>4° B</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-
   
               <v-divider inset></v-divider>
           <v-list-item >
@@ -112,50 +111,51 @@
           <span class="headline" style="color: white;" >Asignar evaluación</span>
         </v-card-title>
         <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal first name*" required></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal middle name" hint="example of helper text only on focus"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  label="Legal last name*"
-                  hint="example of persistent helper text"
-                  persistent-hint
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="Email*" required></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="Password*" type="password" required></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-select
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                  label="Age*"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-autocomplete
-                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
-              </v-col>
-            </v-row>
-          </v-container>
-          <small>* Campo obligatorio</small>
+          <v-tabs
+      v-model="tab2"
+      background-color="light-blue lighten-3"
+      active-class="example"
+      width="30px"
+      dark
+      :centered="true"
+      :fixed-tabs="true"
+      
+    >
+      <v-tabs-slider></v-tabs-slider>
+
+      <v-tab
+        v-for="i in tabs2"
+        :key="i"
+        :href="`#tab2-${i}`"
+      >
+       {{ i }}
+        
+      </v-tab>
+
+      <v-tab-item
+        v-for="i in tabs2"
+        :key="i"
+        :value="'tab2-' + i"
+      >
+        <v-card
+          flat
+          tile
+        >
+           <v-img
+      src="https://usercontent2.hubstatic.com/8821109_f496.jpg"
+      height="400px"
+      dark
+    ></v-img>
+
+        </v-card>
+
+      </v-tab-item>
+    </v-tabs>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="pink darken-1" text @click="dialog = false">Cerrar</v-btn>
-          <v-btn color="green darken-1" text @click="dialog = false">Guardar</v-btn>
+          <v-btn color="green darken-1" text @click="dialog = false">Asignar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -179,43 +179,49 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal first name*" required></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal middle name" hint="example of helper text only on focus"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  label="Legal last name*"
-                  hint="example of persistent helper text"
-                  persistent-hint
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="Email*" required></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="Password*" type="password" required></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
+                 <v-col cols="12" sm="6"  >
                 <v-select
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                  label="Age*"
+                  :items="['Ariadne Tejada', 'Robert Zambrano', 'John Doe', 'Hanna Bloom']"
+                  label="Psicólogo"
+                  prepend-icon="mdi-account"
                   required
                 ></v-select>
               </v-col>
-              <v-col cols="12" sm="6">
-                <v-autocomplete
-                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
+      <v-col>  <v-spacer></v-spacer></v-col>
+              <v-col cols="6">
+                  <v-menu
+                    v-model="menu2"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="190px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="date"
+                        label="Fecha"
+                        prepend-icon="mdi-calendar-month"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="date" @input="menu2 = false" locale="es" color="teal darken-1"></v-date-picker>
+                  </v-menu>        
               </v-col>
+              <v-col cols="12" sm="6">
+                <v-select
+                  :items="['11:00', '12:00', '18:00', '19:00']"
+                  label="Hora"
+                  prepend-icon="mdi-clock-outline"
+                  required
+                ></v-select>
+              </v-col>
+        
             </v-row>
           </v-container>
-          <small>* Campo obligatorio</small>
+          <!--small>* Campo obligatorio</small-->
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -233,7 +239,7 @@
     <v-tabs
       v-model="tab"
       background-color="light-blue lighten-3"
-      class="elevation-2"
+
       dark
       active-class="example"
       :centered="true"
@@ -293,11 +299,14 @@ export default {
         nextIcon: false,
         right: false,
         tabs: ['Historial de evaluaciones','Historial de citas'],
+        tabs2: ['Prueba de Faraday','Prueba de Collins','Prueba de Jules'],
         dialog: false,
         dialog2: false,
         notifications: false,
         sound: true,
         widgets: false,
+        date: new Date().toISOString().substr(0, 10),
+         menu: false,
         headers: [
         {
           text: 'Prueba',

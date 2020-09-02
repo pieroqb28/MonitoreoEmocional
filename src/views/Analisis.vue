@@ -1,6 +1,7 @@
 <template>
 <v-container>
   <div>
+      <Sidebar />
     <Header />
     <Dashboard />
     <Footer />
@@ -12,9 +13,10 @@
 import Header from '@/components/Header.vue'
 import Dashboard from '@/components/Dashboard.vue'
 import Footer from '@/components/Footer.vue'
-
+import Sidebar from '@/components/Sidebar.vue'
 export default {
   components: {
+    Sidebar,
     Header,
     Dashboard,
     Footer

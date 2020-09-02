@@ -52,7 +52,7 @@
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
-            <img src="https://randomuser.me/api/portraits/women/44.jpg">
+            <img src="https://akns-images.eonline.com/eol_images/Entire_Site/2017411/rs_600x600-170511060426-600.gypsy-naomi-watts.ch.051117.jpg?fit=around|700:700&output-quality=90&crop=700:700;center,top">
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -94,9 +94,14 @@
         drawer: true,
         items: [
          // { title: 'Asignar sección', icon: 'mdi-book-plus' },
-        { title: 'Análisis', link: '/', icon: 'mdi-align-vertical-bottom' },
+        { title: 'Análisis', link: 'analisis', icon: 'mdi-align-vertical-bottom' },
+        { title: 'Perfil', link: 'perfil', icon: 'mdi-account-box' },
         { title: 'Estudiantes', link: 'estudiantes', icon: 'mdi-account-multiple' },
-        { title: 'Resultados', link: 'estudiantes-id', icon: 'mdi-badge-account' }
+        { title: 'Consulta de Evaluaciones', link: 'evaluaciones', icon: 'mdi-book-check' },
+        { title: 'Consulta de Citas', link: 'citas', icon: 'mdi-book-account' },
+        { title: 'Solicitudes de Ayuda', link: 'solicitudes', icon: 'mdi-handshake-outline' },
+        //{ title: 'Resultados', link: 'estudiantes-id', icon: 'mdi-badge-account' }
+        
         ],
         color:'indigo',
         colors: [

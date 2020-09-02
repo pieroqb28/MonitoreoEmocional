@@ -1,5 +1,6 @@
 <template>
   <v-container>
+       <!--Sidebar /-->
     <v-row><h2>Datos Estudiante</h2></v-row>
     <v-row>
 
@@ -19,11 +20,12 @@
 
 <script>
 
-
+//import Sidebar from '@/components/Sidebar.vue'
 import Estudiante from '@/components/Estudiante.vue'
 
 export default {
   components: {
+  //  Sidebar,
     Estudiante
   }
 }

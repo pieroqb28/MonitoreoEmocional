@@ -1,26 +1,25 @@
 <template>
   <v-container>
        <Sidebar />
-    <v-row><h2>Consulta Estudiantes</h2></v-row>
+    <v-row><h2>Mi perfil</h2></v-row>
     <v-row>
-      <v-col sm="2" offset-lg="1">
+      <v-col sm="3" >
         <!--Sidebar /-->
       </v-col>
       <v-col >
-        <Lista/>
+        <DatosUsuario/>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import DatosUsuario from '@/components/DatosUsuario.vue'
 import Sidebar from '@/components/Sidebar.vue'
-import Lista from '@/components/Lista.vue'
-
 export default {
   components: {
     Sidebar,
-    Lista
+    DatosUsuario
   }
 }
 </script>

@@ -1,13 +1,13 @@
 <template>
   <v-container>
        <Sidebar />
-    <v-row><h2>Consulta Estudiantes</h2></v-row>
+    <v-row><h2>Consulta Evaluaciones</h2></v-row>
     <v-row>
       <v-col sm="2" offset-lg="1">
         <!--Sidebar /-->
       </v-col>
       <v-col >
-        <Lista/>
+        <ListaEvaluaciones/>
       </v-col>
     </v-row>
   </v-container>
@@ -15,12 +15,12 @@
 
 <script>
 import Sidebar from '@/components/Sidebar.vue'
-import Lista from '@/components/Lista.vue'
+import ListaEvaluaciones from '@/components/ListaEvaluaciones.vue'
 
 export default {
   components: {
     Sidebar,
-    Lista
+    ListaEvaluaciones
   }
 }
 </script>
