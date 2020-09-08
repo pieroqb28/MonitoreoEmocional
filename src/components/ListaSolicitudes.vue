@@ -17,6 +17,52 @@
         ></v-combobox>
       </v-col>
     </v-row>
+        <v-row>
+      <v-col>
+                    <v-menu
+                    v-model="menuIni"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="190px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="dateIni"
+                        label="Fecha de Inicio"
+                        prepend-icon="mdi-calendar-month"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="dateIni" @input="menuIni = false" locale="es" color="light-blue"></v-date-picker>
+                  </v-menu>  
+      </v-col>
+      <v-col>
+                    <v-menu
+                    v-model="menuFin"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="190px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="dateFin"
+                        label="Fecha de fin"
+                        prepend-icon="mdi-calendar-month"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="dateFin" @input="menuFin = false" locale="es" color="light-blue"></v-date-picker>
+                  </v-menu>  
+      </v-col>
+    </v-row>
     <v-row>
    <v-data-table
     :headers="headers"
@@ -140,6 +186,10 @@
        // { text: 'Edad', value: 'edad',width: '180px', align: 'center', },
         { text: '', value: 'actions', sortable: false,width: '240px', align: 'center', justify: 'center',},
       ],
+      dateIni: new Date().toISOString().substr(0, 10),
+      dateFin: new Date().toISOString().substr(0, 10),
+      menuIni: false,
+      menuFin: false,
       search: '',
       desserts: [],
       editedIndex: -1,
@@ -153,8 +203,8 @@
         estado: 0,
         edad: 0,
       },
-      select: [''],
-      select2: [''],
+      //select: [''],
+      //select2: [''],
       coles: [
         'I.E.E. José Olaya',
         'Colegio Villa María',
@@ -189,7 +239,7 @@
         this.desserts = [
           {
             fecha: '24/08/2020',
-            name: 'Alan Brito',
+            name: 'Gianmarco Chávez',
             colegio: 'Newton School',
             seccion: '4B',
             edad: 17,
@@ -210,7 +260,7 @@
           },
           {
             fecha: '14/08/2020',
-            name: 'Alan Brito',
+            name: 'Gianmarco Chávez',
             colegio: 'Newton School',
             seccion: '4B',
             edad: 17,
@@ -224,7 +274,7 @@
           },
           {
             fecha: '06/08/2020',
-            name: 'Alan Brito',
+            name: 'Gianmarco Chávez',
             colegio: 'Newton School',
             seccion: '4B',
             edad: 17,

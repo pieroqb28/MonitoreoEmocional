@@ -18,6 +18,52 @@
       </v-col>
     </v-row>
     <v-row>
+      <v-col>
+                    <v-menu
+                    v-model="menuIni"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="190px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="dateIni"
+                        label="Fecha de Inicio"
+                        prepend-icon="mdi-calendar-month"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="dateIni" @input="menuIni = false" locale="es" color="light-blue"></v-date-picker>
+                  </v-menu>  
+      </v-col>
+      <v-col>
+                    <v-menu
+                    v-model="menuFin"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="190px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="dateFin"
+                        label="Fecha de fin"
+                        prepend-icon="mdi-calendar-month"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="dateFin" @input="menuFin = false" locale="es" color="light-blue"></v-date-picker>
+                  </v-menu>  
+      </v-col>
+    </v-row>
+    <v-row>
    <v-data-table
     :headers="headers"
     :items="desserts"
@@ -27,7 +73,7 @@
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
-        <v-toolbar-title>Lista de Estudiantes</v-toolbar-title>
+        <v-toolbar-title>Lista de Citas</v-toolbar-title>
       <v-spacer></v-spacer> <v-spacer></v-spacer> <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -64,17 +110,26 @@
       dialog: false,
       headers: [
         {
+          text: 'Fecha',
+          align: 'center',
+          value: 'fecha',
+          width: '290px'
+        },
+        {
           text: 'Estudiante',
           align: 'center',
-          sortable: false,
           value: 'name',
           width: '290px'
         },
         { text: 'Colegio', value: 'colegio', width: '290px', align: 'center', },
         { text: 'Seccion', value: 'seccion', width: '290px', align: 'center', },
-        { text: 'Estado', value: 'estado',width: '290px', align: 'center', },
-        //{ text: '', value: 'actions', sortable: false,width: '440px', align: 'center', justify: 'center',},
+       // { text: 'Edad', value: 'edad',width: '180px', align: 'center', },
+        //{ text: '', value: 'actions', sortable: false,width: '240px', align: 'center', justify: 'center',},
       ],
+      dateIni: new Date().toISOString().substr(0, 10),
+      dateFin: new Date().toISOString().substr(0, 10),
+      menuIni: false,
+      menuFin: false,
       search: '',
       desserts: [],
       editedIndex: -1,
@@ -88,8 +143,8 @@
         estado: 0,
         edad: 0,
       },
-      select: [''],
-      select2: [''],
+      //select: [''],
+      //select2: [''],
       coles: [
         'I.E.E. José Olaya',
         'Colegio Villa María',
@@ -123,46 +178,46 @@
       initialize () {
         this.desserts = [
           {
-            name: 'Alan Brito',
+            fecha: '24/08/2020',
+            name: 'Gianmarco Chávez',
             colegio: 'Newton School',
             seccion: '4B',
-            estado: 'Sin Citas',
+            edad: 17,
           },
           {
+            fecha: '22/08/2020',
             name: 'Piero Quiroz',
              colegio: 'Newton School',
             seccion: '5B',
-            estado: 'Citas pendientes',
+            edad: 17,
           },
           {
+            fecha: '19/08/2020',
             name: 'Tessa Livia',
             colegio: 'Colegio Villa María',
             seccion: '1A',
-            estado: 'Citas pendientes',
+            edad: 6.0,
           },
           {
-            name: 'Claudio Pizarro',
-            colegio: 'Colegio Alpamayo',
-            seccion: '3C',
-            estado: 'Sin citas',
+            fecha: '14/08/2020',
+            name: 'Gianmarco Chávez',
+            colegio: 'Newton School',
+            seccion: '4B',
+            edad: 17,
           },
           {
+            fecha: '11/08/2020',
             name: 'Donald Glover',
             colegio: 'Liceo Naval Almirante Guise',
             seccion: '4C',
-            estado: 'Citas pendientes',
+            edad: 15,
           },
           {
-            name: 'Lilibeth Ortiz',
-            colegio: 'Colegio Villa María',
-            seccion: '3B',
-            estado: 'Sin citas',
-          },
-          {
-            name: 'Walter Cueva',
-            colegio: 'I.E.E. José Olaya',
-            seccion: '6C',
-            estado: 'Citas pendientes',
+            fecha: '06/08/2020',
+            name: 'Gianmarco Chávez',
+            colegio: 'Newton School',
+            seccion: '4B',
+            edad: 17,
           },
 
         ]

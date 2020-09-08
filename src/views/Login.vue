@@ -33,9 +33,10 @@
                 <v-card-text>
                   <v-form>
                     <v-text-field
-                      v-model ="username"
-                      label="Usuario"
-                      name="login"
+                      v-model ="correo"
+                      id="correo"
+                      label="Correo"
+                      name="correo"
                       prepend-icon="mdi-account"
                       type="text"
                     ></v-text-field>
@@ -52,7 +53,12 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="light-blue accent-1" to="/analisis">Iniciar sesión</v-btn>
+                  <v-btn color="light-blue accent-1" @click="login()"  to="/analisis">Iniciar sesión</v-btn>
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="indigo accent-1" to="/registro">Registrarse</v-btn>
                   <v-spacer></v-spacer>
                 </v-card-actions>
               </v-card>
@@ -67,16 +73,29 @@
 </template>
 
 <script>
+import axios from "axios"
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';  
+axios.defaults.headers.common['Access-Control-Allow-Methods'] = '*' 
+axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'access-control-allow-headers,access-control-allow-methods,access-control-allow-origin,authorization'; 
   export default {
     name : "Login",
     data: () => ({
-      username: '',
+      correo: '',
       password: ''
     }),
     methods: {
-      login(){
-
-      }
+         async login(){
+          try{
+            const res = await axios.post('https://sistemadepresivoapi.azurewebsites.net/api/LoginWeb/registro',{
+                //crossDomain: true,
+                correo: this.correo,
+                Password: this.password,
+            })
+            console.log(res)
+          } catch(e){
+            console.error(e)
+          }
+        }
     }
   }
 </script>

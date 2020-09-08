@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <!--TopNav /-->
-
+    <custom-component v-if="Logged()">   <Sidebar /></custom-component>
+  
     <v-content>
       <router-view></router-view>
     </v-content>
@@ -10,13 +11,21 @@
 </template>
 
 <script>
-
+import Sidebar from '@/components/Sidebar.vue'
 export default {
   name: 'app',
   components: {
-
+    Sidebar
   },
-
+  methods:{
+     Logged() {
+        if(this.$route.path == "/" || this.$route.path == "/registro" ) {
+          return false
+        } else {
+          return true
+        }
+     }
+  },
   data () {
       return {
         items: [

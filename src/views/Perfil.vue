@@ -1,6 +1,6 @@
 <template>
   <v-container>
-       <Sidebar />
+
     <v-row><h2>Mi perfil</h2></v-row>
     <v-row>
       <v-col sm="3" >
@@ -15,10 +15,10 @@
 
 <script>
 import DatosUsuario from '@/components/DatosUsuario.vue'
-import Sidebar from '@/components/Sidebar.vue'
+
 export default {
   components: {
-    Sidebar,
+
     DatosUsuario
   }
 }

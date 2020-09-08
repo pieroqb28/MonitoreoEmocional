@@ -1,6 +1,6 @@
 <template>
   <v-container>
-       <Sidebar />
+
     <v-row><h2>Solicitudes de ayuda</h2></v-row>
     <v-row>
       <v-col sm="2" offset-lg="1">
@@ -14,12 +14,11 @@
 </template>
 
 <script>
-import Sidebar from '@/components/Sidebar.vue'
 import ListaSolicitudes from '@/components/ListaSolicitudes.vue'
 
 export default {
   components: {
-    Sidebar,
+
     ListaSolicitudes
   }
 }

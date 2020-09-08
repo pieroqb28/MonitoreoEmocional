@@ -17,63 +17,21 @@
         ></v-combobox>
       </v-col>
     </v-row>
-        <v-row>
-      <v-col>
-                    <v-menu
-                    v-model="menuIni"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="190px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="dateIni"
-                        label="Fecha de Inicio"
-                        prepend-icon="mdi-calendar-month"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker v-model="dateIni" @input="menuIni = false" locale="es" color="light-blue"></v-date-picker>
-                  </v-menu>  
-      </v-col>
-      <v-col>
-                    <v-menu
-                    v-model="menuFin"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="190px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="dateFin"
-                        label="Fecha de fin"
-                        prepend-icon="mdi-calendar-month"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker v-model="dateFin" @input="menuFin = false" locale="es" color="light-blue"></v-date-picker>
-                  </v-menu>  
-      </v-col>
-    </v-row>
     <v-row>
    <v-data-table
+     v-model = "selected"
     :headers="headers"
     :items="desserts"
     :search="search"
+    :single-select="singleSelect"
+    item-key="name"
     calculate-widths
     class="elevation-6"
+
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
-        <v-toolbar-title>Lista de Evaluaciones</v-toolbar-title>
+        <v-toolbar-title>Lista de Estudiantes</v-toolbar-title>
       <v-spacer></v-spacer> <v-spacer></v-spacer> <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -84,17 +42,16 @@
       ></v-text-field>
       </v-toolbar>
     </template>
-    <template v-slot:item.actions="{ item }">
-<!-- open new tab api/estudiantes/id -->
+    <!--template v-slot:item.actions="{ item }">
+< open new tab api/estudiantes/id >
       <v-icon
       color = 'light-blue'
-        @click="deleteItem(item)"
-      >
+        @click="editItem(item)"
+        
+      > 
       </v-icon>
 
-         <v-spacer></v-spacer>
-    
-    </template>
+    </template-->
    
     <template v-slot:no-data>
       <v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -107,30 +64,41 @@
 <script>
   export default {
     data: () => ({
-      dialog: false,
-      headers:[
-        {
-          text: 'Fecha',
-          align: 'center',
-          value: 'fecha',
-          width: '240px'
-        },
+      
+        tab: null,
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        icons: false,
+        centered: false,
+        grow: false,
+        vertical: false,
+        prevIcon: false,
+        nextIcon: false,
+        right: false,
+        tabs: ['Historial de evaluaciones','Historial de citas'],
+        tabs2: ['Prueba de Faraday','Prueba de Collins','Prueba de Jules'],
+        dialog: false,
+        dialog2: false,
+        notifications: false,
+        sound: true,
+        widgets: false,
+        date: new Date().toISOString().substr(0, 10),
+        menu: false,
+        singleSelect: true,
+      headers: [
         {
           text: 'Estudiante',
           align: 'center',
+          sortable: false,
           value: 'name',
-          width: '240px'
+          width: '340px'
         },
-        { text: 'Colegio', value: 'colegio', width: '240px', align: 'center', },
-        { text: 'Seccion', value: 'seccion', width: '200px', align: 'center', },
+        { text: 'Colegio', value: 'colegio', width: '340px', align: 'center', },
+        { text: 'Seccion', value: 'seccion', width: '340px', align: 'center', },
        // { text: 'Edad', value: 'edad',width: '180px', align: 'center', },
-        { text: 'Estado', value: 'estado', width: '240px', align: 'center', /*justify: 'center',*/},
+        //{ text: '', value: 'actions', sortable: false,width: '440px', align: 'center', justify: 'center',},
       ],
-      dateIni: new Date().toISOString().substr(0, 10),
-      dateFin: new Date().toISOString().substr(0, 10),
-      menuIni: false,
-      menuFin: false,
       search: '',
+      selected: [],
       desserts: [],
       editedIndex: -1,
       editedItem: {
@@ -143,8 +111,8 @@
         estado: 0,
         edad: 0,
       },
-      //select: [''],
-      //select2: [''],
+      select: [''],
+      select2: [''],
       coles: [
         'I.E.E. José Olaya',
         'Colegio Villa María',
@@ -178,46 +146,46 @@
       initialize () {
         this.desserts = [
           {
-            fecha: '24/08/2020',
-            name: 'Gianmarco Chávez',
+            name: 'Alan Brito',
             colegio: 'Newton School',
             seccion: '4B',
-            estado: 'Pendiente',
+            edad: 17,
           },
           {
-            fecha: '22/08/2020',
             name: 'Piero Quiroz',
              colegio: 'Newton School',
             seccion: '5B',
-            estado: 'Pendiente',
+            edad: 17,
           },
           {
-            fecha: '19/08/2020',
             name: 'Tessa Livia',
             colegio: 'Colegio Villa María',
             seccion: '1A',
-            estado: 'Realizada',
+            edad: 6.0,
           },
           {
-            fecha: '14/08/2020',
-            name: 'Gianmarco Chávez',
-            colegio: 'Newton School',
-            seccion: '4B',
-            estado: 'Pendiente',
+            name: 'Claudio Pizarro',
+            colegio: 'Colegio Alpamayo',
+            seccion: '3C',
+            edad: 14,
           },
           {
-            fecha: '11/08/2020',
             name: 'Donald Glover',
             colegio: 'Liceo Naval Almirante Guise',
             seccion: '4C',
-            estado: 'Pendiente',
+            edad: 15,
           },
           {
-            fecha: '06/08/2020',
-            name: 'Gianmarco Chávez',
-            colegio: 'Newton School',
-            seccion: '4B',
-            estado: 'Realizada',
+            name: 'Lilibeth Ortiz',
+            colegio: 'Colegio Villa María',
+            seccion: '3B',
+            edad: 8,
+          },
+          {
+            name: 'Walter Cueva',
+            colegio: 'I.E.E. José Olaya',
+            seccion: '6C',
+            edad: 11,
           },
 
         ]
@@ -256,3 +224,10 @@
     },
   }
 </script>
+
+<style scoped>
+.example {
+  background-color:#039BE5;
+  
+}
+</style>
