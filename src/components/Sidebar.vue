@@ -155,24 +155,36 @@
       {
         icon: 'mdi-chevron-up',
         'icon-alt': 'mdi-chevron-down',
-        text: 'Datos de Estudiantes',
+        text: 'Estudiantes',
         model: false,
         children: [
-          { icon: 'mdi-account-multiple' , text: 'Lista de Estudiantes', link:'estudiantes' },
+          { icon: 'mdi-account-multiple' , text: 'Consultar Estudiantes', link:'estudiantes' },
           { icon: 'mdi-plus', text: 'Asignar a seccion' },
+          { icon: 'mdi-plus', text: 'Crear seccion' },
         ],
       },
       {
         icon: 'mdi-chevron-up',
         'icon-alt': 'mdi-chevron-down',
-        text: 'Control de Estudiantes',
+        text: 'Evaluaciones ',
         model: false,
         children: [
         { text: 'Consulta de Evaluaciones', link: 'evaluaciones', icon: 'mdi-book-check' },
+        { text: 'Crear Evaluación', icon: 'mdi-plus'},
+        ],
+      },
+      {
+        icon: 'mdi-chevron-up',
+        'icon-alt': 'mdi-chevron-down',
+        text: 'Citas',
+        model: false,
+        children: [
         { text: 'Consulta de Citas', link: 'citas', icon: 'mdi-book-account' },
+        { text: 'Crear Cita', link:'crear_cita', icon: 'mdi-plus' },
         ],
       },
       { icon: 'mdi-handshake-outline', text: 'Solicitudes de Ayuda', link: 'solicitudes' },
+      { icon: 'mdi-align-vertical-bottom', text: 'Reportes' },
     ],
         color:'indigo',
         colors: [
