@@ -67,8 +67,10 @@
    <v-data-table
     :headers="headers"
     :items="desserts"
+    item-key="codigo" 
     :search="search"
     calculate-widths
+    show-expand
     class="elevation-6"
   >
     <template v-slot:top>
@@ -81,11 +83,12 @@
         label="Búsqueda"
         single-line
         hide-details
+         
       ></v-text-field>
       </v-toolbar>
     </template>
-    <template v-slot:item.actions="{ item }">
-<!-- open new tab api/estudiantes/id -->
+    <!--template v-slot:item.actions="{ item }">
+< open new tab api/estudiantes/id >
       <v-icon
       color = 'light-blue'
         @click="deleteItem(item)"
@@ -94,11 +97,113 @@
 
          <v-spacer></v-spacer>
     
+    </template-->
+    <template #expanded-item="{headers,item}">
+      <td :colspan="headers.length"
+    style="padding:0;" >
+    <v-list two-line>
+      <v-row>
+      <v-col>
+       <v-list-item >
+       
+        <v-list-item-icon>
+          <v-icon color="light-blue">mdi-account-tie</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+           <v-list-item-subtitle>Especialista</v-list-item-subtitle>
+          <v-list-item-title>Alvin Pérez</v-list-item-title>
+         
+        </v-list-item-content>
+
+      </v-list-item>
+      <v-divider inset></v-divider>
+      <v-list-item >
+        <v-list-item-icon>
+          <v-icon color="light-blue">mdi-calendar-month</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-subtitle>Fecha de evaluación</v-list-item-subtitle>
+          <v-list-item-title>{{item.fecha}}</v-list-item-title>
+        </v-list-item-content>
+
+      </v-list-item>
+      <v-divider inset ></v-divider>
+      <v-list-item >
+        <v-list-item-icon>
+          <v-icon color="light-blue">mdi-book-check</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-subtitle>Tipo de evaluación</v-list-item-subtitle>
+          <v-list-item-title>Prueba de Faraday</v-list-item-title>         
+        </v-list-item-content>
+
+      </v-list-item>
+       <v-divider inset></v-divider> 
+      </v-col>
+      <v-col>
+        <v-list-item >
+        
+        <v-list-item-icon>
+          <v-icon color="light-blue">mdi-account-child</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-subtitle>Tutor</v-list-item-subtitle>
+          <v-list-item-title>Gianmarco Chávez</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider inset></v-divider>
+      <v-list-item >
+        <v-list-item-icon>
+          <v-icon color="light-blue">mdi-calendar-month</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-subtitle>Fecha de resultado</v-list-item-subtitle>
+          <v-list-item-title>{{item.fechaR}}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider inset></v-divider> 
+
+      <v-list-item >
+        <v-list-item-icon>
+          <v-icon color="light-blue">mdi-numeric</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-subtitle>Puntaje</v-list-item-subtitle>
+          <v-list-item-title>70/100</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider inset></v-divider> 
+      </v-col>
+      </v-row>
+      <v-row   style=" text-align: center;"><v-col>
+        <v-list-item >
+
+        <v-list-item-content>
+          <v-list-item-subtitle>Diagnóstico</v-list-item-subtitle>
+          <v-list-item-title>Depresión moderada</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      </v-col></v-row>
+
+      <v-row ><v-col>
+        <v-list-item >
+
+        <v-list-item-content class="justify-center">
+          <v-btn color="indigo accent-1" >Crear Cita</v-btn>
+        </v-list-item-content>
+      </v-list-item>
+      </v-col></v-row>
+
+    </v-list>   
+      </td>
     </template>
-   
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
-    </template>
+ 
   </v-data-table>
     </v-row>
   </v-container>
@@ -122,9 +227,9 @@
           width: '240px'
         },
         { text: 'Colegio', value: 'colegio', width: '240px', align: 'center', },
-        { text: 'Seccion', value: 'seccion', width: '200px', align: 'center', },
+        { text: 'Seccion', value: 'seccion', width: '160px', align: 'center', },
        // { text: 'Edad', value: 'edad',width: '180px', align: 'center', },
-        { text: 'Estado', value: 'estado', width: '240px', align: 'center', /*justify: 'center',*/},
+        { text: 'Estado', value: 'estado', width: '220px', align: 'center', /*justify: 'center',*/},
       ],
       dateIni: new Date().toISOString().substr(0, 10),
       dateFin: new Date().toISOString().substr(0, 10),
@@ -178,42 +283,54 @@
       initialize () {
         this.desserts = [
           {
+            codigo: 'E02',
             fecha: '24/08/2020',
+            fechaR: '25/08/2020',
             name: 'Gianmarco Chávez',
             colegio: 'Newton School',
             seccion: '4B',
             estado: 'Pendiente',
           },
           {
+            codigo: 'E08',
             fecha: '22/08/2020',
+            fechaR: '24/08/2020',
             name: 'Piero Quiroz',
              colegio: 'Newton School',
             seccion: '5B',
             estado: 'Pendiente',
           },
           {
+            codigo: 'E33',
             fecha: '19/08/2020',
+            fechaR: '20/08/2020',
             name: 'Tessa Livia',
             colegio: 'Colegio Villa María',
             seccion: '1A',
             estado: 'Realizada',
           },
           {
+            codigo: 'E56',
             fecha: '14/08/2020',
+            fechaR: '15/08/2020',
             name: 'Gianmarco Chávez',
             colegio: 'Newton School',
             seccion: '4B',
             estado: 'Pendiente',
           },
           {
+            codigo: 'E45',
             fecha: '11/08/2020',
+            fechaR: '13/08/2020',
             name: 'Donald Glover',
             colegio: 'Liceo Naval Almirante Guise',
             seccion: '4C',
             estado: 'Pendiente',
           },
           {
+            codigo: 'E99',
             fecha: '06/08/2020',
+            fechaR: '10/08/2020',
             name: 'Gianmarco Chávez',
             colegio: 'Newton School',
             seccion: '4B',

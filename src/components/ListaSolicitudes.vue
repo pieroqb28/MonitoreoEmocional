@@ -67,8 +67,10 @@
    <v-data-table
     :headers="headers"
     :items="desserts"
+    item-key="codigo" 
     :search="search"
     calculate-widths
+    show-expand
     class="elevation-6"
   >
     <template v-slot:top>
@@ -84,80 +86,48 @@
       ></v-text-field>
       </v-toolbar>
     </template>
-    <template v-slot:item.actions="{ item }">
-<!-- open new tab api/estudiantes/id -->
-      <v-icon
-      color = 'light-blue'
-        @click="deleteItem(item)"
-      >
-      </v-icon>
-     <v-dialog v-model="dialog2" persistent max-width="600px">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="orange lighten-1"
-          dark
-          v-bind="attrs"
-          v-on="on"
-          height="30px"
-          width ="200px"
-        >
-          Ver detalle
-        </v-btn>
-      </template>
-      <v-card>
-        <v-card-title  style="backgroundColor: #FFA726;">
-          <span class="headline" style="color: white;">Solicitud de ayuda</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-                  <v-col cols="12" sm="6"  >
-                <v-text-field
-                  value="24/08/20"
-                  label="Fecha"
-                  prepend-icon="mdi-calendar-month"
-                  outlined
-                  readonly=""
-                  required
-                ></v-text-field>
-              </v-col>
-                 <v-col cols="12" sm="6"  >
-                <v-text-field
-                  value="Alan Brito"
-                  label="Estudiante"
-                  prepend-icon="mdi-account"
-                  outlined
-                  readonly=""
-                  required
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-textarea
-              v-model="title"
-              label="Mensaje"
-              outlined
-              full-width
-              readonly
-              no-resize
-            ></v-textarea>
-            </v-row>
-          </v-container>
-          <!--small>* Campo obligatorio</small-->
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="pink darken-1" text @click="dialog2 = false">Cerrar</v-btn>
-          <v-btn color="green darken-1" text @click="dialog2 = false">Guardar</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>    
 
+    <template #expanded-item="{headers,item}">
+      <td :colspan="headers.length"
+      style="padding:0;">
+    <v-list two-line>
+      <v-row>
+      <v-col>
+       <v-list-item >
 
-    </template>
-   
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
+        <v-list-item-content>
+          <v-list-item-title>Hola por favor necesito ayuda ayuda ayudaaaaaaaaaaa</v-list-item-title>        
+        </v-list-item-content>
+
+      </v-list-item>
+      </v-col>
+      </v-row>
+      <v-row ><v-col>
+        <v-list-item >
+        <v-list-item-icon>
+          <v-icon color="light-blue">mdi-emoticon-cry</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-subtitle>Crear evaluación</v-list-item-subtitle>
+          <v-list-item-title>{{item.codigo}}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item></v-col>
+      
+       <v-col>
+        <v-list-item >
+        <v-list-item-icon>
+          <v-icon color="light-blue">mdi-emoticon-cry</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-subtitle>Crear cita</v-list-item-subtitle>
+          <v-list-item-title>{{item.codigo}}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      </v-col></v-row>
+    </v-list>   
+      </td>
     </template>
   </v-data-table>
     </v-row>
@@ -173,18 +143,18 @@
           text: 'Fecha',
           align: 'center',
           value: 'fecha',
-          width: '240px'
+          width: '260px'
         },
         {
           text: 'Estudiante',
           align: 'center',
           value: 'name',
-          width: '240px'
+          width: '260px'
         },
-        { text: 'Colegio', value: 'colegio', width: '240px', align: 'center', },
-        { text: 'Seccion', value: 'seccion', width: '200px', align: 'center', },
+        { text: 'Colegio', value: 'colegio', width: '260px', align: 'center', },
+        { text: 'Seccion', value: 'seccion', width: '240px', align: 'center', },
        // { text: 'Edad', value: 'edad',width: '180px', align: 'center', },
-        { text: '', value: 'actions', sortable: false,width: '240px', align: 'center', justify: 'center',},
+       // { text: '', value: 'actions', sortable: false,width: '240px', align: 'center', justify: 'center',},
       ],
       dateIni: new Date().toISOString().substr(0, 10),
       dateFin: new Date().toISOString().substr(0, 10),
@@ -238,6 +208,7 @@
       initialize () {
         this.desserts = [
           {
+            codigo: 'S03',
             fecha: '24/08/2020',
             name: 'Gianmarco Chávez',
             colegio: 'Newton School',
@@ -245,6 +216,7 @@
             edad: 17,
           },
           {
+            codigo: 'S08',
             fecha: '22/08/2020',
             name: 'Piero Quiroz',
              colegio: 'Newton School',
@@ -252,6 +224,7 @@
             edad: 17,
           },
           {
+            codigo: 'S15',
             fecha: '19/08/2020',
             name: 'Tessa Livia',
             colegio: 'Colegio Villa María',
@@ -259,6 +232,7 @@
             edad: 6.0,
           },
           {
+            codigo: 'S33',
             fecha: '14/08/2020',
             name: 'Gianmarco Chávez',
             colegio: 'Newton School',
@@ -266,6 +240,7 @@
             edad: 17,
           },
           {
+            codigo: 'S47',
             fecha: '11/08/2020',
             name: 'Donald Glover',
             colegio: 'Liceo Naval Almirante Guise',
@@ -273,6 +248,7 @@
             edad: 15,
           },
           {
+            codigo: 'S113',
             fecha: '06/08/2020',
             name: 'Gianmarco Chávez',
             colegio: 'Newton School',

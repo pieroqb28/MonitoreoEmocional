@@ -42,7 +42,7 @@
                   <v-spacer></v-spacer>
                 </v-card-actions>
                 <v-card-actions>
-                  <v-spacer></v-spacer>
+                  <v-spacer></v-spacer>   
                   <v-btn color="indigo accent-1" to="/registro">Registrarse</v-btn>
                   <v-spacer></v-spacer>
                 </v-card-actions>

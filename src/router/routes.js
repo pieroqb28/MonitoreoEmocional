@@ -2,11 +2,17 @@ import Analisis from "@/views/Analisis.vue";
 import ConsultaEstudiantes from "@/views/ConsultaEstudiantes.vue";
 import ConsultaEvaluaciones from "@/views/ConsultaEvaluaciones.vue";
 import ConsultaCitas from "@/views/ConsultaCitas.vue";
+import CrearCita from "@/views/CrearCita.vue";
 import ConsultaSolicitudes from "@/views/ConsultaSolicitudes.vue";
 import DatosEstudiante from "@/views/DatosEstudiante.vue";
 import Login from "@/views/Login.vue";
 import Perfil from "@/views/Perfil.vue";
 import Registro from "@/views/Registro.vue";
+
+/*
+ * allowAnonymous: puede verse sin un token
+ * onlyAnonymous: solo puede verse sin token
+ */
 
 export default [
   {
@@ -39,6 +45,7 @@ export default [
     component: ConsultaSolicitudes,
   },
   { path: "/citas", name: "ConsultaCitas", component: ConsultaCitas },
+  { path: "/crear_cita", name: "CrearCita", component: CrearCita },
   {
     path: "/estudiantes-id",
     name: "DatosEstudiante",
