@@ -139,9 +139,6 @@
 
 <script>
 import axios from "axios"
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';  
-axios.defaults.headers.common['Access-Control-Allow-Methods'] = '*' 
-axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'access-control-allow-headers,access-control-allow-methods,access-control-allow-origin,authorization';  
   export default {
     name : "Login",
     data: () => ({

@@ -12,6 +12,7 @@
 
 <script>
 import Sidebar from '@/components/Sidebar.vue'
+
 export default {
   name: 'app',
   components: {
@@ -19,10 +20,10 @@ export default {
   },
   methods:{
      Logged() {
-        if(this.$route.path == "/" || this.$route.path == "/registro" ) {
-          return false
-        } else {
+        if(this.$store.state.auth.accessToken) {
           return true
+        } else {
+          return false
         }
      }
   },
