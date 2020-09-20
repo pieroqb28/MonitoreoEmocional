@@ -3,87 +3,28 @@
    <v-row><h4>Filtros</h4></v-row>
     <v-row>
       <v-col cols="6">
-        <v-combobox
-          v-model="select"
-          :items="coles"
-          label="Institución educativa"        
+        <v-combobox       
+          v-model="selectColegio"
+          :items="api_colegios"
+          placeholder="-"
+          label="Institución educativa"
+          @change="getSecciones()"
         ></v-combobox>
       </v-col>
       <v-col cols="6">
         <v-combobox
-          v-model="select2"
-          :items="secciones"
-          label="Sección"         
+          v-model="selectSeccion"
+          :items="api_secciones"
+          label="Sección"
+          @change="getEstudiantes()"         
         ></v-combobox>
       </v-col>
     </v-row>
 
       <v-row justify="end">
       
-       <v-dialog v-model="dialog" persistent max-width="600px">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="indigo darken-1"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          Asignar evaluación
-        </v-btn>
-      </template>
-      <v-card>
-        <v-card-title style="backgroundColor: #3949AB;">
-          <span class="headline" style="color: white;" >Asignar evaluación</span>
-        </v-card-title>
-        <v-card-text>
-          <v-tabs
-      v-model="tab2"
-      background-color="light-blue lighten-3"
-      active-class="example"
-      width="30px"
-      dark
-      :centered="true"
-      :fixed-tabs="true"
-      
-    >
-      <v-tabs-slider></v-tabs-slider>
-
-      <v-tab
-        v-for="i in tabs2"
-        :key="i"
-        :href="`#tab2-${i}`"
-      >
-       {{ i }}
-        
-      </v-tab>
-
-      <v-tab-item
-        v-for="i in tabs2"
-        :key="i"
-        :value="'tab2-' + i"
-      >
-        <v-card
-          flat
-          tile
-        >
-           <v-img
-      src="https://usercontent2.hubstatic.com/8821109_f496.jpg"
-      height="400px"
-      dark
-    ></v-img>
-
-        </v-card>
-
-      </v-tab-item>
-    </v-tabs>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="pink darken-1" text @click="dialog = false">Cerrar</v-btn>
-          <v-btn color="green darken-1" text @click="dialog = false">Asignar</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+  
+    <v-btn dark color = 'indigo' @click="goToCrearEvaluacion()" to="/crear_evaluacion" >Asignar evaluación</v-btn>
  
     </v-row>
     <v-row>  <v-col><v-spacer></v-spacer></v-col> </v-row>
@@ -92,106 +33,128 @@
   <v-data-table
     v-model="selected"
     :headers="headers"
-    :items="estudiantes"
+    :items="api_estudiantes"
     :single-select="singleSelect"
-    item-key="name"
+    no-results-text = "Búsqueda sin coincidencias"
+    no-data-text = "No hay estudiantes disponibles"
+    item-key="idEstudiante"
     show-select
     class="elevation-6"
+    :search="search"
   >
-
+    <template v-slot:top>
+      <v-toolbar flat color="white">
+        <v-toolbar-title>Lista de Estudiantes</v-toolbar-title>
+      <v-spacer></v-spacer> <v-spacer></v-spacer> <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Búsqueda"
+        single-line
+        hide-details
+         
+      ></v-text-field>
+      </v-toolbar>
+    </template>
   </v-data-table>
    </v-row>
 </v-container>
 </template>
 
 <script>
+import axios from "axios"
   export default {
-    data () {
-      return {
-        tabs2: ['Prueba de Faraday','Prueba de Collins','Prueba de Jules'],
-        dialog: false,
-        dialog2: false,
+    mounted(){
+      this.getColegios()
+    },
+    data :() => ({
+      //return {
+        selectColegio:[],
+        selectSeccion:[],
         singleSelect: true,
         selected: [],
-        coles: [
-        'I.E.E. José Olaya',
-        'Colegio Villa María',
-        'Colegio Alpamayo',
-        'Liceo Naval Almirante Guise'
-        ],
-       secciones: [
-        '5°-A sec.',
-        '6°-B prim.',
-         '2°-B prim.'
-       ],
-        headers: [
-          { text: 'Código', value: 'codigo', width: '240px', align: 'center', sortable: false, },
-          {
-            text: 'Estudiante',
-            align: 'center',
-            sortable: false,
-            value: 'name',
-            width: '295px'
-          },
-          { text: 'Colegio', value: 'colegio', width: '295px', align: 'center', },
-          { text: 'Seccion', value: 'seccion', width: '260px', align: 'center', },
-        // { text: 'Edad', value: 'edad',width: '180px', align: 'center', },
-          //{ text: '', value: 'actions', sortable: false,width: '440px', align: 'center', justify: 'center',},
-        ],     
-       estudiantes : [
-          {
-            codigo: 'E44',
-            name: 'Gianmarco Chávez',
-            colegio: 'Newton School',
-            seccion: '4B',
-            edad: 17,
-          },
-          {
-            codigo: 'E46',
-            name: 'Piero Quiroz',
-             colegio: 'Newton School',
-            seccion: '5B',
-            edad: 17,
-          },
-          {
-            codigo: 'E41',
-            name: 'Tessa Livia',
-            colegio: 'Colegio Villa María',
-            seccion: '1A',
-            edad: 6.0,
-          },
-          {
-            codigo: 'E63',
-            name: 'Claudio Tasayco',
-            colegio: 'Colegio Alpamayo',
-            seccion: '3C',
-            edad: 14,
-          },
-          {
-            codigo: 'E14',
-            name: 'Donald Glover',
-            colegio: 'Liceo Naval Almirante Guise',
-            seccion: '4C',
-            edad: 15,
-          },
-          {
-            codigo: 'E158',
-            name: 'Lilibeth Ortiz',
-            colegio: 'Colegio Villa María',
-            seccion: '3B',
-            edad: 8,
-          },
-          {
-            codigo: 'E424',
-            name: 'Walter Cueva',
-            colegio: 'I.E.E. José Olaya',
-            seccion: '6C',
-            edad: 11,
-          },
+        search: '',
 
-        ]
+       headers: [
+          { text: 'Código', value: 'idEstudiante', width: '245 px', align: 'center', sortable: false, },
+          { text: 'Nombres', value: 'nombres', width: '260px', align: 'center', },
+          { text: 'Apellidos', value: 'apellidos', width: '260px', align: 'center', },
+          { text: 'Colegio', value: 'colegio', width: '260px', align: 'center', },
+          { text: 'Sección', value: 'idSeccion', width: '245px', align: 'center', },
+          
+       ], 
+        api_colegios:[],
+        api_secciones:[],
+        api_estudiantes:[],
+
+      //}
+    }),
+    methods:{
+        async getColegios(){
+        try{
+          const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wEvaluaciones/consulta/tutor/colegio',{
+              //crossDomain: true,
+              params:{
+              idTutor:localStorage.userID,
+              tokenString:localStorage.accessToken,
+              }
+          })
+          //this.colegios = res.data
+          let codigosColegio = res.data.map(a => a.idColegio);
+          let nombresColegio = res.data.map(a => a.nombreColegio)
+          this.api_colegios = codigosColegio.map((value,i) => ({value, text: nombresColegio[i]}));
+          console.log(res)
+          console.log(this.api_colegios)
+        } catch(e){
+          console.error(e)
+        }
+      },
+      async getSecciones(){
+      try{
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wEvaluaciones/consulta/tutor/seccion',{
+            //crossDomain: true,
+            params:{
+            idColegio:this.selectColegio.value,
+            idTutor:localStorage.userID,
+            tokenString:localStorage.accessToken,
+            }
+        })
+        //this.secciones = res.data
+        let codigosSeccion= res.data.map(a => a.idSeccion);
+        let nombresSeccion = res.data.map(a => a.nombreSeccion)
+        this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
+        console.log(res)
+        console.log(this.api_secciones)
+      } catch(e){
+        console.error(e)
       }
     },
+    async getEstudiantes(){
+      try{
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wEvaluaciones/consulta/listado/estudiantes',{
+            //crossDomain: true,
+            params:{
+            idSeccion:this.selectSeccion.value,
+            idTutor:localStorage.userID,
+            tokenString:localStorage.accessToken,
+            }
+        })
+        //this.secciones = res.data
+        //let codigosSeccion= res.data.map(a => a.idSeccion);
+        //let nombresSeccion = res.data.map(a => a.nombreSeccion)
+        //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
+        this.api_estudiantes = res.data
+        console.log(res)
+        //console.log(this.api_estudiantes)
+      } catch(e){
+        console.error(e)
+      }
+    },
+  goToCrearEvaluacion(){
+     localStorage.setItem("selectedEstudiante", this.selected[0].dniEstudiante)
+     console.log(this.selected[0])
+  },
+  }
   }
 </script>
 <style scoped>

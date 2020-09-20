@@ -69,6 +69,7 @@
             v-for="item in items"
             :key="item.text"
             :to="item.link"
+            
           >
             <v-list-item-action>
               <v-icon color = 'white'>{{ item.icon }}</v-icon>

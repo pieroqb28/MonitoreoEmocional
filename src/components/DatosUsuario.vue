@@ -85,12 +85,37 @@
 </template>
 
 <script>
-
+import axios from "axios"
   export default {
+    mounted(){
+      this.getDatosUsuario() 
+    },
     data: () => ({
 
-    })
+    }),
 
+    methods: {
+     async getDatosUsuario(){
+      try{
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net​/api/LoginWeb/Consultar/DatosPersonales/DatosPersonales',{
+            //crossDomain: true,
+            params:{
+              idEspecialista:localStorage.userID,
+              token:localStorage.accessToken,
+            }
+        })
+        console.log(res)
+        /*this.name = (res.data[0].b.primerNombre).concat(" ").concat(res.data[0].b.segundoNombre)
+        this.apellido = (res.data[0].b.apellidoPaterno).concat(" ").concat(res.data[0].b.apellidoMaterno)
+        this.celular = (res.data[0].b.celularEstudiante)
+        this.correo = (res.data[0].b.correoEstudiante)
+        this.idEstudiante = (res.data[0].b.idEstudiante)*/
+
+      } catch(e){
+        console.error(e)
+      }
+    },
+    },
   }
 </script>
 

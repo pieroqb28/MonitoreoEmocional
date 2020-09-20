@@ -5,6 +5,8 @@ import router from "../../router/index";
 // shape: [{ accessToken, loggingIn, loginError }]
 const state = () => ({
   accessToken: null,
+  userID: null,
+  userRole: null,
   loggingIn: false,
   loginError: null,
 });
@@ -22,28 +24,39 @@ const actions = {
       "access-control-allow-headers,access-control-allow-methods,access-control-allow-origin,authorization";
     axios
       .post(
-        "https://sistemadepresivoapi.azurewebsites.net/api/LoginWeb/registro",
+        "https://sistemadepresivotesisupc.azurewebsites.net/api/LoginWeb/registro",
         {
           ...loginData,
         }
       )
 
       .then((response) => {
-        localStorage.setItem("accessToken", response.data.tokenString);
+        localStorage.setItem("accessToken", response.data.tokenString );
+        localStorage.setItem("userID", response.data.id);
+        localStorage.setItem("userRole", response.data.role);
         commit("loginStop", null);
         commit("updateAccessToken", response.data.tokenString);
+        commit("updateUserID", response.data.id)
+        commit("updateUserRole", response.data.role)
         router.push("/analisis");
+        console.log(response)
       })
       .catch((error) => {
         commit("loginStop", error.response.data.error);
         commit("updateAccessToken", null);
+        commit("updateUserID", null);
+        commit("updateUserRole", null);
       });
   },
   fetchAccessToken({ commit }) {
     commit("updateAccessToken", localStorage.getItem("accessToken"));
+    commit("updateUserID", localStorage.getItem("userID"))
+    commit("updateUserRole", localStorage.getItem("userRole"))
   },
   logout({ commit }) {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("userID");
+    localStorage.removeItem("userRole");
     commit("logout");
     router.push("/login");
   },
@@ -59,8 +72,16 @@ const mutations = {
   updateAccessToken: (state, accessToken) => {
     state.accessToken = accessToken;
   },
+  updateUserID: (state, userID) => {
+    state.userID = userID;
+  },
+  updateUserRole: (state, userRole) => {
+    state.userRole = userRole;
+  },
   logout: (state) => {
     state.accessToken = null;
+    state.userID = null;
+    state.userRole = null;
   },
 };
 

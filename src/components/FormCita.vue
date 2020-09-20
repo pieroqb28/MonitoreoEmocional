@@ -14,7 +14,14 @@
       :rules="DNIRules"
       label="DNI"
       required
-    ></v-text-field>
+    ></v-text-field><v-row class="justify-center">
+       <v-btn
+      :disabled="!valid"
+      color="light-blue accent-1"
+      class="mr-4"
+    >
+      Buscar
+    </v-btn></v-row>
     </v-col>
     <v-col>
     <v-text-field
@@ -46,19 +53,7 @@
     ></v-text-field>
     </v-col>
   </v-row>
-  <v-row>
-    <v-col>
-    <v-combobox
-      v-model="selectEspecialista"
-      :items="especialistas"
-      :rules="selectEspecialistaRules"
-      label="Especialista"
-      required
-    ></v-combobox>
-    </v-col>
-    <v-col><v-spacer></v-spacer></v-col>
-  </v-row>
-  <v-row>
+    <v-row>
     <v-col>
 <v-menu
                     v-model="menuFecha"
@@ -95,14 +90,33 @@
     </v-col>
     <v-col><v-spacer></v-spacer></v-col>
   </v-row>
-   
+  <v-row>
+    <v-col>
+    <v-combobox
+      v-model="selectEspecialista"
+      :items="especialistas"
+      :rules="selectEspecialistaRules"
+      label="Especialista"
+      required
+    ></v-combobox>
+    </v-col>
+    <v-col><v-spacer></v-spacer></v-col>
+  </v-row>
+  
     <!--v-checkbox
       v-model="checkbox"
       :rules="[v => !!v || 'You must agree to continue!']"
       label="Do you agree?"
       required
     ></v-checkbox-->
-
+    <v-row><v-col>
+      <v-textarea
+      filled
+      label="Descripción"
+      auto-grow
+      rows="5"
+    ></v-textarea>
+      </v-col></v-row>
     <v-row>
     <v-spacer></v-spacer>
     <v-btn

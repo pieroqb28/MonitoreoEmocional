@@ -157,7 +157,7 @@ import axios from "axios"
     methods: {
       async registro(){
       try{
-        const res = await axios.put('https://sistemadepresivoapi.azurewebsites.net/api/LoginWeb/Create/especialista',{
+        const res = await axios.put('https://sistemadepresivotesisupc.azurewebsites.net/api/LoginWeb/Create/especialista',{
             //crossDomain: true,
             correo: this.correo,
             contrasena: this.contrasena,

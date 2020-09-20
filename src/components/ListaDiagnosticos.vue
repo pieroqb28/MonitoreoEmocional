@@ -17,7 +17,7 @@
         ></v-combobox>
       </v-col>
     </v-row>
-    <v-row>
+        <v-row>
       <v-col>
                     <v-menu
                     v-model="menuIni"
@@ -64,16 +64,18 @@
       </v-col>
     </v-row>
     <v-row>
-   <v-data-table
+   <v-data-table  
     :headers="headers"
     :items="desserts"
+    item-key="codigo" 
     :search="search"
     calculate-widths
+    
     class="elevation-6"
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
-        <v-toolbar-title>Lista de Citas</v-toolbar-title>
+        <v-toolbar-title>Lista de Diagnosticos</v-toolbar-title>
       <v-spacer></v-spacer> <v-spacer></v-spacer> <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -84,20 +86,41 @@
       ></v-text-field>
       </v-toolbar>
     </template>
-    <template v-slot:item.actions="{ item }">
-<!-- open new tab api/estudiantes/id -->
-      <v-icon
-      color = 'light-blue'
-        @click="deleteItem(item)"
-      >
-      </v-icon>
 
-         <v-spacer></v-spacer>
-    
-    </template>
-   
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
+    <template #expanded-item="{headers,item}">
+      <td :colspan="headers.length"
+      style="padding:0;">
+    <v-list two-line>
+      <v-row>
+      <v-col>
+       <v-list-item >
+
+        <v-list-item-content>
+          <v-list-item-title>{{item.solicitud}}</v-list-item-title>        
+        </v-list-item-content>
+
+      </v-list-item>
+      </v-col>
+      </v-row>
+      <v-row >
+        <v-col>
+        <v-list-item >
+        <v-list-item-content class="justify-center">
+          <v-btn color="indigo accent-1" >Crear Cita</v-btn>
+        </v-list-item-content>
+      </v-list-item>
+      </v-col>
+        <v-col>
+        <v-list-item >
+        <v-list-item-content class="justify-center">
+          <v-btn color="light-blue accent-1" >Crear Evaluación</v-btn>
+        </v-list-item-content>
+      </v-list-item>
+      </v-col>
+      </v-row>
+
+    </v-list>   
+      </td>
     </template>
   </v-data-table>
     </v-row>
@@ -107,7 +130,7 @@
 <script>
   export default {
     data: () => ({
-      dialog: false,
+      dialog2: false,
       headers: [
         {
           text: 'Fecha',
@@ -122,10 +145,10 @@
           width: '230px'
         },
         { text: 'Colegio', value: 'colegio', width: '230px', align: 'center', },
-        { text: 'Seccion', value: 'seccion', width: '220px', align: 'center', },
-        { text: 'Tipo Cita', value: 'tipoCita', width: '230px', align: 'center', },
+        { text: 'Seccion', value: 'seccion', width: '210px', align: 'center', },
+        { text: 'Evaluacion', value: 'evaluacion', width: '230px', align: 'center', },
        // { text: 'Edad', value: 'edad',width: '180px', align: 'center', },
-        //{ text: '', value: 'actions', sortable: false,width: '240px', align: 'center', justify: 'center',},
+       // { text: '', value: 'actions', sortable: false,width: '240px', align: 'center', justify: 'center',},
       ],
       dateIni: new Date().toISOString().substr(0, 10),
       dateFin: new Date().toISOString().substr(0, 10),
@@ -179,53 +202,64 @@
       initialize () {
         this.desserts = [
           {
+            evaluacion:'Depresión moderada',
+            solicitud: 'Ayudaaaaaaa 1',
+            codigo: 'S03',
             fecha: '24/08/2020',
             name: 'Gianmarco Chávez',
             colegio: 'Newton School',
             seccion: '4B',
             edad: 17,
-            tipoCita: 'Pre-evaluación',
-            
           },
           {
+            evaluacion:'Depresión moderada',
+            solicitud: 'Ayudaaaaaaa 26',
+            codigo: 'S08',
             fecha: '22/08/2020',
             name: 'Piero Quiroz',
              colegio: 'Newton School',
             seccion: '5B',
             edad: 17,
-            tipoCita: 'Pre-evaluación',
           },
           {
+            evaluacion:'Depresión severa',
+            solicitud: 'Ayudaaaaaaa 165',
+            codigo: 'S15',
             fecha: '19/08/2020',
             name: 'Tessa Livia',
             colegio: 'Colegio Villa María',
             seccion: '1A',
             edad: 6.0,
-            tipoCita: 'Solicitud de ayuda',
           },
           {
+            evaluacion:'Depresión leve',
+            solicitud: 'Ayudaaaaaaa 21',
+            codigo: 'S33',
             fecha: '14/08/2020',
             name: 'Gianmarco Chávez',
             colegio: 'Newton School',
             seccion: '4B',
             edad: 17,
-            tipoCita: 'Pre-evaluación',
           },
           {
+            evaluacion:'Depresión moderada',
+            solicitud: 'Ayudaaaaaaa 31',
+            codigo: 'S47',
             fecha: '11/08/2020',
             name: 'Donald Glover',
             colegio: 'Liceo Naval Almirante Guise',
             seccion: '4C',
             edad: 15,
-            tipoCita: 'Pre-evaluación',
           },
           {
+            evaluacion:'Sin depresión',
+            solicitud: 'Ayudaaaaaaa 19',
+            codigo: 'S113',
             fecha: '06/08/2020',
             name: 'Gianmarco Chávez',
             colegio: 'Newton School',
             seccion: '4B',
             edad: 17,
-            tipoCita: 'Solicitud de ayuda ',
           },
 
         ]

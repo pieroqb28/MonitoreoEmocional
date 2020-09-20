@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import axios from "axios";
+//import axios from "axios";
 import { mapActions } from "vuex";
 export default {
   name: "Login",
@@ -65,10 +65,10 @@ export default {
     password: "",
   }),
   methods: {
-    async login() {
+    /*async login() {
       try {
         const res = await axios.post(
-          "https://sistemadepresivoapi.azurewebsites.net/api/LoginWeb/registro",
+          "https://sistemadepresivotesisupc.azurewebsites.net/api/LoginWeb/registro",
           {
             //crossDomain: true,
             correo: this.correo,
@@ -79,7 +79,7 @@ export default {
       } catch (e) {
         console.error(e);
       }
-    },
+    },*/
     onClickLogin() {
       this.doLogin({correo: this.correo, Password: this.password})
     },

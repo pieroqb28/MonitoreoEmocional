@@ -96,36 +96,29 @@
        <v-list-item >
 
         <v-list-item-content>
-          <v-list-item-title>Hola por favor necesito ayuda ayuda ayudaaaaaaaaaaa</v-list-item-title>        
+          <v-list-item-title>{{item.solicitud}}</v-list-item-title>        
         </v-list-item-content>
 
       </v-list-item>
       </v-col>
       </v-row>
-      <v-row ><v-col>
+      <v-row >
+        <v-col>
         <v-list-item >
-        <v-list-item-icon>
-          <v-icon color="light-blue">mdi-emoticon-cry</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-subtitle>Crear evaluación</v-list-item-subtitle>
-          <v-list-item-title>{{item.codigo}}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item></v-col>
-      
-       <v-col>
-        <v-list-item >
-        <v-list-item-icon>
-          <v-icon color="light-blue">mdi-emoticon-cry</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-subtitle>Crear cita</v-list-item-subtitle>
-          <v-list-item-title>{{item.codigo}}</v-list-item-title>
+        <v-list-item-content class="justify-center">  
+          <v-btn color="indigo accent-1" to="/crear_cita">Crear Cita</v-btn>
         </v-list-item-content>
       </v-list-item>
-      </v-col></v-row>
+      </v-col>
+        <v-col>
+        <v-list-item >
+        <v-list-item-content class="justify-center">
+          <v-btn color="light-blue accent-1" to="/crear_evaluacion">Crear Evaluación</v-btn>
+        </v-list-item-content>
+      </v-list-item>
+      </v-col>
+      </v-row>
+
     </v-list>   
       </td>
     </template>
@@ -208,6 +201,7 @@
       initialize () {
         this.desserts = [
           {
+            solicitud: 'Ayudaaaaaaa 1',
             codigo: 'S03',
             fecha: '24/08/2020',
             name: 'Gianmarco Chávez',
@@ -216,6 +210,7 @@
             edad: 17,
           },
           {
+            solicitud: 'Ayudaaaaaaa 26',
             codigo: 'S08',
             fecha: '22/08/2020',
             name: 'Piero Quiroz',
@@ -224,6 +219,7 @@
             edad: 17,
           },
           {
+            solicitud: 'Ayudaaaaaaa 165',
             codigo: 'S15',
             fecha: '19/08/2020',
             name: 'Tessa Livia',
@@ -232,6 +228,7 @@
             edad: 6.0,
           },
           {
+            solicitud: 'Ayudaaaaaaa 21',
             codigo: 'S33',
             fecha: '14/08/2020',
             name: 'Gianmarco Chávez',
@@ -240,6 +237,7 @@
             edad: 17,
           },
           {
+            solicitud: 'Ayudaaaaaaa 31',
             codigo: 'S47',
             fecha: '11/08/2020',
             name: 'Donald Glover',
@@ -248,6 +246,7 @@
             edad: 15,
           },
           {
+            solicitud: 'Ayudaaaaaaa 19',
             codigo: 'S113',
             fecha: '06/08/2020',
             name: 'Gianmarco Chávez',

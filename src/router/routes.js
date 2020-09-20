@@ -3,7 +3,9 @@ import ConsultaEstudiantes from "@/views/ConsultaEstudiantes.vue";
 import ConsultaEvaluaciones from "@/views/ConsultaEvaluaciones.vue";
 import ConsultaCitas from "@/views/ConsultaCitas.vue";
 import CrearCita from "@/views/CrearCita.vue";
+import CrearEvaluacion from "@/views/CrearEvaluacion.vue";
 import ConsultaSolicitudes from "@/views/ConsultaSolicitudes.vue";
+import ConsultaDiagnosticos from "@/views/ConsultaDiagnosticos.vue";
 import DatosEstudiante from "@/views/DatosEstudiante.vue";
 import Login from "@/views/Login.vue";
 import Perfil from "@/views/Perfil.vue";
@@ -39,12 +41,22 @@ export default [
     name: "ConsultaEvaluaciones",
     component: ConsultaEvaluaciones,
   },
+  { path: "/crear_evaluacion", name: "CrearEvaluacion", component: CrearEvaluacion },
+
   {
     path: "/solicitudes",
     name: "ConsultaSolicitudes",
     component: ConsultaSolicitudes,
   },
-  { path: "/citas", name: "ConsultaCitas", component: ConsultaCitas },
+  {
+    path: "/diagnosticos",
+    name: "ConsultaDiagnosticos",
+    component: ConsultaDiagnosticos,
+  },
+  { path: "/citas", 
+    name: "ConsultaCitas", 
+    component: ConsultaCitas },
+
   { path: "/crear_cita", name: "CrearCita", component: CrearCita },
   {
     path: "/estudiantes-id",

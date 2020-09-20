@@ -51,7 +51,7 @@
 
           <v-list-item-content>
             <v-list-item-title>Ariadne Tejada</v-list-item-title>
-            <v-list-item-subtitle>Psicóloga </v-list-item-subtitle>
+            <v-list-item-subtitle>{{rol}}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item> 
 
@@ -123,6 +123,19 @@
               </v-list-item-content>
             </v-list-item>
           </template>
+          <v-list-item><v-spacer></v-spacer></v-list-item>
+          <v-list-item><v-spacer></v-spacer></v-list-item>    
+          <v-list-item><v-spacer></v-spacer></v-list-item>
+          <v-list-item><v-spacer></v-spacer></v-list-item>    
+          <v-list-item><v-spacer></v-spacer></v-list-item>              
+            <v-list-item  @click="onClickLogout()">
+              <v-list-item-action>
+                <v-icon color = 'pink lighten-1 '>mdi-exit-to-app</v-icon>
+              </v-list-item-action>
+              <v-list-item-title style="color: #EC407A;">
+               Cerrar sesión
+              </v-list-item-title>
+           </v-list-item>
         </v-list>
       </v-navigation-drawer>
   
@@ -130,11 +143,13 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
   export default {
     
     data () {
       return {
-         dialog: false,
+        dialog: false,
         drawer: null,
         //drawer: true,
         items2: [
@@ -170,7 +185,7 @@
         model: false,
         children: [
         { text: 'Consulta de Evaluaciones', link: 'evaluaciones', icon: 'mdi-book-check' },
-        { text: 'Crear Evaluación', icon: 'mdi-plus'},
+        { text: 'Crear Evaluación', link: 'crear_evaluacion', icon: 'mdi-plus'},
         ],
       },
       {
@@ -184,6 +199,7 @@
         ],
       },
       { icon: 'mdi-handshake-outline', text: 'Solicitudes de Ayuda', link: 'solicitudes' },
+      { icon: 'mdi-code-not-equal', text: 'Diagnósticos', link: 'diagnosticos' },
       { icon: 'mdi-align-vertical-bottom', text: 'Reportes' },
     ],
         color:'indigo',
@@ -199,9 +215,16 @@
         miniVariant: false,
         expandOnHover: false,
         background: false,
+        rol: localStorage.userRole,
 
       }
     },
 
+    methods:{
+      onClickLogout() {
+        this.logout()
+      },
+      ...mapActions("auth", ["logout"]),
+      },
   }
 </script>

@@ -1,19 +1,22 @@
 <template>
   <v-container >
     <v-row><h4>Filtros</h4></v-row>
-    <v-row>
+    <v-row v-if="rol==='TUTOR'">
       <v-col cols="6">
         <v-combobox
-          v-model="select"
-          :items="coles"
-          label="Institución educativa"        
+          v-model="selectColegio"
+          :items="api_colegios"
+          placeholder="-" 
+          label="Institución educativa"
+          @change="getSecciones()"       
         ></v-combobox>
       </v-col>
       <v-col cols="6">
         <v-combobox
-          v-model="select2"
-          :items="secciones"
-          label="Sección"         
+          v-model="selectSeccion"
+          :items="api_secciones"
+          label="Sección"
+          @change="getEvaluacionesTutor()"          
         ></v-combobox>
       </v-col>
     </v-row>
@@ -195,7 +198,7 @@
         <v-list-item >
 
         <v-list-item-content class="justify-center">
-          <v-btn color="indigo accent-1" >Crear Cita</v-btn>
+          <v-btn color="indigo accent-1" href="http://localhost:8080/#/crear_cita">Crear Cita</v-btn>
         </v-list-item-content>
       </v-list-item>
       </v-col></v-row>
@@ -210,9 +213,21 @@
 </template>
 
 <script>
+import axios from "axios"
   export default {
+     mounted(){
+       if (this.rol==='TUTOR')
+       {
+          this.getColegios()
+       }
+      if (this.rol==='ESPECIALISTA')
+       {
+          this.getEvaluacionesEspecialista()
+       }
+    },
     data: () => ({
-      dialog: false,
+      selectColegio:[],
+      selectSeccion:[],
       headers:[
         {
           text: 'Fecha',
@@ -261,115 +276,99 @@
         '6°-B prim.',
          '2°-B prim.'
        ],
+        api_colegios:[],
+        api_secciones:[],
+        api_evaluaciones:[],
+        rol: localStorage.userRole,
     }),
 
-    computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      },
-    },
-
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-    },
-
-    created () {
-      this.initialize()
-    },
-
-    methods: {
-      initialize () {
-        this.desserts = [
-          {
-            codigo: 'E02',
-            fecha: '24/08/2020',
-            fechaR: '25/08/2020',
-            name: 'Gianmarco Chávez',
-            colegio: 'Newton School',
-            seccion: '4B',
-            estado: 'Pendiente',
-          },
-          {
-            codigo: 'E08',
-            fecha: '22/08/2020',
-            fechaR: '24/08/2020',
-            name: 'Piero Quiroz',
-             colegio: 'Newton School',
-            seccion: '5B',
-            estado: 'Pendiente',
-          },
-          {
-            codigo: 'E33',
-            fecha: '19/08/2020',
-            fechaR: '20/08/2020',
-            name: 'Tessa Livia',
-            colegio: 'Colegio Villa María',
-            seccion: '1A',
-            estado: 'Realizada',
-          },
-          {
-            codigo: 'E56',
-            fecha: '14/08/2020',
-            fechaR: '15/08/2020',
-            name: 'Gianmarco Chávez',
-            colegio: 'Newton School',
-            seccion: '4B',
-            estado: 'Pendiente',
-          },
-          {
-            codigo: 'E45',
-            fecha: '11/08/2020',
-            fechaR: '13/08/2020',
-            name: 'Donald Glover',
-            colegio: 'Liceo Naval Almirante Guise',
-            seccion: '4C',
-            estado: 'Pendiente',
-          },
-          {
-            codigo: 'E99',
-            fecha: '06/08/2020',
-            fechaR: '10/08/2020',
-            name: 'Gianmarco Chávez',
-            colegio: 'Newton School',
-            seccion: '4B',
-            estado: 'Realizada',
-          },
-
-        ]
-      },
-
-      editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      deleteItem (item) {
-        const index = this.desserts.indexOf(item)
-        this.desserts.splice(index, 1)
-        this.desserts.push(item)
-        var win = window.open('http://localhost:8080/#/estudiantes-id');
-        win.focus();
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
+     methods:{
+        async getColegios(){
+        try{
+          const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wEvaluaciones/consulta/tutor/colegio',{
+              //crossDomain: true,
+              params:{
+              idTutor:localStorage.userID,
+              tokenString:localStorage.accessToken,
+              }
+          })
+          //this.colegios = res.data
+          let codigosColegio = res.data.map(a => a.idColegio);
+          let nombresColegio = res.data.map(a => a.nombreColegio)
+          this.api_colegios = codigosColegio.map((value,i) => ({value, text: nombresColegio[i]}));
+          console.log(res)
+          console.log(this.api_colegios)
+        } catch(e){
+          console.error(e)
         }
-        this.close()
       },
+      async getSecciones(){
+      try{
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wEvaluaciones/consulta/tutor/seccion',{
+            //crossDomain: true,
+            params:{
+            idColegio:this.selectColegio.value,
+            idTutor:localStorage.userID,
+            tokenString:localStorage.accessToken,
+            }
+        })
+        //this.secciones = res.data
+        let codigosSeccion= res.data.map(a => a.idSeccion);
+        let nombresSeccion = res.data.map(a => a.nombreSeccion)
+        this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
+        console.log(res)
+        console.log(this.api_secciones)
+      } catch(e){
+        console.error(e)
+      }
     },
+    async getEvaluacionesEspecialista(){
+      try{
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wConsultaEvaluaciones/consulta/evaluaciones/especialista',{
+            //crossDomain: true,
+            params:{
+            idEspecialista:localStorage.userID,
+            tokenString:localStorage.accessToken,
+            }
+        })
+        //this.secciones = res.data
+        //let codigosSeccion= res.data.map(a => a.idSeccion);
+        //let nombresSeccion = res.data.map(a => a.nombreSeccion)
+        //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
+        this.api_evaluaciones = res.data
+        console.log(res)
+        //console.log(this.api_estudiantes)
+      } catch(e){
+        console.error(e)
+      }
+    },
+
+    async getEvaluacionesTutor(){
+      try{
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wConsultaEvaluaciones/consulta/evaluaciones/tutor',{
+            //crossDomain: true,
+            params:{
+            idSeccion:this.selectSeccion.value,
+            idTutor:localStorage.userID,
+            tokenString:localStorage.accessToken,
+            }
+        })
+        //this.secciones = res.data
+        //let codigosSeccion= res.data.map(a => a.idSeccion);
+        //let nombresSeccion = res.data.map(a => a.nombreSeccion)
+        //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
+        this.api_evaluaciones = res.data
+        console.log(res)
+        //console.log(this.api_estudiantes)
+      } catch(e){
+        console.error(e)
+      }
+    },
+  goToCrearEvaluacion(){
+     localStorage.setItem("selectedEstudiante", this.selected[0].dniEstudiante)
+     console.log(this.selected[0])
+  },
+
+  }
   }
 </script>
