@@ -169,15 +169,15 @@ import axios from "axios"
         const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarEvaluacion/asignar/consulta/DNI',{
             //crossDomain: true,
             params:{
-              DNI:this.DNI,
+              dni:this.DNI,
             }
         })
-
+        console.log(res)
         this.name = (res.data[0].b.primerNombre).concat(" ").concat(res.data[0].b.segundoNombre)
         this.apellido = (res.data[0].b.apellidoPaterno).concat(" ").concat(res.data[0].b.apellidoMaterno)
         this.celular = (res.data[0].b.celularEstudiante)
         this.correo = (res.data[0].b.correoEstudiante)
-        this.idEstudiante = (res.data[0].b.idEstudiante)
+        this.idEstudiante = (res.data[0].b.idAuUser)
 
       } catch(e){
         console.error(e)
@@ -190,8 +190,8 @@ import axios from "axios"
         let codigosObjEvaluacion= res.data.map(a => a.idObjEvaluacion);
         let nombresObjEvaluacion = res.data.map(a => a.nombreObjEvaluacion)
         this.api_evaluaciones = codigosObjEvaluacion.map((value,i) => ({value, text: nombresObjEvaluacion[i]}));
-        console.log(res)
-        console.log(this.api_evaluaciones)
+        //console.log(res)
+        //console.log(this.api_evaluaciones)
       } catch(e){
         console.error(e)
       }
