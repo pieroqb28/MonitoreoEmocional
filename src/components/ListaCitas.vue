@@ -1,7 +1,7 @@
 <template>
   <v-container >
     <v-row><h4>Filtros</h4></v-row>
-    <v-row>
+    <v-row v-if="rol==='TUTOR'">
       <v-col cols="6">
         <v-combobox
           v-model="select"
@@ -66,7 +66,10 @@
     <v-row>
    <v-data-table
     :headers="headers"
-    :items="desserts"
+    :items="api_citas"
+    item-key="idCita"
+    no-results-text = "Búsqueda sin coincidencias"
+    no-data-text = "No hay citas disponibles"
     :search="search"
     calculate-widths
     class="elevation-6"
@@ -84,46 +87,42 @@
       ></v-text-field>
       </v-toolbar>
     </template>
-    <template v-slot:item.actions="{ item }">
-<!-- open new tab api/estudiantes/id -->
-      <v-icon
-      color = 'light-blue'
-        @click="deleteItem(item)"
-      >
-      </v-icon>
 
-         <v-spacer></v-spacer>
-    
-    </template>
-   
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
-    </template>
   </v-data-table>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import axios from "axios"
+
   export default {
+    mounted(){
+      this.getCitas()
+    },
     data: () => ({
       dialog: false,
       headers: [
         {
           text: 'Fecha',
           align: 'center',
-          value: 'fecha',
+          value: 'fechaFin',
           width: '230px'
         },
         {
-          text: 'Estudiante',
+          text: 'Nombres',
           align: 'center',
-          value: 'name',
+          value: 'primerNombre',
+          width: '230px'
+        },
+        {
+          text: 'Apellidos',
+          align: 'center',
+          value: 'apellidoPaterno',
           width: '230px'
         },
         { text: 'Colegio', value: 'colegio', width: '230px', align: 'center', },
-        { text: 'Seccion', value: 'seccion', width: '220px', align: 'center', },
-        { text: 'Tipo Cita', value: 'tipoCita', width: '230px', align: 'center', },
+        { text: 'Tipo Cita', value: 'nombre', width: '230px', align: 'center', },
        // { text: 'Edad', value: 'edad',width: '180px', align: 'center', },
         //{ text: '', value: 'actions', sortable: false,width: '240px', align: 'center', justify: 'center',},
       ],
@@ -132,18 +131,8 @@
       menuIni: false,
       menuFin: false,
       search: '',
-      desserts: [],
-      editedIndex: -1,
-      editedItem: {
-        name: '',
-        estado: 0,
-        edad: 0,
-      },
-      defaultItem: {
-        name: '',
-        estado: 0,
-        edad: 0,
-      },
+
+
       //select: [''],
       //select2: [''],
       coles: [
@@ -157,110 +146,32 @@
         '6°-B prim.',
          '2°-B prim.'
        ],
+       api_citas: [],
+       rol: localStorage.userRole,
     }),
 
-    computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      },
-    },
 
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-    },
-
-    created () {
-      this.initialize()
-    },
 
     methods: {
-      initialize () {
-        this.desserts = [
-          {
-            fecha: '24/08/2020',
-            name: 'Gianmarco Chávez',
-            colegio: 'Newton School',
-            seccion: '4B',
-            edad: 17,
-            tipoCita: 'Pre-evaluación',
-            
-          },
-          {
-            fecha: '22/08/2020',
-            name: 'Piero Quiroz',
-             colegio: 'Newton School',
-            seccion: '5B',
-            edad: 17,
-            tipoCita: 'Pre-evaluación',
-          },
-          {
-            fecha: '19/08/2020',
-            name: 'Tessa Livia',
-            colegio: 'Colegio Villa María',
-            seccion: '1A',
-            edad: 6.0,
-            tipoCita: 'Solicitud de ayuda',
-          },
-          {
-            fecha: '14/08/2020',
-            name: 'Gianmarco Chávez',
-            colegio: 'Newton School',
-            seccion: '4B',
-            edad: 17,
-            tipoCita: 'Pre-evaluación',
-          },
-          {
-            fecha: '11/08/2020',
-            name: 'Donald Glover',
-            colegio: 'Liceo Naval Almirante Guise',
-            seccion: '4C',
-            edad: 15,
-            tipoCita: 'Pre-evaluación',
-          },
-          {
-            fecha: '06/08/2020',
-            name: 'Gianmarco Chávez',
-            colegio: 'Newton School',
-            seccion: '4B',
-            edad: 17,
-            tipoCita: 'Solicitud de ayuda ',
-          },
-
-        ]
-      },
-
-      editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      deleteItem (item) {
-        const index = this.desserts.indexOf(item)
-        this.desserts.splice(index, 1)
-        this.desserts.push(item)
-        var win = window.open('http://localhost:8080/#/estudiantes-id');
-        win.focus();
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
+    async getCitas(){
+      try{
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wConsultaCitas/consulta/citas',{
+            //crossDomain: true,
+            params:{
+            idEspecialista:localStorage.userID,
+            }
         })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
-        }
-        this.close()
-      },
+        //this.secciones = res.data
+        //let codigosSeccion= res.data.map(a => a.idSeccion);
+        //let nombresSeccion = res.data.map(a => a.nombreSeccion)
+        //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
+        this.api_citas = res.data
+        console.log(res.data)
+        //console.log(this.api_estudiantes)
+      } catch(e){
+        console.error(e)
+      }
+    },
     },
   }
 </script>

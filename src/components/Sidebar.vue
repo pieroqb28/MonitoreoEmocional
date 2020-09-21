@@ -57,8 +57,8 @@
 
          </v-card>
           </v-list-item>
-          <template v-for="item in items">
-            <v-row
+          <template v-for="item in items" >
+            <v-row             
               v-if="item.heading"
               :key="item.heading"
               align="center"
@@ -68,7 +68,7 @@
                   {{ item.heading }}
                 </v-subheader>
               </v-col>
-              <v-col
+              <!--v-col
                 cols="6"
                 class="text-center"
               >
@@ -76,13 +76,14 @@
                   href="#!"
                   class="body-2 black--text"
                 >EDIT</a>
-              </v-col>
+              </v-col-->
             </v-row>
             <v-list-group
-              v-else-if="item.children"
+           
+              v-else-if="item.children && (item.tipoRol===rol || item.tipoRol==='AMBOS')"
               :key="item.text"
               v-model="item.model"
-            
+              
               append-icon=""
             >
             <v-icon slot="prependIcon" color="white">{{item.model ? item.icon : item['icon-alt']}}</v-icon>
@@ -109,7 +110,7 @@
               </v-list-item>
             </v-list-group>
             <v-list-item
-              v-else
+              v-else-if="(item.tipoRol===rol || item.tipoRol==='AMBOS')"
               :key="item.text"
               :to="item.link"
             >
@@ -130,9 +131,9 @@
           <v-list-item><v-spacer></v-spacer></v-list-item>              
             <v-list-item  @click="onClickLogout()">
               <v-list-item-action>
-                <v-icon color = 'pink lighten-1 '>mdi-exit-to-app</v-icon>
+                <v-icon color = 'pink darken-1'>mdi-exit-to-app</v-icon>
               </v-list-item-action>
-              <v-list-item-title style="color: #EC407A;">
+              <v-list-item-title style="color: #D81B60;">
                Cerrar sesión
               </v-list-item-title>
            </v-list-item>
@@ -164,13 +165,14 @@ import { mapActions } from "vuex";
         
         ],
       items: [
-      { icon: 'mdi-align-vertical-bottom', text: 'Análisis', link: 'analisis' },
-      { icon: 'mdi-account-box', text: 'Perfil', link: 'perfil' },
+      { icon: 'mdi-align-vertical-bottom', text: 'Análisis', tipoRol: 'AMBOS', link: 'analisis' },
+      { icon: 'mdi-account-box', text: 'Perfil', tipoRol: 'AMBOS', link: 'perfil' },
 
       {
         icon: 'mdi-chevron-up',
         'icon-alt': 'mdi-chevron-down',
         text: 'Estudiantes',
+        tipoRol: 'TUTOR',
         model: false,
         children: [
           { icon: 'mdi-account-multiple' , text: 'Consultar Estudiantes', link:'estudiantes' },
@@ -182,6 +184,7 @@ import { mapActions } from "vuex";
         icon: 'mdi-chevron-up',
         'icon-alt': 'mdi-chevron-down',
         text: 'Evaluaciones ',
+        tipoRol: 'AMBOS',
         model: false,
         children: [
         { text: 'Consulta de Evaluaciones', link: 'evaluaciones', icon: 'mdi-book-check' },
@@ -192,15 +195,16 @@ import { mapActions } from "vuex";
         icon: 'mdi-chevron-up',
         'icon-alt': 'mdi-chevron-down',
         text: 'Citas',
+        tipoRol: 'AMBOS',
         model: false,
         children: [
         { text: 'Consulta de Citas', link: 'citas', icon: 'mdi-book-account' },
         { text: 'Crear Cita', link:'crear_cita', icon: 'mdi-plus' },
         ],
       },
-      { icon: 'mdi-handshake-outline', text: 'Solicitudes de Ayuda', link: 'solicitudes' },
-      { icon: 'mdi-code-not-equal', text: 'Diagnósticos', link: 'diagnosticos' },
-      { icon: 'mdi-align-vertical-bottom', text: 'Reportes' },
+      { icon: 'mdi-handshake-outline', text: 'Solicitudes de Ayuda', tipoRol: 'AMBOS', link: 'solicitudes' },
+      { icon: 'mdi-code-not-equal', text: 'Diagnósticos', tipoRol: 'ESPECIALISTA', link: 'diagnosticos' },
+      { icon: 'mdi-align-vertical-bottom', text: 'Reportes', tipoRol: 'ESPECIALISTA',  },
     ],
         color:'indigo',
         colors: [

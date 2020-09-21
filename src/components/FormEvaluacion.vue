@@ -16,7 +16,6 @@
       required
     ></v-text-field><v-row class="justify-center">
        <v-btn
-      :disabled="!valid"
       color="light-blue accent-1"
       class="mr-4"
       @click="getDatosEstudiante()"
@@ -95,6 +94,7 @@
     <v-row>
     <v-spacer></v-spacer>
     <v-btn
+     :disabled="!valid"
       color="error"
       class="mr-4"
       @click="postEvaluacion()"
@@ -112,6 +112,30 @@
     </v-btn>
     </v-row>
   </v-form>
+     <v-dialog
+      v-model="postDialog"
+      max-width="370"
+    >
+      <v-card>
+        <v-card-title class="headline">{{this.textDialog}}</v-card-title>
+
+        <!--v-card-text>
+          La evaluación se ha registrado correctamente.
+        </v-card-text-->
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="postDialog = false"
+          >
+            Entendido
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   
   </v-container>
 </template>
@@ -122,11 +146,14 @@ import axios from "axios"
   export default {
     mounted(){
       this.DNI = localStorage.getItem("selectedEstudiante")
+      //console.log(localStorage.getItem("selectedEstudiante"))
       this.getDatosEstudiante()
       this.getEvaluaciones()
       //this.name = localStorage.getItem("selectedEstudiante").dniEstudiante
     },
     data: () => ({
+      postDialog: false,
+      textDialog:'',
       valid: true,
       name: '',
       apellido: '',
@@ -160,9 +187,6 @@ import axios from "axios"
       validate () {
         this.$refs.form.validate()
       },
-      reset () {
-        this.$refs.form.reset()
-      },
 
      async getDatosEstudiante(){
       try{
@@ -172,12 +196,13 @@ import axios from "axios"
               dni:this.DNI,
             }
         })
-        console.log(res)
+        //console.log(res)
         this.name = (res.data[0].b.primerNombre).concat(" ").concat(res.data[0].b.segundoNombre)
         this.apellido = (res.data[0].b.apellidoPaterno).concat(" ").concat(res.data[0].b.apellidoMaterno)
         this.celular = (res.data[0].b.celularEstudiante)
         this.correo = (res.data[0].b.correoEstudiante)
         this.idEstudiante = (res.data[0].b.idAuUser)
+   
 
       } catch(e){
         console.error(e)
@@ -209,8 +234,17 @@ import axios from "axios"
           }
         );
         console.log(res);
+       if (res.status === 200)
+        {
+          this.textDialog = 'La evaluación ha sido creada correctamente'
+        }
+        else this.textDialog = 'Ha ocurrido un problema, intente nuevamente'
+        this.postDialog = true;
+
       } catch (e) {
         console.error(e);
+        this.textDialog = 'Ha ocurrido un problema, intente nuevamente'
+        this.postDialog = true;
       }
     },
 

@@ -69,8 +69,8 @@
     <v-row>
    <v-data-table
     :headers="headers"
-    :items="desserts"
-    item-key="codigo" 
+    :items="api_evaluaciones"
+    item-key="idEvaluacion" 
     :search="search"
     calculate-widths
     show-expand
@@ -165,7 +165,7 @@
 
         <v-list-item-content>
           <v-list-item-subtitle>Fecha de resultado</v-list-item-subtitle>
-          <v-list-item-title>{{item.fechaR}}</v-list-item-title>
+          <v-list-item-title>{{item.fecha}}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -235,16 +235,22 @@ import axios from "axios"
           value: 'fecha',
           width: '240px'
         },
-        {
-          text: 'Estudiante',
+       {
+          text: 'Nombres',
           align: 'center',
-          value: 'name',
+          value: 'nombreEstudiante',
           width: '240px'
         },
-        { text: 'Colegio', value: 'colegio', width: '240px', align: 'center', },
-        { text: 'Seccion', value: 'seccion', width: '160px', align: 'center', },
+        {
+          text: 'Apellidos',
+          align: 'center',
+          value: 'apellidoEstudiante',
+          width: '240px'
+        },
+        //{ text: 'Colegio', value: 'colegio', width: '240px', align: 'center', },
+        { text: 'Seccion', value: 'nombreSeccion', width: '160px', align: 'center', },
        // { text: 'Edad', value: 'edad',width: '180px', align: 'center', },
-        { text: 'Estado', value: 'estado', width: '220px', align: 'center', /*justify: 'center',*/},
+        { text: 'Estado', value: 'estadoEvaluacion', width: '220px', align: 'center', /*justify: 'center',*/},
       ],
       dateIni: new Date().toISOString().substr(0, 10),
       dateFin: new Date().toISOString().substr(0, 10),

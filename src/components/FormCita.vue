@@ -7,7 +7,7 @@
     lazy-validation
   >
   <v-row>
-    <v-col>
+    <v-col><v-row><v-col>
     <v-text-field
       v-model="DNI"
       :counter="8"
@@ -19,18 +19,28 @@
       :disabled="!valid"
       color="light-blue accent-1"
       class="mr-4"
+      @click="getDatosEstudiante()"
     >
       Buscar
-    </v-btn></v-row>
+    </v-btn></v-row></v-col></v-row>
     </v-col>
     <v-col>
+      <v-row><v-col>
     <v-text-field
       v-model="name"
       :rules="nameRules"
-      label="Nombre"
+      label="Nombres"
       readonly
       required
-    ></v-text-field>
+    ></v-text-field></v-col><v-col>
+      <v-text-field
+      v-model="apellido"
+      :rules="nameRules"
+      label="Apellidos"
+      readonly
+      required
+    ></v-text-field></v-col>
+      </v-row>
     </v-col>
   </v-row>
     <v-row>
@@ -45,9 +55,9 @@
     </v-col>
     <v-col>
     <v-text-field
-      v-model="familiar"
+      v-model="correo"
       :rules="nameRules"
-      label="Familiar"
+      label="Correo"
       readonly
       required
     ></v-text-field>
@@ -111,9 +121,10 @@
     ></v-checkbox-->
     <v-row><v-col>
       <v-textarea
+      v-model="descripcion"
       filled
       label="Descripción"
-      auto-grow
+      no-resize
       rows="5"
     ></v-textarea>
       </v-col></v-row>
@@ -142,12 +153,21 @@
 </template>
 
 <script>
+import axios from "axios"
+
   export default {
+    mounted(){
+      this.DNI = localStorage.getItem("selectedEstudiante")
+      this.getDatosEstudiante()
+      //this.getEvaluaciones()
+      //this.name = localStorage.getItem("selectedEstudiante").dniEstudiante
+    },
     data: () => ({
       date: new Date().toISOString().substr(0, 10),
       menuFecha: false,
       valid: true,
-      name: 'Jorge Talca',
+      name: '',
+      apellido: '',
       nameRules: [
         //v => !!v || 'Name is required',
         //v => (v && v.length <= 10) || 'Name must be less than 10 characters',
@@ -158,12 +178,12 @@
         v => (v && v.length == 8) || 'El DNI debe contener 8 dígitos',
         //v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
-      celular:'986477328',
+      celular:'',
       celularRules: [
         //v => !!v || 'El DNI es obligatorio',
         //v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
-      familiar:'John Doe',
+      familiar:'',
       selectEspecialista: null,
       selectEspecialistaRules: [
         v => !!v || 'Debe seleccionar un especialista',
@@ -187,6 +207,8 @@
         '11:00',
         '17:30',
       ],
+      idEstudiante:'',
+      descripcion:'',
 
     }),
 
@@ -197,6 +219,57 @@
       reset () {
         this.$refs.form.reset()
       },
+
+      async getDatosEstudiante(){
+      try{
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarEvaluacion/asignar/consulta/DNI',{
+            //crossDomain: true,
+            params:{
+              dni:this.DNI,
+            }
+        })
+        console.log(res)
+        this.name = (res.data[0].b.primerNombre).concat(" ").concat(res.data[0].b.segundoNombre)
+        this.apellido = (res.data[0].b.apellidoPaterno).concat(" ").concat(res.data[0].b.apellidoMaterno)
+        this.celular = (res.data[0].b.celularEstudiante)
+        this.correo = (res.data[0].b.correoEstudiante)
+        this.idEstudiante = (res.data[0].b.idAuUser)
+
+      } catch(e){
+        console.error(e)
+      }
+    },
+    
+     /*async getEvaluaciones(){
+      try{
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarEvaluacion/asignar/consulta/obj/evaluaciones')
+        let codigosObjEvaluacion= res.data.map(a => a.idObjEvaluacion);
+        let nombresObjEvaluacion = res.data.map(a => a.nombreObjEvaluacion)
+        this.api_evaluaciones = codigosObjEvaluacion.map((value,i) => ({value, text: nombresObjEvaluacion[i]}));
+        //console.log(res)
+        //console.log(this.api_evaluaciones)
+      } catch(e){
+        console.error(e)
+      }
+    },*/
+
+    async postEvaluacion() {
+      try {
+        const res = await axios.post(
+          "https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarEvaluacion/asignar/evaluacion",
+          {
+            //crossDomain: true,
+            idEstudiante: this.idEstudiante,
+            descripcion: this.descripcion, 
+            idObjEvaluacion: this.selectEvaluacion.value,
+            idTutor:localStorage.userID,
+          }
+        );
+        console.log(res);
+      } catch (e) {
+        console.error(e);
+      }
+    },
 
     },
   }

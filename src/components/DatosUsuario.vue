@@ -13,7 +13,7 @@
     
       
         <v-card-title class="white--text " style="backgroundColor: #03A9F4;">
-          <v-row class="display-1" justify="center" >Ariadne Tejada</v-row>
+          <v-row class="display-1" justify="center" >{{(this.nombres).concat(" ").concat(this.apellidos)}}</v-row>
         </v-card-title>
         
      
@@ -26,8 +26,8 @@
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title>(650) 555-1234</v-list-item-title>
-          <v-list-item-subtitle>Celular</v-list-item-subtitle>
+          <v-list-item-title>{{this.celular}}</v-list-item-title>
+          <v-list-item-subtitle>Personal</v-list-item-subtitle>
         </v-list-item-content>
 
  
@@ -52,7 +52,7 @@
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title>ariadne_tejada24@gmail.com</v-list-item-title>
+          <v-list-item-title>{{this.correo}}</v-list-item-title>
           <v-list-item-subtitle>Personal</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -91,7 +91,10 @@ import axios from "axios"
       this.getDatosUsuario() 
     },
     data: () => ({
-
+      nombres:'',
+      apellidos:'',
+      celular:'',
+      correo:'',
     }),
 
     methods: {
@@ -105,6 +108,10 @@ import axios from "axios"
             }
         })
         console.log(res)
+        this.nombres= res.data[0].primerNombre
+        this.apellidos = res.data[0].primerApellido
+        this.celular = res.data[0].celular
+        this.correo = res.data[0].correo
         /*this.name = (res.data[0].b.primerNombre).concat(" ").concat(res.data[0].b.segundoNombre)
         this.apellido = (res.data[0].b.apellidoPaterno).concat(" ").concat(res.data[0].b.apellidoMaterno)
         this.celular = (res.data[0].b.celularEstudiante)

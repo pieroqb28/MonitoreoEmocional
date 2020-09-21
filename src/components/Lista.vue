@@ -19,12 +19,12 @@
           @change="getEstudiantes()"         
         ></v-combobox>
       </v-col>
-    </v-row>
+    </v-row>  
 
       <v-row justify="end">
       
   
-    <v-btn dark color = 'indigo' @click="goToCrearEvaluacion()" to="/crear_evaluacion" >Asignar evaluación</v-btn>
+    <v-btn dark color = 'indigo' @click ="goToCrearEvaluacion()" >Asignar evaluación</v-btn>
  
     </v-row>
     <v-row>  <v-col><v-spacer></v-spacer></v-col> </v-row>
@@ -41,6 +41,7 @@
     show-select
     class="elevation-6"
     :search="search"
+    
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
@@ -103,8 +104,8 @@ import axios from "axios"
           let codigosColegio = res.data.map(a => a.idColegio);
           let nombresColegio = res.data.map(a => a.nombreColegio)
           this.api_colegios = codigosColegio.map((value,i) => ({value, text: nombresColegio[i]}));
-          console.log(res)
-          console.log(this.api_colegios)
+          //console.log(res)
+          //console.log(this.api_colegios)
         } catch(e){
           console.error(e)
         }
@@ -123,8 +124,8 @@ import axios from "axios"
         let codigosSeccion= res.data.map(a => a.idSeccion);
         let nombresSeccion = res.data.map(a => a.nombreSeccion)
         this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
-        console.log(res)
-        console.log(this.api_secciones)
+        //console.log(res)
+        //console.log(this.api_secciones)
       } catch(e){
         console.error(e)
       }
@@ -144,15 +145,16 @@ import axios from "axios"
         //let nombresSeccion = res.data.map(a => a.nombreSeccion)
         //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
         this.api_estudiantes = res.data
-        console.log(res)
+        //console.log(res)
         //console.log(this.api_estudiantes)
       } catch(e){
         console.error(e)
       }
     },
   goToCrearEvaluacion(){
-     localStorage.setItem("selectedEstudiante", this.selected[0].dniEstudiante)
-     console.log(this.selected[0])
+    localStorage.setItem("selectedEstudiante", this.selected[0].dniEstudiante)
+    console.log(localStorage.getItem("selectedEstudiante"))
+    this.$router.push('/crear_evaluacion')
   },
   }
   }

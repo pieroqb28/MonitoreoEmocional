@@ -1,22 +1,25 @@
 <template>
   <v-container >
     <v-row><h4>Filtros</h4></v-row>
-    <v-row>
+    <!--v-row>
       <v-col cols="6">
-        <v-combobox
-          v-model="select"
-          :items="coles"
-          label="Institución educativa"        
+        <v-combobox       
+          v-model="selectColegio"
+          :items="api_colegios"
+          placeholder="-"
+          label="Institución educativa"
+          @change="getSecciones()"
         ></v-combobox>
       </v-col>
       <v-col cols="6">
         <v-combobox
-          v-model="select2"
-          :items="secciones"
-          label="Sección"         
+          v-model="selectSeccion"
+          :items="api_secciones"
+          label="Sección"
+          @change="getEstudiantes()"         
         ></v-combobox>
       </v-col>
-    </v-row>
+    </v-row-->
         <v-row>
       <v-col>
                     <v-menu
@@ -128,8 +131,14 @@
 </template>
 
 <script>
+import axios from "axios"
   export default {
+    mounted(){
+      this.getColegios()
+    },
     data: () => ({
+      selectColegio:[],
+      selectSeccion:[],
       dialog2: false,
       headers: [
         {
@@ -155,17 +164,7 @@
       menuFin: false,
       search: '',
       desserts: [],
-      editedIndex: -1,
-      editedItem: {
-        name: '',
-        estado: 0,
-        edad: 0,
-      },
-      defaultItem: {
-        name: '',
-        estado: 0,
-        edad: 0,
-      },
+
       //select: [''],
       //select2: [''],
       coles: [
@@ -179,19 +178,10 @@
         '6°-B prim.',
          '2°-B prim.'
        ],
+        api_colegios:[],
+        api_secciones:[],
+        api_solicitudes:[],
     }),
-
-    computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      },
-    },
-
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-    },
 
     created () {
       this.initialize()
@@ -258,36 +248,46 @@
         ]
       },
 
-      editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      deleteItem (item) {
-        const index = this.desserts.indexOf(item)
-        this.desserts.splice(index, 1)
-        this.desserts.push(item)
-        var win = window.open('http://localhost:8080/#/estudiantes-id');
-        win.focus();
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
+       async getColegios(){
+        try{
+          const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wEvaluaciones/consulta/tutor/colegio',{
+              //crossDomain: true,
+              params:{
+              idTutor:localStorage.userID,
+              tokenString:localStorage.accessToken,
+              }
+          })
+          //this.colegios = res.data
+          let codigosColegio = res.data.map(a => a.idColegio);
+          let nombresColegio = res.data.map(a => a.nombreColegio)
+          this.api_colegios = codigosColegio.map((value,i) => ({value, text: nombresColegio[i]}));
+          console.log(res)
+          console.log(this.api_colegios)
+        } catch(e){
+          console.error(e)
         }
-        this.close()
       },
+      async getSecciones(){
+      try{
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wEvaluaciones/consulta/tutor/seccion',{
+            //crossDomain: true,
+            params:{
+            idColegio:this.selectColegio.value,
+            idTutor:localStorage.userID,
+            tokenString:localStorage.accessToken,
+            }
+        })
+        //this.secciones = res.data
+        let codigosSeccion= res.data.map(a => a.idSeccion);
+        let nombresSeccion = res.data.map(a => a.nombreSeccion)
+        this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
+        console.log(res)
+        console.log(this.api_secciones)
+      } catch(e){
+        console.error(e)
+      }
+      },
+
     },
   }
 </script>
