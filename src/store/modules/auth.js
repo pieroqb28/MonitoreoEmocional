@@ -7,6 +7,7 @@ const state = () => ({
   accessToken: null,
   userID: null,
   userRole: null,
+  userName: null,
   loggingIn: false,
   loginError: null,
 });
@@ -34,10 +35,12 @@ const actions = {
         localStorage.setItem("accessToken", response.data.tokenString );
         localStorage.setItem("userID", response.data.id);
         localStorage.setItem("userRole", response.data.role);
+        localStorage.setItem("userName", response.data.nombre);
         commit("loginStop", null);
         commit("updateAccessToken", response.data.tokenString);
         commit("updateUserID", response.data.id)
         commit("updateUserRole", response.data.role)
+        commit("updateUserName", response.data.nombre)
         router.push("/analisis");
         console.log(response)
       })
@@ -46,17 +49,20 @@ const actions = {
         commit("updateAccessToken", null);
         commit("updateUserID", null);
         commit("updateUserRole", null);
+        commit("updateUserName", null);
       });
   },
   fetchAccessToken({ commit }) {
     commit("updateAccessToken", localStorage.getItem("accessToken"));
     commit("updateUserID", localStorage.getItem("userID"))
     commit("updateUserRole", localStorage.getItem("userRole"))
+    commit("updateUserName", localStorage.getItem("userName"))
   },
   logout({ commit }) {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("userID");
     localStorage.removeItem("userRole");
+    localStorage.removeItem("userName");
     commit("logout");
     router.push("/login");
   },
@@ -78,10 +84,14 @@ const mutations = {
   updateUserRole: (state, userRole) => {
     state.userRole = userRole;
   },
+  updateUserName: (state, userName) => {
+    state.userName = userName;
+  },
   logout: (state) => {
     state.accessToken = null;
     state.userID = null;
     state.userRole = null;
+    state.userName = null;
   },
 };
 

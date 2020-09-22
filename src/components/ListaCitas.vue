@@ -166,7 +166,7 @@ import axios from "axios"
         //let nombresSeccion = res.data.map(a => a.nombreSeccion)
         //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
         this.api_citas = res.data
-        console.log(res.data)
+        console.log(res)
         //console.log(this.api_estudiantes)
       } catch(e){
         console.error(e)

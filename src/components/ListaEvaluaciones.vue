@@ -70,11 +70,11 @@
    <v-data-table
     :headers="headers"
     :items="api_evaluaciones"
-    item-key="idEvaluacion" 
+    item-key="fecha" 
     :search="search"
     calculate-widths
     show-expand
-    class="elevation-6"
+    class="elevation-6" 
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
@@ -178,7 +178,7 @@
 
         <v-list-item-content>
           <v-list-item-subtitle>Puntaje</v-list-item-subtitle>
-          <v-list-item-title>70/100</v-list-item-title>
+          <v-list-item-title>{{item.puntaje}}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <v-divider inset></v-divider> 
@@ -189,7 +189,7 @@
 
         <v-list-item-content>
           <v-list-item-subtitle>Diagnóstico</v-list-item-subtitle>
-          <v-list-item-title>Depresión moderada</v-list-item-title>
+          <v-list-item-title>{{item.resultadoEvaluacion}}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       </v-col></v-row>
@@ -198,7 +198,7 @@
         <v-list-item >
 
         <v-list-item-content class="justify-center">
-          <v-btn color="indigo accent-1" href="http://localhost:8080/#/crear_cita">Crear Cita</v-btn>
+          <v-btn color="indigo accent-1" @click ="goToCrearCita(item.dniEstudiante)">Crear Cita</v-btn>
         </v-list-item-content>
       </v-list-item>
       </v-col></v-row>
@@ -370,10 +370,11 @@ import axios from "axios"
         console.error(e)
       }
     },
-  goToCrearEvaluacion(){
-     localStorage.setItem("selectedEstudiante", this.selected[0].dniEstudiante)
-     console.log(this.selected[0])
-  },
+   goToCrearCita(pDNI){
+      localStorage.setItem("selectedEstudiante", pDNI)
+      console.log(localStorage.getItem("selectedEstudiante"))
+      this.$router.push('/crear_evaluacion')
+   },
 
   }
   }

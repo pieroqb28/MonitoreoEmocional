@@ -1,25 +1,25 @@
 <template>
   <v-container >
     <v-row><h4>Filtros</h4></v-row>
-    <!--v-row>
+    <v-row>
       <v-col cols="6">
         <v-combobox       
-          v-model="selectColegio"
-          :items="api_colegios"
+          v-model="selectTipoSolicitud"
+          :items="tipo_solicitudes"
           placeholder="-"
-          label="Institución educativa"
-          @change="getSecciones()"
+          label="Estado de solicitud"
+          @change="getSolicitudes()"
         ></v-combobox>
       </v-col>
       <v-col cols="6">
-        <v-combobox
+        <!--v-combobox
           v-model="selectSeccion"
           :items="api_secciones"
           label="Sección"
           @change="getEstudiantes()"         
-        ></v-combobox>
+        ></v-combobox-->
       </v-col>
-    </v-row-->
+    </v-row>
         <v-row>
       <v-col>
                     <v-menu
@@ -69,8 +69,8 @@
     <v-row>
    <v-data-table
     :headers="headers"
-    :items="desserts"
-    item-key="codigo" 
+    :items="api_solicitudes"
+    item-key="idSolicitudAyuda" 
     :search="search"
     calculate-widths
     show-expand
@@ -99,7 +99,7 @@
        <v-list-item >
 
         <v-list-item-content>
-          <v-list-item-title>{{item.solicitud}}</v-list-item-title>        
+          <v-list-item-title>{{item.descripcion}}</v-list-item-title>        
         </v-list-item-content>
 
       </v-list-item>
@@ -109,14 +109,14 @@
         <v-col>
         <v-list-item >
         <v-list-item-content class="justify-center">  
-          <v-btn color="indigo accent-1" to="/crear_cita">Crear Cita</v-btn>
+          <v-btn color="indigo accent-1" @click ="goToCrearCita(item.dniEstudiante)">Crear Cita</v-btn>
         </v-list-item-content>
       </v-list-item>
       </v-col>
         <v-col>
         <v-list-item >
         <v-list-item-content class="justify-center">
-          <v-btn color="light-blue accent-1" to="/crear_evaluacion">Crear Evaluación</v-btn>
+          <v-btn color="light-blue accent-1" @click ="goToCrearEvaluacion(item.dniEstudiante)">Crear Evaluación</v-btn>
         </v-list-item-content>
       </v-list-item>
       </v-col>
@@ -137,24 +137,29 @@ import axios from "axios"
       this.getColegios()
     },
     data: () => ({
-      selectColegio:[],
-      selectSeccion:[],
+      selectTipoSolicitud:[],
       dialog2: false,
       headers: [
         {
           text: 'Fecha',
           align: 'center',
           value: 'fecha',
-          width: '260px'
+          width: '240px'
         },
         {
-          text: 'Estudiante',
+          text: 'Nombres',
           align: 'center',
-          value: 'name',
-          width: '260px'
+          value: 'primerNombre',
+          width: '215px'
         },
-        { text: 'Colegio', value: 'colegio', width: '260px', align: 'center', },
-        { text: 'Seccion', value: 'seccion', width: '240px', align: 'center', },
+        {
+          text: 'Apellidos',
+          align: 'center',
+          value: 'segundoNombre',
+          width: '215px'
+        },
+        { text: 'Colegio', value: 'colegio', width: '215px', align: 'center', },
+        { text: 'Estado', value: 'contenido', width: '215px', align: 'center', },
        // { text: 'Edad', value: 'edad',width: '180px', align: 'center', },
        // { text: '', value: 'actions', sortable: false,width: '240px', align: 'center', justify: 'center',},
       ],
@@ -178,114 +183,55 @@ import axios from "axios"
         '6°-B prim.',
          '2°-B prim.'
        ],
+       tipo_solicitudes:[
+         {
+           text: 'Pendiente',
+           value: '1',
+         },
+         {
+           text: 'Atendida',
+           value: '2',
+         },
+       ],
         api_colegios:[],
         api_secciones:[],
         api_solicitudes:[],
     }),
 
-    created () {
-      this.initialize()
-    },
+
 
     methods: {
-      initialize () {
-        this.desserts = [
-          {
-            solicitud: 'Ayudaaaaaaa 1',
-            codigo: 'S03',
-            fecha: '24/08/2020',
-            name: 'Gianmarco Chávez',
-            colegio: 'Newton School',
-            seccion: '4B',
-            edad: 17,
-          },
-          {
-            solicitud: 'Ayudaaaaaaa 26',
-            codigo: 'S08',
-            fecha: '22/08/2020',
-            name: 'Piero Quiroz',
-             colegio: 'Newton School',
-            seccion: '5B',
-            edad: 17,
-          },
-          {
-            solicitud: 'Ayudaaaaaaa 165',
-            codigo: 'S15',
-            fecha: '19/08/2020',
-            name: 'Tessa Livia',
-            colegio: 'Colegio Villa María',
-            seccion: '1A',
-            edad: 6.0,
-          },
-          {
-            solicitud: 'Ayudaaaaaaa 21',
-            codigo: 'S33',
-            fecha: '14/08/2020',
-            name: 'Gianmarco Chávez',
-            colegio: 'Newton School',
-            seccion: '4B',
-            edad: 17,
-          },
-          {
-            solicitud: 'Ayudaaaaaaa 31',
-            codigo: 'S47',
-            fecha: '11/08/2020',
-            name: 'Donald Glover',
-            colegio: 'Liceo Naval Almirante Guise',
-            seccion: '4C',
-            edad: 15,
-          },
-          {
-            solicitud: 'Ayudaaaaaaa 19',
-            codigo: 'S113',
-            fecha: '06/08/2020',
-            name: 'Gianmarco Chávez',
-            colegio: 'Newton School',
-            seccion: '4B',
-            edad: 17,
-          },
 
-        ]
-      },
-
-       async getColegios(){
-        try{
-          const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wEvaluaciones/consulta/tutor/colegio',{
-              //crossDomain: true,
-              params:{
-              idTutor:localStorage.userID,
-              tokenString:localStorage.accessToken,
-              }
-          })
-          //this.colegios = res.data
-          let codigosColegio = res.data.map(a => a.idColegio);
-          let nombresColegio = res.data.map(a => a.nombreColegio)
-          this.api_colegios = codigosColegio.map((value,i) => ({value, text: nombresColegio[i]}));
-          console.log(res)
-          console.log(this.api_colegios)
-        } catch(e){
-          console.error(e)
-        }
-      },
-      async getSecciones(){
+      async getSolicitudes(){
       try{
-        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wEvaluaciones/consulta/tutor/seccion',{
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wConsultaSolicitudesAyuda/consulta/solicitudes/ayuda',{
             //crossDomain: true,
             params:{
-            idColegio:this.selectColegio.value,
-            idTutor:localStorage.userID,
-            tokenString:localStorage.accessToken,
+            estadoSolicitud:this.selectTipoSolicitud.value,
             }
         })
         //this.secciones = res.data
-        let codigosSeccion= res.data.map(a => a.idSeccion);
-        let nombresSeccion = res.data.map(a => a.nombreSeccion)
-        this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
+        //let codigosSeccion= res.data.map(a => a.idSeccion);
+        //let nombresSeccion = res.data.map(a => a.nombreSeccion)
+        //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
+        this.api_solicitudes = res.data
         console.log(res)
-        console.log(this.api_secciones)
+        //console.log(this.api_estudiantes)
       } catch(e){
         console.error(e)
       }
+      
+    },
+    goToCrearEvaluacion(pDNI){
+      console.log(pDNI)
+      localStorage.setItem("selectedEstudiante", pDNI)
+      console.log(localStorage.getItem("selectedEstudiante"))
+      this.$router.push('/crear_evaluacion')
+      },
+    goToCrearCita(pDNI){
+      localStorage.setItem("selectedEstudiante", pDNI)
+      console.log(localStorage.getItem("selectedEstudiante"))
+      this.$router.push('/crear_evaluacion')
       },
 
     },

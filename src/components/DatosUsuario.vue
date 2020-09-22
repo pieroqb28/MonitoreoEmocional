@@ -61,7 +61,7 @@
         <v-list-item-action></v-list-item-action>
 
         <v-list-item-content>
-          <v-list-item-title>atejada@sannax.com</v-list-item-title>
+          <v-list-item-title>placeholder  @sannax.com</v-list-item-title>
           <v-list-item-subtitle>Clínica</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
