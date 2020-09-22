@@ -176,8 +176,8 @@ import { mapActions } from "vuex";
         model: false,
         children: [
           { icon: 'mdi-account-multiple' , text: 'Consultar Estudiantes', link:'estudiantes' },
-          { icon: 'mdi-plus', text: 'Asignar a seccion' },
-          { icon: 'mdi-plus', text: 'Crear seccion' },
+          { icon: 'mdi-plus', text: 'Asignar a seccion' , link: 'asignar_seccion'},
+          { icon: 'mdi-plus', text: 'Crear seccion', link: 'crear_seccion' },
         ],
       },
       {
