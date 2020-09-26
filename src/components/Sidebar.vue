@@ -50,7 +50,7 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>Ariadne Tejada</v-list-item-title>
+            <v-list-item-title>{{nombre}}</v-list-item-title>
             <v-list-item-subtitle>{{rol}}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item> 
@@ -220,6 +220,7 @@ import { mapActions } from "vuex";
         expandOnHover: false,
         background: false,
         rol: localStorage.userRole,
+        nombre: localStorage.userName,
 
       }
     },
