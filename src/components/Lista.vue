@@ -77,11 +77,10 @@ import axios from "axios"
         search: '',
 
        headers: [
-          { text: 'Código', value: 'idEstudiante', width: '245 px', align: 'center', sortable: false, },
-          { text: 'Nombres', value: 'nombres', width: '260px', align: 'center', },
-          { text: 'Apellidos', value: 'apellidos', width: '260px', align: 'center', },
-          { text: 'Colegio', value: 'colegio', width: '260px', align: 'center', },
-          { text: 'Sección', value: 'idSeccion', width: '245px', align: 'center', },
+          { text: 'Nombres', value: 'nombreEstudiante', width: '260px', align: 'left', },
+          { text: 'DNI', value: 'dniEstudiante', width: '260px', align: 'left', },
+          { text: 'Apoderado', value: 'nombrePadre', width: '260px', align: 'left', },
+          { text: 'Contacto Apoderado', value: 'celularPadre', width: '260px', align: 'left', },
           
        ], 
         api_colegios:[],
@@ -140,11 +139,13 @@ import axios from "axios"
             tokenString:localStorage.accessToken,
             }
         })
+        console.log(this.selectSeccion.value, localStorage.userID,localStorage.accessToken )
         //this.secciones = res.data
         //let codigosSeccion= res.data.map(a => a.idSeccion);
         //let nombresSeccion = res.data.map(a => a.nombreSeccion)
         //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
         this.api_estudiantes = res.data
+        this.api_estudiantes.map( a => console.log(a.nombreEstudiante))
         //console.log(res)
         //console.log(this.api_estudiantes)
       } catch(e){

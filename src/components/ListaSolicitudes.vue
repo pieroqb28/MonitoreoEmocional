@@ -134,31 +134,29 @@
 import axios from "axios"
   export default {
     mounted(){
-      this.getColegios()
     },
     data: () => ({
       selectTipoSolicitud:[],
       headers: [
         {
           text: 'Fecha',
-          align: 'center',
+          align: 'left',
           value: 'fecha',
-          width: '240px'
+          width: '215px'
         },
         {
           text: 'Nombres',
-          align: 'center',
+          align: 'left',
           value: 'primerNombre',
           width: '215px'
         },
         {
-          text: 'Apellidos',
-          align: 'center',
-          value: 'segundoNombre',
+          text: 'DNI',
+          align: 'left',
+          value: 'dniEstudiante',
           width: '215px'
         },
-        { text: 'Colegio', value: 'colegio', width: '215px', align: 'center', },
-        { text: 'Estado', value: 'contenido', width: '215px', align: 'center', },
+        { text: 'Estado', value: 'contenido', width: '215px', align: 'left', },
        // { text: 'Edad', value: 'edad',width: '180px', align: 'center', },
        // { text: '', value: 'actions', sortable: false,width: '240px', align: 'center', justify: 'center',},
       ],

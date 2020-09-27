@@ -198,7 +198,7 @@
         <v-list-item >
 
         <v-list-item-content class="justify-center">
-          <v-btn color="indigo accent-1" @click ="goToCrearCita(item.dniEstudiante)">Crear Cita</v-btn>
+          <v-btn color="indigo accent-1" @click ="goToCrearCita(item.dniEstudiante, item.idEvaluacion)">Crear Cita</v-btn>
         </v-list-item-content>
       </v-list-item>
       </v-col></v-row>
@@ -231,26 +231,20 @@ import axios from "axios"
       headers:[
         {
           text: 'Fecha',
-          align: 'center',
+          align: 'left',
           value: 'fecha',
           width: '240px'
         },
        {
           text: 'Nombres',
-          align: 'center',
+          align: 'left',
           value: 'nombreEstudiante',
           width: '240px'
         },
-        {
-          text: 'Apellidos',
-          align: 'center',
-          value: 'apellidoEstudiante',
-          width: '240px'
-        },
         //{ text: 'Colegio', value: 'colegio', width: '240px', align: 'center', },
-        { text: 'Seccion', value: 'nombreSeccion', width: '160px', align: 'center', },
+        { text: 'Puntaje', value: 'puntaje', width: '160px', align: 'left', },
        // { text: 'Edad', value: 'edad',width: '180px', align: 'center', },
-        { text: 'Estado', value: 'estadoEvaluacion', width: '220px', align: 'center', /*justify: 'center',*/},
+        { text: 'Estado', value: 'estadoEvaluacion', width: '220px', align: 'left', /*justify: 'center',*/},
       ],
       dateIni: new Date().toISOString().substr(0, 10),
       dateFin: new Date().toISOString().substr(0, 10),
@@ -302,8 +296,6 @@ import axios from "axios"
           let codigosColegio = res.data.map(a => a.idColegio);
           let nombresColegio = res.data.map(a => a.nombreColegio)
           this.api_colegios = codigosColegio.map((value,i) => ({value, text: nombresColegio[i]}));
-          //console.log(res)
-          //console.log(this.api_colegios)
         } catch(e){
           console.error(e)
         }
@@ -322,8 +314,6 @@ import axios from "axios"
         let codigosSeccion= res.data.map(a => a.idSeccion);
         let nombresSeccion = res.data.map(a => a.nombreSeccion)
         this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
-        //console.log(res)
-        //console.log(this.api_secciones)
       } catch(e){
         console.error(e)
       }
@@ -342,7 +332,6 @@ import axios from "axios"
         //let nombresSeccion = res.data.map(a => a.nombreSeccion)
         //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
         this.api_evaluaciones = res.data
-        console.log(res)
         //console.log(this.api_estudiantes)
       } catch(e){
         console.error(e)
@@ -370,12 +359,12 @@ import axios from "axios"
         console.error(e)
       }
     },
-   goToCrearCita(pDNI){
+   goToCrearCita(pDNI, idEvaluacion ){
+      console.log(pDNI)
       localStorage.setItem("selectedEstudiante", pDNI)
       console.log(localStorage.getItem("selectedEstudiante"))
-      this.$router.push('/crear_cita')
+      this.$router.push(`/crear_cita?idEvaluacion=${idEvaluacion}`)
    },
-
   }
   }
 </script>
