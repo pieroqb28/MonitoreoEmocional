@@ -198,7 +198,7 @@
         <v-list-item >
 
         <v-list-item-content class="justify-center">
-          <v-btn color="indigo accent-1" @click ="goToCrearCita(item.dniEstudiante)">Crear Cita</v-btn>
+          <v-btn color="indigo accent-1" @click ="goToCrearCita(item.dniEstudiante, item.idEvaluacion)">Crear Cita</v-btn>
         </v-list-item-content>
       </v-list-item>
       </v-col></v-row>
@@ -239,12 +239,6 @@ import axios from "axios"
           text: 'Nombres',
           align: 'center',
           value: 'nombreEstudiante',
-          width: '240px'
-        },
-        {
-          text: 'Apellidos',
-          align: 'center',
-          value: 'apellidoEstudiante',
           width: '240px'
         },
         //{ text: 'Colegio', value: 'colegio', width: '240px', align: 'center', },
@@ -322,8 +316,6 @@ import axios from "axios"
         let codigosSeccion= res.data.map(a => a.idSeccion);
         let nombresSeccion = res.data.map(a => a.nombreSeccion)
         this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
-        console.log(res)
-        console.log(this.api_secciones)
       } catch(e){
         console.error(e)
       }
@@ -342,7 +334,8 @@ import axios from "axios"
         //let nombresSeccion = res.data.map(a => a.nombreSeccion)
         //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
         this.api_evaluaciones = res.data
-        console.log(res)
+        console.log("Api_evaluaciones ");
+        console.log( this.api_evaluaciones );
         //console.log(this.api_estudiantes)
       } catch(e){
         console.error(e)
@@ -370,10 +363,11 @@ import axios from "axios"
         console.error(e)
       }
     },
-   goToCrearCita(pDNI){
+   goToCrearCita(pDNI, idEvaluacion ){
+      console.log(pDNI)
       localStorage.setItem("selectedEstudiante", pDNI)
       console.log(localStorage.getItem("selectedEstudiante"))
-      this.$router.push('/crear_evaluacion')
+      this.$router.push(`/crear_cita?idEvaluacion=${idEvaluacion}`)
    },
 
   }

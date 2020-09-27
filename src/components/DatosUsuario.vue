@@ -13,12 +13,12 @@
     
       
         <v-card-title class="white--text " style="backgroundColor: #03A9F4;">
-          <v-row class="display-1" justify="center" >{{(this.nombres).concat(" ").concat(this.apellidos)}}</v-row>
+          <v-row class="display-1" justify="center" >{{this.nombres}}</v-row>
         </v-card-title>
         
      
     <v-list two-line>
-      <v-row>
+      <v-row class="no-margin">
       <v-col>
       <v-list-item >
         <v-list-item-icon>
@@ -27,22 +27,23 @@
 
         <v-list-item-content>
           <v-list-item-title>{{this.celular}}</v-list-item-title>
-          <v-list-item-subtitle>Personal</v-list-item-subtitle>
+          <v-list-item-subtitle>Numero personal</v-list-item-subtitle>
         </v-list-item-content>
 
  
       </v-list-item>
 
       <v-list-item >
-        <v-list-item-action></v-list-item-action>
+        <v-list-item-icon>
+          <v-icon color="light-blue">mdi-account-box</v-icon>
+        </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title>(323) 555-6789</v-list-item-title>
-          <v-list-item-subtitle>Clínica</v-list-item-subtitle>
+          <v-list-item-title>{{this.dni}}</v-list-item-title>
+          <v-list-item-subtitle>DNI</v-list-item-subtitle>
         </v-list-item-content>
 
       </v-list-item>
-      <v-divider inset></v-divider>
       </v-col>
       <v-col>
 
@@ -53,29 +54,7 @@
 
         <v-list-item-content>
           <v-list-item-title>{{this.correo}}</v-list-item-title>
-          <v-list-item-subtitle>Personal</v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-list-item >
-        <v-list-item-action></v-list-item-action>
-
-        <v-list-item-content>
-          <v-list-item-title>placeholder  @sannax.com</v-list-item-title>
-          <v-list-item-subtitle>Clínica</v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-divider inset></v-divider>
-
-      <v-list-item >
-        <v-list-item-icon>
-          <v-icon color="light-blue">mdi-map-marker</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title>Calle El Boulevard 169</v-list-item-title>
-          <v-list-item-subtitle>San Isidro, Lima</v-list-item-subtitle>
+          <v-list-item-subtitle>Correo personal</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       </v-col>
@@ -92,9 +71,9 @@ import axios from "axios"
     },
     data: () => ({
       nombres:'',
-      apellidos:'',
       celular:'',
       correo:'',
+      dni:'',
     }),
 
     methods: {
@@ -107,11 +86,10 @@ import axios from "axios"
               token:localStorage.accessToken,
             }
         })
-        console.log(res)
         this.nombres= res.data[0].primerNombre
-        this.apellidos = res.data[0].primerApellido
         this.celular = res.data[0].celular
         this.correo = res.data[0].correo
+        this.dni = res.data[0].dni
         /*this.name = (res.data[0].b.primerNombre).concat(" ").concat(res.data[0].b.segundoNombre)
         this.apellido = (res.data[0].b.apellidoPaterno).concat(" ").concat(res.data[0].b.apellidoMaterno)
         this.celular = (res.data[0].b.celularEstudiante)
@@ -125,5 +103,9 @@ import axios from "axios"
     },
   }
 </script>
-
+<style scoped>
+  .no-margin {
+    margin: 0;
+  }
+</style>
 

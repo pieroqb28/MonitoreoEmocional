@@ -165,6 +165,10 @@ import axios from "axios";
 export default {
   mounted() {
     this.DNI = localStorage.getItem("selectedEstudiante");
+    if (this.DNI !== ""){
+      this.getDatosEstudiante()
+    }
+    this.getDatosEstudiante()
     this.getDatosEspecialistas();
     //this.getEvaluaciones()
     //this.name = localStorage.getItem("selectedEstudiante").dniEstudiante
@@ -212,10 +216,15 @@ export default {
   methods: {
     async validate() {
       if (this.$refs.form.validate()) { 
+        let idEvaluacion = 0;
+        if (this.$route.query.idEvaluacion) {
+          idEvaluacion = this.$route.query.idEvaluacion
+        }
         let fecha = new Date(this.date);
         const params = {
           idEstudiante: this.idEstudiante,
           idEspecialista: this.selectEspecialista.value,
+          idEvaluacion: idEvaluacion,
           idTutor: parseInt(localStorage.userID),
           nombre: this.nombreCita,
           descripcion: this.descripcion,
@@ -248,7 +257,6 @@ export default {
             },
           }
         );
-        console.log(res);
         if (res.data[0]) {
           this.name = res.data[0].b.primerNombre
             .concat(" ")

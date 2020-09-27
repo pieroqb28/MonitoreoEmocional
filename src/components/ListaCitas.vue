@@ -141,11 +141,7 @@ import axios from "axios"
         'Colegio Alpamayo',
         'Liceo Naval Almirante Guise'
         ],
-       secciones: [
-        '5°-A sec.',
-        '6°-B prim.',
-         '2°-B prim.'
-       ],
+       secciones: [],
        api_citas: [],
        rol: localStorage.userRole,
     }),
