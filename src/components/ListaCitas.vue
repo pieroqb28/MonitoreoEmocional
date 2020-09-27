@@ -1,5 +1,73 @@
 <template>
   <v-container>
+    <v-dialog
+      v-model="dialog"
+      fullscreen
+      hide-overlay
+      transition="scale-transition"
+    >
+      <v-card>
+        <v-toolbar dark color="light-blue">
+          <v-btn icon dark @click="dialog = false">
+            <v-icon>mdi-arrow-left</v-icon>
+          </v-btn>
+          <v-toolbar-title>Nuevo diagnóstico</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn dark text @click="dialog = false">Volver</v-btn>
+          </v-toolbar-items> </v-toolbar
+        ><v-container>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-row>
+              <v-col>
+                <v-text-field
+                  v-model="descripcion"
+                  label="Evaluación"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field
+                  v-model="tipoDepresion"
+                  label="Tipo Depresión"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <!--v-checkbox
+      v-model="checkbox"
+      :rules="[v => !!v || 'You must agree to continue!']"
+      label="Do you agree?"
+      required
+    ></v-checkbox-->
+            <v-row
+              ><v-col>
+                <v-textarea
+                  v-model="comentarios"
+                  filled
+                  label="Diagnóstico"
+                  rows="5"
+                  no-resize
+                ></v-textarea> </v-col
+            ></v-row>
+
+            <v-row>
+              <v-spacer></v-spacer>
+
+              <v-btn
+                :disabled="!valid"
+                color="success"
+                class="mr-4"
+                @click="createDiagnostico"
+              >
+                Guardar
+              </v-btn>
+            </v-row>
+          </v-form></v-container
+        >
+      </v-card>
+    </v-dialog>
     <v-row><h4>Filtros</h4></v-row>
     <v-row v-if="rol === 'TUTOR'">
       <v-col cols="6">
@@ -85,6 +153,7 @@
         no-data-text="No hay citas disponibles"
         :search="search"
         calculate-widths
+        show-expand
         class="elevation-6"
       >
         <template v-slot:top>
@@ -99,6 +168,25 @@
               hide-details
             ></v-text-field>
           </v-toolbar>
+        </template>
+        <template #expanded-item="{ headers, item }">
+          <td :colspan="headers.length" style="padding: 0">
+            <v-list two-line>
+              <v-row
+                ><v-col>
+                  <v-list-item>
+                    <v-list-item-content class="justify-center">
+                      <v-btn
+                        color="indigo accent-1"
+                        @click="showCreateDiagDialog(item)"
+                        >Crear Diagnostico</v-btn
+                      >
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-col></v-row
+              >
+            </v-list>
+          </td>
         </template>
       </v-data-table>
     </v-row>
@@ -165,6 +253,11 @@ export default {
     api_secciones: [],
     api_citas: [],
     rol: localStorage.userRole,
+    idCita: 0,
+    idEspecialista: 0,
+    descripcion: "",
+    tipoDepresion: "",
+    comentarios: "",
   }),
 
   methods: {
@@ -235,7 +328,7 @@ export default {
         //let codigosSeccion= res.data.map(a => a.idSeccion);
         //let nombresSeccion = res.data.map(a => a.nombreSeccion)
         //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
-        this.api_citas = res.data.map( cita => {
+        this.api_citas = res.data.map((cita) => {
           cita.horaCita = cita.horaCita.split(":");
           cita.horaCita.pop();
           cita.horaCita = cita.horaCita.join(":");
@@ -263,7 +356,7 @@ export default {
         //let codigosSeccion= res.data.map(a => a.idSeccion);
         //let nombresSeccion = res.data.map(a => a.nombreSeccion)
         //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
-        this.api_citas = res.data.map( cita => {
+        this.api_citas = res.data.map((cita) => {
           cita.horaCita = cita.horaCita.split(":");
           cita.horaCita.pop();
           cita.horaCita = cita.horaCita.join(":");
@@ -274,6 +367,40 @@ export default {
       } catch (e) {
         console.error(e);
       }
+    },
+    async createDiagnostico() {
+      const params = {
+        idCita: this.idCita,
+        idEspecialista: parseInt(this.idEspecialista),
+        descripcion: this.descripcion,
+        tipoDepresion: this.tipoDepresion,
+        comentarios: this.comentarios,
+      };
+      console.log( params );
+      try {
+        const res = await axios.post(
+          "https://sistemadepresivotesisupc.azurewebsites.net/api/wConsultaDiagnostico/registrar/diagnostico",
+          params,
+        );
+        //this.secciones = res.data
+        //let codigosSeccion= res.data.map(a => a.idSeccion);
+        //let nombresSeccion = res.data.map(a => a.nombreSeccion)
+        //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
+        console.log(res);
+        this.dialog = false;
+        //console.log(this.api_estudiantes)
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    showCreateDiagDialog(item) {
+      this.idCita = item.idCita;
+      this.idEspecialista = localStorage.userID;
+      this.dialog = true;
+    },
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {});
     },
   },
 };

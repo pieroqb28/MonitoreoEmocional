@@ -24,84 +24,30 @@
                   <v-row
                     ><v-col>
                       <v-text-field
-                        v-model="name"
-                        :rules="nameRules"
+                        v-model="nombreEstudiante"
                         label="Nombres"
-                        readonly
-                        required
-                      ></v-text-field></v-col
-                    ><v-col>
-                      <v-text-field
-                        v-model="apellido"
-                        :rules="nameRules"
-                        label="Apellidos"
                         readonly
                         required
                       ></v-text-field
                     ></v-col>
                   </v-row>
                 </v-col>
-
-                <v-col
-                  ><v-row
-                    ><v-col>
-                      <v-text-field
-                        v-model="DNI"
-                        :rules="DNIRules"
-                        label="Tutor"
-                        required
-                      ></v-text-field></v-col
-                  ></v-row>
-                </v-col>
               </v-row>
 
               <v-row>
                 <v-col>
                   <v-text-field
-                    v-model="celular"
-                    :rules="celularRules"
+                    v-model="nombrecolegio"
                     label="Institución"
                     readonly
                     required
                   ></v-text-field>
                 </v-col>
-                <v-col>
-                  <v-text-field
-                    v-model="correo"
-                    :rules="nameRules"
-                    label="Sección"
-                    readonly
-                    required
-                  ></v-text-field>
-                </v-col>
               </v-row>
-
               <v-row>
                 <v-col>
                   <v-text-field
-                    v-model="celular"
-                    :rules="celularRules"
-                    label="Fecha Cita"
-                    readonly
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-col>
-                  <v-text-field
-                    v-model="correo"
-                    :rules="nameRules"
-                    label="Tipo Cita"
-                    readonly
-                    required
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col>
-                  <v-text-field
-                    v-model="celular"
-                    :rules="celularRules"
+                    v-model="descripcion"
                     label="Evaluación"
                     readonly
                     required
@@ -109,8 +55,7 @@
                 </v-col>
                 <v-col>
                   <v-text-field
-                    v-model="correo"
-                    :rules="nameRules"
+                    v-model="tipoDepresion"
                     label="Tipo Depresión"
                     readonly
                     required
@@ -127,37 +72,14 @@
               <v-row
                 ><v-col>
                   <v-textarea
-                    v-model="descripcion"
-                    filled
-                    label="Descripción del tutor"
-                    rows="3"
-                    no-resize
-                  ></v-textarea> </v-col
-              ></v-row>
-
-              <v-row
-                ><v-col>
-                  <v-textarea
-                    v-model="descripcion"
+                    v-model="comentarios"
                     filled
                     label="Diagnóstico"
                     rows="5"
                     no-resize
+                    readonly
                   ></v-textarea> </v-col
               ></v-row>
-
-              <v-row>
-                <v-spacer></v-spacer>
-
-                <v-btn
-                  :disabled="!valid"
-                  color="success"
-                  class="mr-4"
-                  @click="dialog = false"
-                >
-                  Guardar
-                </v-btn>
-              </v-row>
             </v-form></v-container
           >
         </v-card>
@@ -328,6 +250,7 @@ export default {
   data: () => ({
     name: "",
     dialog: false,
+    valid: true,
     headers: [
       {
         text: "Fecha",
@@ -347,7 +270,12 @@ export default {
         value: "dniEstudiante",
         width: "150px",
       },
-      { text: "Colegio", value: "nombrecolegio", width: "230px", align: "left" },
+      {
+        text: "Colegio",
+        value: "nombrecolegio",
+        width: "230px",
+        align: "left",
+      },
       {
         text: "Descripción",
         value: "descripcion",
@@ -363,16 +291,11 @@ export default {
     search: "",
     api_diagnosticos: [],
     editedIndex: -1,
-    editedItem: {
-      name: "",
-      estado: 0,
-      edad: 0,
-    },
-    defaultItem: {
-      name: "",
-      estado: 0,
-      edad: 0,
-    },
+    nombreEstudiante: "",
+    comentarios: "",
+    tipoDepresion: "",
+    descripcion: "",
+    nombrecolegio: "",
   }),
 
   computed: {
@@ -388,10 +311,11 @@ export default {
   },
   methods: {
     editItem(item) {
-      this.editedIndex = this.api_diagnosticos.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.name = item.name;
-
+      this.nombreEstudiante = item.nombreEstudiante;
+      this.comentarios = item.comentarios;
+      this.tipoDepresion = item.tipoDepresion;
+      this.descripcion = item.descripcion;
+      this.nombrecolegio = item.nombrecolegio;
       this.dialog = true;
     },
 
