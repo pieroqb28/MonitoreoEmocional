@@ -67,14 +67,22 @@
   <v-row>
     <v-col>
     <v-combobox
-      v-model="selectEvaluacion "
-      :items="api_evaluaciones"
-      :rules="selectEvaluacionRules"
-      label="Evaluación"
+      v-model="selectTipoActividad"
+      :items="api_TipoActividad"
+      :rules="selectTipoActividadRules"
+      label="Tipo de actividad"
       required
     ></v-combobox>
     </v-col>
-    <v-col><v-spacer></v-spacer></v-col>
+    <v-col>
+     <v-combobox
+      v-model="selectDuracion"
+      :items="api_Duraciones"
+      :rules="selectDuracionRules"
+      label="Duración"
+      required
+    ></v-combobox>
+    </v-col>
   </v-row>
   
     <!--v-checkbox
@@ -174,12 +182,18 @@ import axios from "axios"
         //v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
       correo:'',
-      selectEvaluacion: null,
-      selectEvaluacionRules: [
+      selectTipoActividad: null,
+      selectTipoActividadRules: [
         v => !!v || 'Debe seleccionar una evaluación',
         //v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
-      api_evaluaciones:[],
+      selectDuracion: null,
+      selectDuracionRules: [
+        v => !!v || 'Debe seleccionar una duración',
+        //v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+      api_TipoActividad:['Recreacional','Social','Física'],
+      api_Duraciones:['1 día','2 días','3 días'],
       idEstudiante:'',
       descripcion:'',
     }),
@@ -210,7 +224,7 @@ import axios from "axios"
       }
     },
     
-     async getEvaluaciones(){
+     async getTipoActividades(){
       try{
         const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarEvaluacion/asignar/consulta/obj/evaluaciones')
         let codigosObjEvaluacion= res.data.map(a => a.idObjEvaluacion);

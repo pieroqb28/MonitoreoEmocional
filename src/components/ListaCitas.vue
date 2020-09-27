@@ -4,16 +4,19 @@
     <v-row v-if="rol==='TUTOR'">
       <v-col cols="6">
         <v-combobox
-          v-model="select"
-          :items="coles"
-          label="Institución educativa"        
+          v-model="selectColegio"
+          :items="api_colegios"
+          placeholder="-" 
+          label="Institución educativa"
+          @change="getSecciones()"       
         ></v-combobox>
       </v-col>
       <v-col cols="6">
         <v-combobox
-          v-model="select2"
-          :items="secciones"
-          label="Sección"         
+          v-model="selectSeccion"
+          :items="api_secciones"
+          label="Sección"
+          @change="getCitasTutor()"          
         ></v-combobox>
       </v-col>
     </v-row>
@@ -98,9 +101,18 @@ import axios from "axios"
 
   export default {
     mounted(){
-      this.getCitas()
+      if (this.rol==='TUTOR')
+       {
+          this.getColegios()
+       }
+      if (this.rol==='ESPECIALISTA')
+       {
+          this.getCitasEspecialista()
+       }
     },
     data: () => ({
+      selectColegio:[],
+      selectSeccion:[],
       dialog: false,
       headers: [
         {
@@ -132,26 +144,58 @@ import axios from "axios"
       menuFin: false,
       search: '',
 
-
-      //select: [''],
-      //select2: [''],
-      coles: [
-        'I.E.E. José Olaya',
-        'Colegio Villa María',
-        'Colegio Alpamayo',
-        'Liceo Naval Almirante Guise'
-        ],
-       secciones: [],
-       api_citas: [],
-       rol: localStorage.userRole,
+        api_colegios:[],
+        api_secciones:[],
+        api_citas:[],
+        rol: localStorage.userRole,
     }),
 
 
 
     methods: {
-    async getCitas(){
+      async getColegios(){
+        try{
+          const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wEvaluaciones/consulta/tutor/colegio',{
+              //crossDomain: true,
+              params:{
+              idTutor:localStorage.userID,
+              tokenString:localStorage.accessToken,
+              }
+          })
+          //this.colegios = res.data
+          let codigosColegio = res.data.map(a => a.idColegio);
+          let nombresColegio = res.data.map(a => a.nombreColegio)
+          this.api_colegios = codigosColegio.map((value,i) => ({value, text: nombresColegio[i]}));
+          //console.log(res)
+          //console.log(this.api_colegios)
+        } catch(e){
+          console.error(e)
+        }
+      },
+    async getSecciones(){
       try{
-        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wConsultaCitas/consulta/citas',{
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wEvaluaciones/consulta/tutor/seccion',{
+            //crossDomain: true,
+            params:{
+            idColegio:this.selectColegio.value,
+            idTutor:localStorage.userID,
+            tokenString:localStorage.accessToken,
+            }
+        })
+        //this.secciones = res.data
+        let codigosSeccion= res.data.map(a => a.idSeccion);
+        let nombresSeccion = res.data.map(a => a.nombreSeccion)
+        this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
+        //console.log(res)
+        //console.log(this.api_secciones)
+      } catch(e){
+        console.error(e)
+      }
+    },
+
+    async getCitasEspecialista(){
+      try{
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarCitas/consulta/citas',{
             //crossDomain: true,
             params:{
             idEspecialista:localStorage.userID,
@@ -162,6 +206,26 @@ import axios from "axios"
         //let nombresSeccion = res.data.map(a => a.nombreSeccion)
         //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
         this.api_citas = res.data
+        console.log(res)
+        //console.log(this.api_estudiantes)
+      } catch(e){
+        console.error(e)
+      }
+    },
+
+    async getCitasTutor(){
+      try{
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarCitas/consulta/citas/tutor',
+          {
+            //crossDomain: true,
+            idTutorAuuser: localStorage.userID,
+            idSeccion:this.selectSeccion.value,
+          });
+        //this.secciones = res.data
+        //let codigosSeccion= res.data.map(a => a.idSeccion);
+        //let nombresSeccion = res.data.map(a => a.nombreSeccion)
+        //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
+        this.api_evaluaciones = res.data
         console.log(res)
         //console.log(this.api_estudiantes)
       } catch(e){

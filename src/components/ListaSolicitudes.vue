@@ -138,7 +138,6 @@ import axios from "axios"
     },
     data: () => ({
       selectTipoSolicitud:[],
-      dialog2: false,
       headers: [
         {
           text: 'Fecha',
@@ -231,7 +230,7 @@ import axios from "axios"
     goToCrearCita(pDNI){
       localStorage.setItem("selectedEstudiante", pDNI)
       console.log(localStorage.getItem("selectedEstudiante"))
-      this.$router.push('/crear_evaluacion')
+      this.$router.push('/crear_cita')
       },
 
     },

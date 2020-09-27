@@ -204,7 +204,9 @@ import { mapActions } from "vuex";
       },
       { icon: 'mdi-handshake-outline', text: 'Solicitudes de Ayuda', tipoRol: 'AMBOS', link: 'solicitudes' },
       { icon: 'mdi-code-not-equal', text: 'Diagnósticos', tipoRol: 'ESPECIALISTA', link: 'diagnosticos' },
+      { icon: 'mdi-format-list-bulleted', text: 'Actividades', tipoRol: 'ESPECIALISTA', link: 'crear_actividad' },
       { icon: 'mdi-align-vertical-bottom', text: 'Reportes', tipoRol: 'ESPECIALISTA',  },
+      
     ],
         color:'indigo',
         colors: [
