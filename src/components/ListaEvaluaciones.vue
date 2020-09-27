@@ -289,7 +289,7 @@ import axios from "axios"
     }),
 
      methods:{
-        async getColegios(){
+      async getColegios(){
         try{
           const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wEvaluaciones/consulta/tutor/colegio',{
               //crossDomain: true,
@@ -302,13 +302,13 @@ import axios from "axios"
           let codigosColegio = res.data.map(a => a.idColegio);
           let nombresColegio = res.data.map(a => a.nombreColegio)
           this.api_colegios = codigosColegio.map((value,i) => ({value, text: nombresColegio[i]}));
-          console.log(res)
-          console.log(this.api_colegios)
+          //console.log(res)
+          //console.log(this.api_colegios)
         } catch(e){
           console.error(e)
         }
       },
-      async getSecciones(){
+    async getSecciones(){
       try{
         const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wEvaluaciones/consulta/tutor/seccion',{
             //crossDomain: true,
@@ -322,8 +322,8 @@ import axios from "axios"
         let codigosSeccion= res.data.map(a => a.idSeccion);
         let nombresSeccion = res.data.map(a => a.nombreSeccion)
         this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
-        console.log(res)
-        console.log(this.api_secciones)
+        //console.log(res)
+        //console.log(this.api_secciones)
       } catch(e){
         console.error(e)
       }
@@ -373,7 +373,7 @@ import axios from "axios"
    goToCrearCita(pDNI){
       localStorage.setItem("selectedEstudiante", pDNI)
       console.log(localStorage.getItem("selectedEstudiante"))
-      this.$router.push('/crear_evaluacion')
+      this.$router.push('/crear_cita')
    },
 
   }

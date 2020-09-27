@@ -5,6 +5,7 @@ import ConsultaCitas from "@/views/ConsultaCitas.vue";
 import CrearCita from "@/views/CrearCita.vue";
 import CrearEvaluacion from "@/views/CrearEvaluacion.vue";
 import CrearSeccion from "@/views/CrearSeccion.vue";
+import CrearActividad from "@/views/CrearActividad.vue";
 import AsignarSeccion from "@/views/AsignarSeccion.vue";
 import ConsultaSolicitudes from "@/views/ConsultaSolicitudes.vue";
 import ConsultaDiagnosticos from "@/views/ConsultaDiagnosticos.vue";
@@ -45,6 +46,7 @@ export default [
   },
   { path: "/crear_evaluacion", name: "CrearEvaluacion", component: CrearEvaluacion },
   { path: "/crear_seccion", name: "CrearSeccion", component: CrearSeccion },
+  { path: "/crear_actividad", name: "CrearActividad", component: CrearActividad },
   { path: "/asignar_seccion", name: "AsignarSeccion", component: AsignarSeccion },
   {
     path: "/solicitudes",
