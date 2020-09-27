@@ -70,7 +70,7 @@
    <v-data-table
     :headers="headers"
     :items="api_evaluaciones"
-    item-key="fecha" 
+    item-key="idEvaluacion" 
     :search="search"
     calculate-widths
     show-expand
