@@ -130,31 +130,47 @@
                   <v-divider inset></v-divider>
                 </v-col>
                 <v-col>
-                  <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon color="light-blue">mdi-account-child</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle>Tutor</v-list-item-subtitle>
-                      <v-list-item-title>{{
-                        item.nombreTutor
-                      }}</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-
+                  <template v-if="rol !== 'TUTOR'">
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="light-blue">mdi-account-child</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content>
+                        <v-list-item-subtitle>Tutor</v-list-item-subtitle>
+                        <v-list-item-title>{{
+                          item.nombreTutor
+                        }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </template>
+                  <template v-else>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="light-blue">mdi-comment</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content>
+                        <v-list-item-subtitle>Comentario</v-list-item-subtitle>
+                        <v-list-item-title>{{
+                          item.comentario
+                        }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </template>
                   <v-divider inset></v-divider>
                   <template v-if="rol !== 'TUTOR'">
-                  <v-list-item >
-                    <v-list-item-icon>
-                      <v-icon color="light-blue">mdi-numeric</v-icon>
-                    </v-list-item-icon>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="light-blue">mdi-numeric</v-icon>
+                      </v-list-item-icon>
 
-                    <v-list-item-content>
-                      <v-list-item-subtitle>Puntaje</v-list-item-subtitle>
-                      <v-list-item-title>{{ item.puntaje }}</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-divider inset></v-divider>
+                      <v-list-item-content>
+                        <v-list-item-subtitle>Puntaje</v-list-item-subtitle>
+                        <v-list-item-title>{{
+                          item.puntaje
+                        }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider inset></v-divider>
                   </template>
                 </v-col>
               </v-row>
