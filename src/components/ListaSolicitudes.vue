@@ -156,6 +156,7 @@ import axios from "axios"
           value: 'dniEstudiante',
           width: '215px'
         },
+        { text: 'Colegio', value: 'colegio', width: '215px', align: 'left', },
         { text: 'Estado', value: 'contenido', width: '215px', align: 'left', },
        // { text: 'Edad', value: 'edad',width: '180px', align: 'center', },
        // { text: '', value: 'actions', sortable: false,width: '240px', align: 'center', justify: 'center',},

@@ -165,7 +165,7 @@ import { mapActions } from "vuex";
         
         ],
       items: [
-      { icon: 'mdi-align-vertical-bottom', text: 'Análisis', tipoRol: 'AMBOS', link: 'analisis' },
+      //{ icon: 'mdi-align-vertical-bottom', text: 'Análisis', tipoRol: 'AMBOS', link: 'analisis' },
       { icon: 'mdi-account-box', text: 'Perfil', tipoRol: 'AMBOS', link: 'perfil' },
 
       {

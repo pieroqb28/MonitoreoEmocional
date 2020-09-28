@@ -41,7 +41,7 @@ const actions = {
         commit("updateUserID", response.data.id)
         commit("updateUserRole", response.data.role)
         commit("updateUserName", response.data.nombre)
-        router.push("/analisis");
+        router.push("/solicitudes");
         console.log(response)
       })
       .catch((error) => {
