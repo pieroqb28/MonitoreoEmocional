@@ -117,18 +117,6 @@
                 <v-col>
                   <v-list-item>
                     <v-list-item-icon>
-                      <v-icon color="light-blue">mdi-account-tie</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle>Especialista</v-list-item-subtitle>
-                      <v-list-item-title>{{
-                        item.nombreEspecialista
-                      }}</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-divider inset></v-divider>
-                  <v-list-item>
-                    <v-list-item-icon>
                       <v-icon color="light-blue">mdi-calendar-month</v-icon>
                     </v-list-item-icon>
 
@@ -155,8 +143,8 @@
                   </v-list-item>
 
                   <v-divider inset></v-divider>
-
-                  <v-list-item>
+                  <template v-if="rol !== 'TUTOR'">
+                  <v-list-item >
                     <v-list-item-icon>
                       <v-icon color="light-blue">mdi-numeric</v-icon>
                     </v-list-item-icon>
@@ -167,6 +155,7 @@
                     </v-list-item-content>
                   </v-list-item>
                   <v-divider inset></v-divider>
+                  </template>
                 </v-col>
               </v-row>
               <v-row
