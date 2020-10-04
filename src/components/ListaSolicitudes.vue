@@ -2,7 +2,7 @@
   <v-container >
     <v-row><h4>Filtros</h4></v-row>
     <v-row>
-      <v-col cols="6">
+      <v-col >
         <v-combobox       
           v-model="selectTipoSolicitud"
           :items="tipo_solicitudes"
@@ -109,14 +109,14 @@
         <v-col>
         <v-list-item >
         <v-list-item-content class="justify-center">  
-          <v-btn color="indigo accent-1" @click ="goToCrearCita(item.dniEstudiante)">Crear Cita</v-btn>
+          <v-btn color="indigo accent-1" @click ="goToCrearCita(item.dniEstudiante, item.idSolicitudAyuda)">Crear Cita</v-btn>
         </v-list-item-content>
       </v-list-item>
       </v-col>
         <v-col>
         <v-list-item >
         <v-list-item-content class="justify-center">
-          <v-btn color="light-blue accent-1" @click ="goToCrearEvaluacion(item.dniEstudiante)">Crear Evaluación</v-btn>
+          <v-btn color="light-blue accent-1" @click ="goToCrearEvaluacion(item.dniEstudiante, item.idSolicitudAyuda)">Crear Evaluación</v-btn>
         </v-list-item-content>
       </v-list-item>
       </v-col>
@@ -220,14 +220,15 @@ import axios from "axios"
       }
       
     },
-    goToCrearEvaluacion(pDNI){
-      console.log(pDNI)
+    goToCrearEvaluacion(pDNI, pSolicitud){
       localStorage.setItem("selectedEstudiante", pDNI)
+      localStorage.setItem("selectedSolicitud", pSolicitud)
       console.log(localStorage.getItem("selectedEstudiante"))
       this.$router.push('/crear_evaluacion')
       },
-    goToCrearCita(pDNI){
+    goToCrearCita(pDNI, pSolicitud){
       localStorage.setItem("selectedEstudiante", pDNI)
+      localStorage.setItem("selectedSolicitud", pSolicitud)
       console.log(localStorage.getItem("selectedEstudiante"))
       this.$router.push('/crear_cita')
       },

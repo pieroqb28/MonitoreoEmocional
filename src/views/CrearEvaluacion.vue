@@ -6,9 +6,7 @@
     <!--v-row>  <v-col><v-spacer></v-spacer></v-col> </v-row>  
     <v-row><h3>Datos Estudiante</h3></v-row-->
     <v-row>
-      <v-col sm="1" offset-lg="1">
-        <!--Sidebar /-->
-      </v-col>
+
       <v-col >
         <FormEvaluacion/>
       </v-col>

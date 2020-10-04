@@ -75,15 +75,125 @@
     ></v-combobox>
     </v-col>
     <v-col>
-     <v-combobox
-      v-model="selectDuracion"
-      :items="api_Duraciones"
-      :rules="selectDuracionRules"
-      label="Duración"
+    <v-text-field
+      v-model="nombreActividad"
+      :rules="nameRules"
+      label="Nombre de actividad"
       required
-    ></v-combobox>
+    ></v-text-field>
     </v-col>
   </v-row>
+        <v-row>
+        <v-col>
+          <!--v-text-field
+            v-model="nombreCita"
+            label="Nombre de cita"
+          ></v-text-field-->
+          <v-menu
+            v-model="menuFecha"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+            min-width="190px"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="date"
+                label="Fecha"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="date"
+              @input="menuFecha = false"
+              locale="es"
+              color="indigo"
+            ></v-date-picker>
+          </v-menu>
+        </v-col>
+        <!--v-col><v-spacer></v-spacer></v-col-->
+            <v-col>
+            <v-row>
+          <!--v-text-field
+            v-model="name"
+            :rules="nameRules"
+            label="Nombres"
+            readonly
+            required
+          ></v-text-field-->
+            <v-menu
+              ref="menuHI"
+              v-model="menuHoraInicio"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="timeInicio"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="timeInicio"
+                  label="Hora Inicio"
+                  prepend-icon="mdi-clock-time-four-outline"
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="menuHoraInicio"
+                ampm-in-title
+                format="ampm"
+                scrollable
+                v-model="timeInicio"
+                full-width
+                @click:minute="$refs.menuHI.save(timeInicio)"
+              ></v-time-picker>
+            </v-menu>
+            <!--v-text-field
+            v-model="apellido"
+            :rules="nameRules"
+            label="Apellidos"
+            readonly
+            required
+          ></v-text-field-->
+         <v-menu
+              ref="menuHF"
+              v-model="menuHoraFin"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="timeFin"
+              transition="scale-transition"
+              offset-y
+              max-width="280px"
+              min-width="280px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="timeFin"
+                  label="Hora Fin"
+                  prepend-icon="mdi-clock-time-four-outline"
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="menuHoraFin"
+                ampm-in-title
+                format="ampm"
+                scrollable                
+                v-model="timeFin"
+                full-width
+                @click:minute="$refs.menuHF.save(timeFin)"
+              ></v-time-picker>
+            </v-menu>
+            </v-row>
+          </v-col>
+      </v-row>
   
     <!--v-checkbox
       v-model="checkbox"
@@ -106,7 +216,7 @@
      :disabled="!valid"
       color="error"
       class="mr-4"
-      @click="postEvaluacion()"
+      @click="postActividad()"
     >
       Crear Evaluación 
     </v-btn>
@@ -157,13 +267,20 @@ import axios from "axios"
       this.DNI = localStorage.getItem("selectedEstudiante")
       //console.log(localStorage.getItem("selectedEstudiante"))
       this.getDatosEstudiante()
-      this.getEvaluaciones()
+      this.getTipoActividades()
       //this.name = localStorage.getItem("selectedEstudiante").dniEstudiante
     },
     data: () => ({
+      date: new Date().toISOString().substr(0, 10),
+      menuFecha: false,
+      timeInicio: null,
+      menuHoraInicio: false,
+      timeFin: null,
+      menuHoraFin: false,
       postDialog: false,
       textDialog:'',
       valid: true,
+      nombreActivdad:'',
       name: '',
       apellido: '',
       nameRules: [
@@ -192,7 +309,7 @@ import axios from "axios"
         v => !!v || 'Debe seleccionar una duración',
         //v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
-      api_TipoActividad:['Recreacional','Social','Física'],
+      api_TipoActividad:[],
       api_Duraciones:['1 día','2 días','3 días'],
       idEstudiante:'',
       descripcion:'',
@@ -226,32 +343,36 @@ import axios from "axios"
     
      async getTipoActividades(){
       try{
-        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarEvaluacion/asignar/consulta/obj/evaluaciones')
-        let codigosObjEvaluacion= res.data.map(a => a.idObjEvaluacion);
-        let nombresObjEvaluacion = res.data.map(a => a.nombreObjEvaluacion)
-        this.api_evaluaciones = codigosObjEvaluacion.map((value,i) => ({value, text: nombresObjEvaluacion[i]}));
-        //console.log(res)
+        const res = await axios.get('https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarActividades/consulta/tipos/actividades')
+        let codigosTipoActividad= res.data.map(a => a.codigo);
+        let nombresTipoActividad = res.data.map(a => a.contenido)
+        this.api_TipoActividad = codigosTipoActividad.map((value,i) => ({value, text: nombresTipoActividad[i]}));
+        console.log(res)
         //console.log(this.api_evaluaciones)
       } catch(e){
         console.error(e)
       }
     },
-    async postEvaluacion() {
+    async postActividad() {
       try {
         const res = await axios.post(
-          "https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarEvaluacion/asignar/evaluacion",
+          "https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarActividades/asignar/actividades",
           {
             //crossDomain: true,
-            idEstudiante: this.idEstudiante,
-            descripcion: this.descripcion, 
-            idObjEvaluacion: this.selectEvaluacion.value,
-            idTutor:localStorage.userID,
+            Nomnbre: this.nombreActivdad,
+            FechaInicio: this.date,
+            horaInicio: this.timeInicio,
+            horaFin: this.timeFin,
+            Descripcion: this.descripcion,
+            TipoActividad: this.selectTipoActividad.value, 
+            IdEstudiante: this.idEstudiante,
+            idEspecialista:localStorage.userID,
           }
         );
         console.log(res);
        if (res.status === 200)
         {
-          this.textDialog = 'La evaluación ha sido creada correctamente'
+          this.textDialog = 'La actividad ha sido creada correctamente'
         }
         else this.textDialog = 'Ha ocurrido un problema, intente nuevamente'
         this.postDialog = true;

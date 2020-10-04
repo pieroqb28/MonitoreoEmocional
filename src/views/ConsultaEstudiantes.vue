@@ -3,9 +3,7 @@
 
     <v-row><h2>Consulta Estudiantes</h2></v-row>
     <v-row>
-      <v-col sm="2" offset-lg="1">
-        <!--Sidebar /-->
-      </v-col>
+
       <v-col >
         <Lista/>
       </v-col>
