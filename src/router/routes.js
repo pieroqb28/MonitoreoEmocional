@@ -1,4 +1,6 @@
 import Analisis from "@/views/Analisis.vue";
+import ListaPacientes from "@/views/ConsultaPacientes.vue";
+import DashboardPaciente from "@/views/DashboardPaciente.vue";
 import ConsultaEstudiantes from "@/views/ConsultaEstudiantes.vue";
 import ConsultaEvaluaciones from "@/views/ConsultaEvaluaciones.vue";
 import ConsultaCitas from "@/views/ConsultaCitas.vue";
@@ -57,6 +59,16 @@ export default [
     path: "/diagnosticos",
     name: "ConsultaDiagnosticos",
     component: ConsultaDiagnosticos,
+  },
+  {
+    path: "/pacientes",
+    name: "ListaPacientes",
+    component: ListaPacientes,
+  },
+  {
+    path: "/paciente_detalle",
+    name: "DashboardPaciente",
+    component: DashboardPaciente,
   },
   { path: "/citas", 
     name: "ConsultaCitas", 
