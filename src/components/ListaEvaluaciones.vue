@@ -110,6 +110,7 @@
          <v-spacer></v-spacer>
     
     </template-->
+    
         <template #expanded-item="{ headers, item }">
           <td :colspan="headers.length" style="padding: 0">
             <v-list two-line>
@@ -347,7 +348,9 @@ export default {
         //let codigosSeccion= res.data.map(a => a.idSeccion);
         //let nombresSeccion = res.data.map(a => a.nombreSeccion)
         //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
+        if (res.data != "No se encontraron registros"){
         this.api_evaluaciones = res.data;
+        }
         console.log(res);
         //console.log(this.api_estudiantes)
       } catch (e) {

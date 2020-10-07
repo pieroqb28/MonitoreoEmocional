@@ -69,10 +69,10 @@
       </v-row>
       <v-row>
         <v-col>
-          <v-text-field
+          <!--v-text-field
             v-model="nombreCita"
             label="Nombre de cita"
-          ></v-text-field>
+          ></v-text-field-->
           <v-menu
             v-model="menuFecha"
             :close-on-content-click="false"

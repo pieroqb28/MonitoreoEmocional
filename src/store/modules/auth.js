@@ -63,6 +63,7 @@ const actions = {
     localStorage.removeItem("userID");
     localStorage.removeItem("userRole");
     localStorage.removeItem("userName");
+    localStorage.clear();
     commit("logout");
     router.push("/login");
   },

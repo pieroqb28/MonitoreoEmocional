@@ -2,9 +2,9 @@
   <v-container>
     <v-row><h2>Consulta Evaluaciones</h2></v-row>
     <v-row>
-      <v-col sm="2" offset-lg="1">
-        <!--Sidebar /-->
-      </v-col>
+      <!--v-col sm="2" offset-lg="1">
+        <!Sidebar />
+      </v-col-->
       <v-col >
         <ListaEvaluaciones/>
       </v-col>

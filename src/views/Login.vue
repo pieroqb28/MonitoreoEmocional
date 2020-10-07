@@ -4,7 +4,7 @@
       <v-app>
         <v-container class="fill-height" fluid>
           <v-row align="center" justify="center">
-            <v-col>
+            <v-col class="hidden-xs-only">
               <img
                 class="elevation-10"
                 src="https://reencontrate.com/wp-content/uploads/2020/05/control-de-las-emociones1.jpg"
@@ -12,8 +12,8 @@
             </v-col>
             <v-col cols="12" sm="8" md="4">
               <v-card class="elevation-10" height="400px" max-width="800px">
-                <v-toolbar color="light-blue" dark flat height="100px">
-                  <v-toolbar-title style="font-size:34px;">Monitoreo Emocional</v-toolbar-title>
+                <v-toolbar color="light-blue" dark flat height="100px"><v-spacer></v-spacer>
+                  <v-toolbar-title style="font-size:30px">Monitoreo Emocional</v-toolbar-title><v-spacer></v-spacer>
                 </v-toolbar>
                 <v-card-text>
                   <v-form>

@@ -147,6 +147,9 @@ import axios from "axios"
   export default {
     mounted(){
       this.DNI = localStorage.getItem("selectedEstudiante")
+      this.idSolicitudAyuda = localStorage.getItem("selectedSolicitud")
+      console.log(localStorage.getItem("selectedSolicitud"))
+      if (localStorage.getItem("selectedSolicitud")==null) this.idSolicitudAyuda = 0
       //console.log(localStorage.getItem("selectedEstudiante"))
       this.getDatosEstudiante()
       this.getEvaluaciones()
@@ -182,6 +185,7 @@ import axios from "axios"
       api_evaluaciones:[],
       idEstudiante:'',
       descripcion:'',
+      idSolicitudAyuda:'',
     }),
 
     methods: {
@@ -232,12 +236,15 @@ import axios from "axios"
             descripcion: this.descripcion, 
             idObjEvaluacion: this.selectEvaluacion.value,
             idTutor:localStorage.userID,
+            idSolicitudAyuda:this.idSolicitudAyuda,
           }
         );
         console.log(res);
        if (res.status === 200)
         {
           this.textDialog = 'La evaluación ha sido creada correctamente'
+          localStorage.removeItem("selectedSolicitud")
+          localStorage.removeItem("selectedEstudiante")
         }
         else this.textDialog = 'Ha ocurrido un problema, intente nuevamente'
         this.postDialog = true;

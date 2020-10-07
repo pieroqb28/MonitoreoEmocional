@@ -169,7 +169,7 @@
             ></v-text-field>
           </v-toolbar>
         </template>
-        <template #expanded-item="{ headers, item }">
+        <template  v-if="rol === 'ESPECIALISTA'" #expanded-item="{ headers, item }">
           <td :colspan="headers.length" style="padding: 0">
             <v-list two-line>
               <v-row
@@ -237,7 +237,7 @@ export default {
       {
         text: "Estado",
         align: "left",
-        value: "contenido",
+        value: "estadoCita",
         width: "230px",
       },
       // { text: 'Edad', value: 'edad',width: '180px', align: 'center', },
@@ -362,6 +362,7 @@ export default {
           cita.horaCita = cita.horaCita.join(":");
           return cita;
         });
+        console.log(this.selectSeccion.text);
         console.log(res);
         //console.log(this.api_estudiantes)
       } catch (e) {
