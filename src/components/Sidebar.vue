@@ -270,7 +270,17 @@ import { mapActions } from "vuex";
       items: [
       //{ icon: 'mdi-align-vertical-bottom', text: 'Análisis', tipoRol: 'AMBOS', link: 'analisis' },
       { icon: 'mdi-account-box', text: 'Perfil', tipoRol: 'AMBOS', link: 'perfil' },
-
+      {
+        icon: 'mdi-chevron-up',
+        'icon-alt': 'mdi-chevron-down',
+        text: 'Pacientes',
+        tipoRol: 'ESPECIALISTA',
+        model: false,
+        children: [
+          { icon: 'mdi-account-multiple' , text: 'Consultar Pacientes', link:'pacientes' },
+          { icon: 'mdi-account-search', text: 'Detalle Paciente' , link: 'paciente_detalle'},
+        ],
+      },
       {
         icon: 'mdi-chevron-up',
         'icon-alt': 'mdi-chevron-down',

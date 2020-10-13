@@ -9,7 +9,7 @@
       <v-tab-item :key="appointments">
         <v-card flat>
           <v-data-table
-            :headers="headers"
+            :headers="cita_headers"
             :items="api_citas"
             item-key="idCita"
             no-results-text="Búsqueda sin coincidencias"
@@ -54,12 +54,11 @@
       <v-tab-item :key="evaluations">
         <v-card flat>
           <v-data-table
-            :headers="headers"
-            :items="api_evaluaciones"
+            :headers="eva_headers"
+            :items="info_evaluaciones"
             item-key="fecha"
             :search="search"
             calculate-widths
-            show-expand
           >
             <template v-slot:top>
               <v-toolbar flat color="white">
@@ -72,96 +71,10 @@
                 ></v-text-field>
               </v-toolbar>
             </template>
-            <template #expanded-item="{ headers, item }">
-              <td :colspan="headers.length" style="padding: 0">
-                <v-list two-line>
-                  <v-row>
-                    <v-col>
-                      <v-list-item>
-                        <v-list-item-icon>
-                          <v-icon color="light-blue">mdi-calendar-month</v-icon>
-                        </v-list-item-icon>
-
-                        <v-list-item-content>
-                          <v-list-item-subtitle
-                            >Fecha de evaluación</v-list-item-subtitle
-                          >
-                          <v-list-item-title>{{
-                            item.fecha
-                          }}</v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                      <v-divider inset></v-divider>
-                    </v-col>
-                    <v-col>
-                      <template v-if="rol !== 'TUTOR'">
-                        <v-list-item>
-                          <v-list-item-icon>
-                            <v-icon color="light-blue"
-                              >mdi-account-child</v-icon
-                            >
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-subtitle>Tutor</v-list-item-subtitle>
-                            <v-list-item-title>{{
-                              item.nombreTutor
-                            }}</v-list-item-title>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </template>
-                      <template v-else>
-                        <v-list-item>
-                          <v-list-item-icon>
-                            <v-icon color="light-blue">mdi-comment</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-subtitle
-                              >Comentario</v-list-item-subtitle
-                            >
-                            <v-list-item-title>{{
-                              item.comentario
-                            }}</v-list-item-title>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </template>
-                      <v-divider inset></v-divider>
-                      <template v-if="rol !== 'TUTOR'">
-                        <v-list-item>
-                          <v-list-item-icon>
-                            <v-icon color="light-blue">mdi-numeric</v-icon>
-                          </v-list-item-icon>
-
-                          <v-list-item-content>
-                            <v-list-item-subtitle>Puntaje</v-list-item-subtitle>
-                            <v-list-item-title>{{
-                              item.puntaje
-                            }}</v-list-item-title>
-                          </v-list-item-content>
-                        </v-list-item>
-                        <v-divider inset></v-divider>
-                      </template>
-                    </v-col>
-                  </v-row>
-                  <v-row
-                    ><v-col>
-                      <v-list-item>
-                        <v-list-item-content class="justify-center">
-                          <v-btn
-                            color="indigo accent-1"
-                            @click="
-                              goToCrearCita(
-                                item.dniEstudiante,
-                                item.idEvaluacion
-                              )
-                            "
-                            >Crear Cita</v-btn
-                          >
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-col></v-row
-                  >
-                </v-list>
-              </td>
+            <template v-slot:[`item.actions`]="{ item }">
+              <v-icon class="mr-2" @click="showAnswers(item)">
+                mdi-play
+              </v-icon>
             </template>
           </v-data-table>
         </v-card>
@@ -194,15 +107,116 @@
           </v-data-table>
         </v-card>
       </v-tab-item>
+      <v-dialog v-model="dialogRespuestas" max-width="500px">
+        <v-card>
+          <v-card-title class="headline"
+            >Respuestas</v-card-title
+          >
+           <v-data-table
+            :headers="respuestas_headers"
+            :items="respuestas"
+            item-key="resp"
+            calculate-widths
+          ></v-data-table>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialogRespuestas = false"
+              >Cerrar</v-btn
+            >
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-tabs-items>
   </v-card>
 </template>
 <script>
+import axios from "axios";
 export default {
+  mounted() {
+    this.getEvaluaciones();
+    this.getCitas();
+  },
   data() {
     return {
       tab: null,
+      dni: this.$route.query.dni || "",
+      api_evaluaciones: [],
+      api_citas: [],
+      info_evaluaciones: [],
+      respuestas: [],
+      dialogRespuestas: false,
+      respuestas_headers: [
+        { text: "Pregunta", value: "nombrePregunta", align: "left" },
+        { text: "Respuesta", value: "nombreAlternativa", align: "left" },
+        { text: "Puntaje", value:"puntaje"},
+      ],
+      cita_headers: [
+        { text: "Fecha", value: "fechaDiagnostico", align: "left" },
+        { text: "Descripción", value: "descriDiag", align: "left" },
+        { text: "Tipo depresión", value: "tipodepresion", align: "left" },
+        { text: "Comentario", value:"comentario"},
+      ],
+      eva_headers: [
+        { text: "Nombre", value: "nombre", align: "left" },
+        { text: "Nro. Telef.", value: "celular", align: "left" },
+        { text: "Estado depresivo", value: "estadoDepresivo", align: "left" },
+        { text: "Puntaje", value: "puntaje", align: "left" },
+        { text: "Estado", value: "estado", align: "left" },
+        {
+          text: "Ver respuestas",
+          value: "actions",
+          sortable: false,
+          align: "center",
+        },
+      ],
     };
+  },
+  methods: {
+    showAnswers(infoEvaluacion) {
+      this.respuestas = this.api_evaluaciones.find(
+        (x) => x.infoEvaluacion.idEvaluacion === infoEvaluacion.idEvaluacion
+      ).preguntas;
+      this.dialogRespuestas = true;
+    },
+    async getEvaluaciones() {
+      try {
+        const res = await axios.get(
+          "https://sistemadepresivotesisupc.azurewebsites.net/api/wConsultaHistorialClinia/consulta/historial/evlauaciones",
+          {
+            //crossDomain: true,
+            params: {
+              idAuEstudiante: this.dni,
+            },
+          }
+        );
+        this.api_evaluaciones = res.data;
+        this.info_evaluaciones = this.api_evaluaciones.map(
+          (x) => x.infoEvaluacion
+        );
+        console.log(this.info_evaluaciones);
+        console.log(this.api_evaluaciones);
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async getCitas() {
+      try {
+        const res = await axios.get(
+          "https://sistemadepresivotesisupc.azurewebsites.net/api/wConsultaHistorialClinia/consulta/citas/estudiante",
+          {
+            //crossDomain: true,
+            params: {
+              dniEstudiante: this.dni,
+            },
+          }
+        );
+        this.api_citas = res.data;
+        console.log(this.api_citas);
+      } catch (e) {
+        console.error(e);
+      }
+    },
   },
 };
 </script>
