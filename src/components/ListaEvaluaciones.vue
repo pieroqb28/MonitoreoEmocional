@@ -80,7 +80,7 @@
       <v-data-table
         :headers="headers"
         :items="api_evaluaciones"
-        item-key="fecha"
+        item-key="dniEstudiante"
         :search="search"
         calculate-widths
         show-expand
@@ -98,19 +98,7 @@
               hide-details
             ></v-text-field>
           </v-toolbar>
-        </template>
-        <!--template v-slot:item.actions="{ item }">
-< open new tab api/estudiantes/id >
-      <v-icon
-      color = 'light-blue'
-        @click="deleteItem(item)"
-      >
-      </v-icon>
-
-         <v-spacer></v-spacer>
-    
-    </template-->
-    
+        </template>    
         <template #expanded-item="{ headers, item }">
           <td :colspan="headers.length" style="padding: 0">
             <v-list two-line>
@@ -175,8 +163,8 @@
                   </template>
                 </v-col>
               </v-row>
-              <v-row
-                ><v-col>
+              <v-row>
+                <v-col>
                   <v-list-item>
                     <v-list-item-content class="justify-center">
                       <v-btn
@@ -188,8 +176,8 @@
                       >
                     </v-list-item-content>
                   </v-list-item>
-                </v-col></v-row
-              >
+                </v-col>
+              </v-row>
             </v-list>
           </td>
         </template>
@@ -252,8 +240,6 @@ export default {
       estado: 0,
       edad: 0,
     },
-    //select: [''],
-    //select2: [''],
     api_colegios: [],
     api_secciones: [],
     api_evaluaciones: [],
@@ -358,9 +344,7 @@ export default {
       }
     },
     goToCrearCita(pDNI, idEvaluacion) {
-      console.log(pDNI);
       localStorage.setItem("selectedEstudiante", pDNI);
-      console.log(localStorage.getItem("selectedEstudiante"));
       this.$router.push(`/crear_cita?idEvaluacion=${idEvaluacion}`);
     },
   },

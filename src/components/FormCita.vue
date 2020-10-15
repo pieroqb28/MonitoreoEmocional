@@ -161,14 +161,15 @@
 
 <script>
 import axios from "axios";
+// import { sendAppointmentMsg } from "../utils/twilioUtil";
 
 export default {
   mounted() {
     this.DNI = localStorage.getItem("selectedEstudiante");
-    if (this.DNI !== ""){
-      this.getDatosEstudiante()
+    if (this.DNI !== "") {
+      this.getDatosEstudiante();
     }
-    this.getDatosEstudiante()
+    this.getDatosEstudiante();
     this.getDatosEspecialistas();
     //this.getEvaluaciones()
     //this.name = localStorage.getItem("selectedEstudiante").dniEstudiante
@@ -215,10 +216,10 @@ export default {
 
   methods: {
     async validate() {
-      if (this.$refs.form.validate()) { 
+      if (this.$refs.form.validate()) {
         let idEvaluacion = 0;
         if (this.$route.query.idEvaluacion) {
-          idEvaluacion = this.$route.query.idEvaluacion
+          idEvaluacion = this.$route.query.idEvaluacion;
         }
         let fecha = new Date(this.date);
         const params = {
@@ -236,7 +237,8 @@ export default {
             "https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarCitas/asignar/citas",
             params
           );
-          console.log(res);
+          console.log( res );
+          // sendAppointmentMsg();
         } catch (e) {
           console.error(e);
         }

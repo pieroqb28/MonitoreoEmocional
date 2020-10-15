@@ -78,7 +78,6 @@ export default {
             },
           }
         );
-        console.log(localStorage.userID);
         console.log(res);
         this.api_pacientes = res.data;
       } catch (e) {
