@@ -227,7 +227,7 @@
       class="mr-4"
       @click="validate"
     >
-      Validar
+      Crear cita
     </v-btn>
     </v-row>
   </v-form>

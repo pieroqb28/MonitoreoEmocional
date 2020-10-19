@@ -62,9 +62,13 @@
           <v-card color="grey lighten-4" min-width="350px" flat>
             <v-toolbar :color="selectedEvent.color" dark>
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-btn @click="selectedOpen = false" icon>
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
             </v-toolbar>
             <v-card-text>
-              <span v-html="selectedEvent.details"></span>
+              <span v-html="selectedEvent.descripcion"></span>
             </v-card-text>
             <v-card-actions>
               <v-btn text color="secondary" @click="selectedOpen = false">
@@ -197,8 +201,7 @@ export default {
         const events = res.data.map((cita) => {
             cita.start = moment(cita.fechaInicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
             cita.end = cita.start;
-            console.log( cita.end );
-            cita.name = "PRUEBA";
+            cita.name = cita.nombre;
             cita.color = this.colors[this.rnd(0, this.colors.length - 1)];
             return cita;
         });

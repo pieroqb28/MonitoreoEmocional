@@ -32,7 +32,7 @@
         <v-spacer></v-spacer>
         <v-btn color="error" class="mr-4" @click="reset">Reiniciar</v-btn>
 
-        <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Validar</v-btn>
+        <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Crear sección</v-btn>
       </v-row>
     </v-form>
   </v-container>
