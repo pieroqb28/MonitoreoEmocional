@@ -336,6 +336,8 @@ export default {
         //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
         if (res.data != "No se encontraron registros"){
         this.api_evaluaciones = res.data;
+        } else{
+          this.api_evaluaciones = [];
         }
         console.log(res);
         //console.log(this.api_estudiantes)
