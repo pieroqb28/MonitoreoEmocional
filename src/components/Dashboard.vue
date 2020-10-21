@@ -1,7 +1,25 @@
 <template>
 <v-container fluid>
+  <v-row class="justify-center">
+                <v-btn
+                  color="light-blue accent-1"
+                  class="mr-4"
+                  @click="sendMail()"
+                >
+                  Mail
+                </v-btn></v-row
+              >
+  <v-row><v-col>Total de alumnos</v-col><v-col>Atención de especialistas</v-col></v-row>
   <v-row>
-  <v-card
+    <v-col><pie-chart :data="[['Saludables',180],['Depresivos',120]]"></pie-chart></v-col>
+    <v-col><pie-chart :data="[['Gianmarco Chávez',50],['Alvin Gonzáles',37],['Piero Quiroz',24]]"></pie-chart></v-col>
+  </v-row>
+  <v-row><v-col></v-col></v-row><v-row><v-col></v-col></v-row><v-row><v-col>Alumnos depresivos por colegio</v-col></v-row>
+  <v-row>
+    <column-chart :data="[['Carmelitas', 32], ['Lord Byron', 46], ['Newton School', 28]]"></column-chart>
+  </v-row>
+  <v-row>
+  <!--v-card
     class="mx-auto"
     color="grey lighten-4"
     max-width="600"
@@ -138,16 +156,18 @@
         stroke-linecap="round"
       ></v-sparkline>
     </v-sheet>
-  </v-card>
+  </v-card-->
   </v-row>
 </v-container>
 </template>
 
 <script>
+
   const exhale = ms =>
     new Promise(resolve => setTimeout(resolve, ms))
 
   export default {
+
     data: () => ({
       checking: false,
       heartbeats: [],
@@ -181,6 +201,7 @@
 
         this.checking = false
       },
+      
     },
   }
 </script>

@@ -1,4 +1,4 @@
-{
+p{
   "name": "monitoreo_emocional",
   "version": "0.1.0",
   "private": true,
@@ -9,12 +9,16 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
+    "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
     "firebase": "^7.24.0",
+    "nodemailer": "^6.4.14",
     "moment": "^2.29.1",
     "qs": "^6.9.4",
     "twilio": "^3.50.0",
     "vue": "^2.6.12",
+    "vue-chartjs": "^3.5.1",
+    "vue-chartkick": "^0.6.1",
     "vue-router": "^3.4.3",
     "vuetify": "^2.2.11",
     "vuex": "^3.5.1",
