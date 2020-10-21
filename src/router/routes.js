@@ -15,6 +15,7 @@ import DatosEstudiante from "@/views/DatosEstudiante.vue";
 import Login from "@/views/Login.vue";
 import Perfil from "@/views/Perfil.vue";
 import Registro from "@/views/Registro.vue";
+import Calendario from "@/views/Calendario.vue";
 
 /*
  * allowAnonymous: puede verse sin un token
@@ -69,6 +70,11 @@ export default [
     path: "/paciente_detalle",
     name: "DashboardPaciente",
     component: DashboardPaciente,
+  },
+  {
+    path: "/calendario_citas",
+    name: "Calendario de citas",
+    component: Calendario,
   },
   { path: "/citas", 
     name: "ConsultaCitas", 

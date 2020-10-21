@@ -319,7 +319,13 @@ import { mapActions } from "vuex";
       { icon: 'mdi-code-not-equal', text: 'Diagnósticos', tipoRol: 'ESPECIALISTA', link: 'diagnosticos' },
       { icon: 'mdi-format-list-bulleted', text: 'Actividades', tipoRol: 'ESPECIALISTA', link: 'crear_actividad' },
       { icon: 'mdi-align-vertical-bottom', text: 'Reportes', tipoRol: 'ESPECIALISTA',  },
-      
+      {
+        icon: 'mdi-calendar',
+        text: 'Calendario de citas',
+        tipoRol: 'ESPECIALISTA',
+        link: "calendario_citas",
+        model: false,
+      },
     ],
         color:'indigo',
         colors: [

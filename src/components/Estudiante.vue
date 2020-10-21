@@ -169,12 +169,12 @@
           v-bind="attrs"
           v-on="on"
         >
-          Crear cita
+          Crear actividad
         </v-btn>
       </template>
       <v-card>
         <v-card-title  style="backgroundColor: #00897B;">
-          <span class="headline" style="color: white;">Crear cita</span>
+          <span class="headline" style="color: white;">Crear actividad</span>
         </v-card-title>
         <v-card-text>
           <v-container>

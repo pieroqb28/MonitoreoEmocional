@@ -227,7 +227,7 @@
       class="mr-4"
       @click="validate"
     >
-      Validar
+      Crear cita
     </v-btn>
     </v-row>
   </v-form>
@@ -359,7 +359,7 @@ import axios from "axios"
           "https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarActividades/asignar/actividades",
           {
             //crossDomain: true,
-            Nomnbre: this.nombreActivdad,
+            Nombre: this.nombreActivdad,
             FechaInicio: this.date,
             horaInicio: this.timeInicio,
             horaFin: this.timeFin,
