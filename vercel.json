@@ -1,7 +1,7 @@
 {
     "headers": [
       {
-        "source": "https://fcm.googleapis.com/fcm/send",
+        "source": "fcm.googleapis.com/fcm/send",
         "headers": [
           { "key": "Access-Control-Allow-Credentials", "value": "true" },
           { "key": "Access-Control-Allow-Origin", "value": "*" },
