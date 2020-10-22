@@ -34,7 +34,7 @@ export function sendNotification(type, idEstudiante) {
             "key=AAAAEnoc1Vw:APA91bE9OPU53Pl0eq2iy7BFILi6TEp2RqeevvFK6lvnRTDI-ciFTluhd7Xi6QdbtBNw15qopbVt2OhcrthZG3r5WJyNzuTLa2bihbIAuDGpC3FsvQtbEYaFJ2z79uAnr8yowKBdWCzh",
         },
       };
-      axios.post("https://fcm.googleapis.com/fcm/send", data, config);
+      axios.post(" https://cors-anywhere.herokuapp.com/https://fcm.googleapis.com/fcm/send", data, config);
     });
   //
 }
