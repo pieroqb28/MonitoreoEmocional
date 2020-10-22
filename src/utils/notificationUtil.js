@@ -30,6 +30,7 @@ export function sendNotification(type, idEstudiante) {
       let config = {
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
           "Authorization":
             "key=AAAAEnoc1Vw:APA91bE9OPU53Pl0eq2iy7BFILi6TEp2RqeevvFK6lvnRTDI-ciFTluhd7Xi6QdbtBNw15qopbVt2OhcrthZG3r5WJyNzuTLa2bihbIAuDGpC3FsvQtbEYaFJ2z79uAnr8yowKBdWCzh",
         },
