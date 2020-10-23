@@ -161,7 +161,7 @@
 
 <script>
 import axios from "axios";
-// import { sendAppointmentMsg } from "../utils/twilioUtil";
+import { sendNotification } from "../utils/notificationUtil";
 
 export default {
   mounted() {
@@ -233,11 +233,14 @@ export default {
           hora: this.selectHora,
         };
         try {
-          const res = await axios.post(
-            "https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarCitas/asignar/citas",
-            params
-          );
-          console.log( res );
+          const res = await axios
+            .post(
+              "https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarCitas/asignar/citas",
+              params
+            )
+            if( res.status == "200" ) {
+              sendNotification( 'appointment_created', this.idEstudiante )
+            }
           // sendAppointmentMsg();
         } catch (e) {
           console.error(e);
