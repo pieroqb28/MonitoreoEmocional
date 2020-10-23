@@ -1,14 +1,5 @@
 <template>
 <v-container fluid>
-  <v-row class="justify-center">
-                <v-btn
-                  color="light-blue accent-1"
-                  class="mr-4"
-                  @click="sendMail()"
-                >
-                  Mail
-                </v-btn></v-row
-              >
   <v-row><v-col>Total de alumnos</v-col><v-col>Atención de especialistas</v-col></v-row>
   <v-row>
     <v-col><pie-chart :data="[['Saludables',180],['Depresivos',120]]"></pie-chart></v-col>
