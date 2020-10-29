@@ -80,7 +80,7 @@
       <v-data-table
         :headers="headers"
         :items="api_evaluaciones"
-        item-key="dniEstudiante"
+        item-key="idEvaluacion"
         :search="search"
         calculate-widths
         show-expand
