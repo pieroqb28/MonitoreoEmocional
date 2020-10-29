@@ -144,7 +144,7 @@
       ></v-row>
       <v-row>
         <v-spacer></v-spacer>
-        <v-btn color="error" class="mr-4" @click="reset"> Reiniciar </v-btn>
+        <v-btn color="error" class="mr-4" @click="reset"> Limpiar </v-btn>
 
         <v-btn
           :disabled="!valid"
@@ -156,6 +156,23 @@
         </v-btn>
       </v-row>
     </v-form>
+    <v-dialog v-model="postDialog" max-width="370">
+      <v-card>
+        <v-card-title class="headline">{{ this.textDialog }}</v-card-title>
+
+        <!--v-card-text>
+          La evaluación se ha registrado correctamente.
+        </v-card-text-->
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="green darken-1" text @click="onClickOk">
+            Entendido
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -175,6 +192,8 @@ export default {
     //this.name = localStorage.getItem("selectedEstudiante").dniEstudiante
   },
   data: () => ({
+    postDialog: false,
+    textDialog: "",
     date: new Date().toISOString().substr(0, 10),
     menuFecha: false,
     valid: true,
@@ -232,25 +251,34 @@ export default {
           fecha: fecha.toISOString(),
           hora: this.selectHora,
         };
+        console.log(params);
         try {
-          const res = await axios
-            .post(
-              "https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarCitas/asignar/citas",
-              params
-            )
-            if( res.status == "200" ) {
-              sendNotification( 'appointment_created', this.idEstudiante )
-            }
+          const res = await axios.post(
+            "https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarCitas/asignar/citas",
+            params
+          );
+          if (res.status == "200") {
+            sendNotification("appointment_created", this.idEstudiante);
+            this.textDialog = "La cita ha sido creada correctamente";
+            localStorage.removeItem("selectedSolicitud");
+            localStorage.removeItem("selectedEstudiante");
+          } else
+            this.textDialog = "Ha ocurrido un problema, intente nuevamente";
+          this.postDialog = true;
           // sendAppointmentMsg();
         } catch (e) {
           console.error(e);
+          this.textDialog = "Ha ocurrido un problema, intente nuevamente";
+          this.postDialog = true;
         }
       }
     },
     reset() {
       this.$refs.form.reset();
     },
-
+    onClickOk() {
+      this.$router.push('/citas')
+    },
     async getDatosEstudiante() {
       try {
         const res = await axios.get(

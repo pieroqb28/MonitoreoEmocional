@@ -30,7 +30,7 @@
       ></v-checkbox-->
       <v-row>
         <v-spacer></v-spacer>
-        <v-btn color="error" class="mr-4" @click="reset">Reiniciar</v-btn>
+        <v-btn color="error" class="mr-4" @click="reset">Limpiar</v-btn>
 
         <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Crear sección</v-btn>
       </v-row>
