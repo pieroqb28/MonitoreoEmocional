@@ -326,6 +326,13 @@ import { mapActions } from "vuex";
         link: "calendario_citas",
         model: false,
       },
+      {
+        icon: 'mdi-chart-bar',
+        text: 'Monitoreo',
+        tipoRol: 'ESPECIALISTA',
+        link: "bi-diagram",
+        model: false,
+      },
     ],
         color:'indigo',
         colors: [

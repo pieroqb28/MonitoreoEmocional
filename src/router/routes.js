@@ -16,6 +16,7 @@ import Login from "@/views/Login.vue";
 import Perfil from "@/views/Perfil.vue";
 import Registro from "@/views/Registro.vue";
 import Calendario from "@/views/Calendario.vue";
+import BIDiagram from "@/views/BIDiagram.vue";
 
 /*
  * allowAnonymous: puede verse sin un token
@@ -85,6 +86,11 @@ export default [
     path: "/estudiantes-id",
     name: "DatosEstudiante",
     component: DatosEstudiante,
+  },
+  {
+    path: "/bi-diagram",
+    name: "BIDiagram",
+    component: BIDiagram,
   },
   { path: "/perfil", name: "Perfil", component: Perfil },
   {
