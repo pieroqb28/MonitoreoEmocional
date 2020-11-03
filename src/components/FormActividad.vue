@@ -276,7 +276,7 @@ export default {
     postDialog: false,
     textDialog: "",
     valid: true,
-    nombreActivdad: "",
+    nombreActividad: "",
     name: "",
     apellido: "",
     nameRules: [
@@ -367,7 +367,7 @@ export default {
           "https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarActividades/asignar/actividades",
           {
             //crossDomain: true,
-            Nombre: this.nombreActivdad,
+            Nombre: this.nombreActividad,
             FechaInicio: this.date,
             horaInicio: this.timeInicio,
             horaFin: this.timeFin,
@@ -378,6 +378,12 @@ export default {
           }
         );
         console.log(res);
+        Tasunto = "Nueva actividad: " + this.selectTipoActividad.value
+        Ttexto = "Nombre de la actividad: " + this.nombreActividad + "\n" 
+                + "Descripción: " + this.descripcion + "\n"
+                + "Fecha: " + this.date + "\n"
+                + "Hora: " + this.timeInicio + " - " + this.timeFin + "\n"
+        sendMail(this.correo, Tasunto, Ttexto)
         if (res.status === 200) {
           this.textDialog = "La actividad ha sido creada correctamente";
         } else this.textDialog = "Ha ocurrido un problema, intente nuevamente";
@@ -386,6 +392,22 @@ export default {
         console.error(e);
         this.textDialog = "Ha ocurrido un problema, intente nuevamente";
         this.postDialog = true;
+      }
+    },
+
+    async sendMail(destinatario, asunto, texto){
+      try {
+        const res = await axios.post(
+          "https://us-central1-monitoreoemocionalfb.cloudfunctions.net/METmailer",
+          {
+            to: this.destinatario,
+            message : this.texto,
+            subject : this.asunto,
+          }
+        );
+        console.log(res);
+      } catch (e) {
+        console.error(e)
       }
     },
   },

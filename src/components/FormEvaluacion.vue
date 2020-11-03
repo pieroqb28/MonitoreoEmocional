@@ -246,6 +246,9 @@ export default {
         );
         console.log(res);
         if (res.status === 200) {
+          Tasunto = "Nueva evaluación: " + this.selectEvaluacion.value
+          Ttexto = "Descripción: " + this.descripcion + "\n"
+          sendMail(this.correo, Tasunto, Ttexto)
           this.textDialog = "La evaluación ha sido creada correctamente";
           localStorage.removeItem("selectedSolicitud");
           localStorage.removeItem("selectedEstudiante");
@@ -259,6 +262,22 @@ export default {
     },
     onClickOk() {
       this.$router.push('/evaluaciones')
+    },
+
+    async sendMail(destinatario, asunto, texto){
+      try {
+        const res = await axios.post(
+          "https://us-central1-monitoreoemocionalfb.cloudfunctions.net/METmailer",
+          {
+            to: this.destinatario,
+            message : this.texto,
+            subject : this.asunto,
+          }
+        );
+        console.log(res);
+      } catch (e) {
+        console.error(e)
+      }
     },
   },
 };
