@@ -233,7 +233,7 @@ export default {
     idEstudiante: "",
     descripcion: "",
     correo: "",
-    idSolicitud = "",
+    idSolicitud: "",
   }),
 
   methods: {
