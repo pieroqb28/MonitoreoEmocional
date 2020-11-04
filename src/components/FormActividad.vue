@@ -378,12 +378,12 @@ export default {
           }
         );
         console.log(res);
-        Tasunto = "Nueva actividad: " + this.selectTipoActividad.value
-        Ttexto = "Nombre de la actividad: " + this.nombreActividad + "\n" 
+        let Tasunto = "Nueva actividad: " + this.selectTipoActividad.value
+        let Ttexto = "Nombre de la actividad: " + this.nombreActividad + "\n" 
                 + "Descripción: " + this.descripcion + "\n"
                 + "Fecha: " + this.date + "\n"
                 + "Hora: " + this.timeInicio + " - " + this.timeFin + "\n"
-        sendMail(this.correo, Tasunto, Ttexto)
+        this.sendMail(this.correo, Tasunto, Ttexto)
         if (res.status === 200) {
           this.textDialog = "La actividad ha sido creada correctamente";
         } else this.textDialog = "Ha ocurrido un problema, intente nuevamente";

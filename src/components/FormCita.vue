@@ -263,11 +263,11 @@ export default {
           );
           if (res.status == "200") {
             sendNotification("appointment_created", this.idEstudiante);
-              Tasunto = "Nueva cita: " + this.nombreCita
-              Ttexto = "Descripción: " + this.descripcion + "\n"
+              let Tasunto = "Nueva cita: " + this.nombreCita
+              let Ttexto = "Descripción: " + this.descripcion + "\n"
                       + "Fecha: " + this.fecha.toISOString() + "\n"
                       + "Hora: " + this.selectHora + "\n"
-              sendMail(this.correo, Tasunto, Ttexto)
+              this.sendMail(this.correo, Tasunto, Ttexto)
             this.textDialog = "La cita ha sido creada correctamente";
             localStorage.removeItem("selectedSolicitud");
             localStorage.removeItem("selectedEstudiante");

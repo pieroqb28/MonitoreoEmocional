@@ -246,9 +246,9 @@ export default {
         );
         console.log(res);
         if (res.status === 200) {
-          Tasunto = "Nueva evaluación: " + this.selectEvaluacion.value
-          Ttexto = "Descripción: " + this.descripcion + "\n"
-          sendMail(this.correo, Tasunto, Ttexto)
+          let Tasunto = "Nueva evaluación: " + this.selectEvaluacion.value
+          let Ttexto = "Descripción: " + this.descripcion + "\n"
+          this.sendMail(this.correo, Tasunto, Ttexto)
           this.textDialog = "La evaluación ha sido creada correctamente";
           localStorage.removeItem("selectedSolicitud");
           localStorage.removeItem("selectedEstudiante");
