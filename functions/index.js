@@ -68,8 +68,8 @@ app.post("/", (req, res) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: 'monitoreoemocional@gmail.com',
-      pass: 'ntzaftbyfytydzgz'
+      user: 'monitoreo.emocional.tecnologico@gmail.com',
+      pass: 'monitoreo#12345'
     }
   });
 
@@ -89,4 +89,4 @@ app.post("/", (req, res) => {
   });
 });
 
-module.exports.mailer = functions.https.onRequest(app);
+module.exports.METmailer = functions.https.onRequest(app);

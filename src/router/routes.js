@@ -9,6 +9,7 @@ import CrearEvaluacion from "@/views/CrearEvaluacion.vue";
 import CrearSeccion from "@/views/CrearSeccion.vue";
 import CrearActividad from "@/views/CrearActividad.vue";
 import AsignarSeccion from "@/views/AsignarSeccion.vue";
+import AsignarPaciente from "@/views/AsignarPaciente.vue";
 import ConsultaSolicitudes from "@/views/ConsultaSolicitudes.vue";
 import ConsultaDiagnosticos from "@/views/ConsultaDiagnosticos.vue";
 import DatosEstudiante from "@/views/DatosEstudiante.vue";
@@ -71,6 +72,11 @@ export default [
     path: "/paciente_detalle",
     name: "DashboardPaciente",
     component: DashboardPaciente,
+  },
+  {
+    path: "/paciente_asignar",
+    name: "AsignarPaciente",
+    component: AsignarPaciente,
   },
   {
     path: "/calendario_citas",

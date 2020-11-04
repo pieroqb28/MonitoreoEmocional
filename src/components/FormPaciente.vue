@@ -68,35 +68,8 @@
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col>
-          <v-combobox
-            v-model="selectEvaluacion"
-            :items="api_evaluaciones"
-            :rules="selectEvaluacionRules"
-            label="Evaluación"
-            required
-          ></v-combobox>
-        </v-col>
-        <v-col><v-spacer></v-spacer></v-col>
-      </v-row>
+      
 
-      <!--v-checkbox
-      v-model="checkbox"
-      :rules="[v => !!v || 'You must agree to continue!']"
-      label="Do you agree?"
-      required
-    ></v-checkbox-->
-      <v-row
-        ><v-col>
-          <v-textarea
-            v-model="descripcion"
-            filled
-            label="Descripción"
-            rows="5"
-            no-resize
-          ></v-textarea> </v-col
-      ></v-row>
       <v-row>
         <v-spacer></v-spacer>
 
@@ -107,9 +80,8 @@
           :disabled="!valid"
           color="success"
           class="mr-4"
-          @click="postEvaluacion()"
         >
-          Crear Evaluación
+          Asignar Paciente  
         </v-btn>
       </v-row>
     </v-form>
@@ -138,14 +110,13 @@ import axios from "axios";
 
 export default {
   mounted() {
-    this.DNI = localStorage.getItem("selectedEstudiante");
+    /*this.DNI = localStorage.getItem("selectedEstudiante");
     this.idSolicitudAyuda = localStorage.getItem("selectedSolicitud");
     console.log(localStorage.getItem("selectedSolicitud"));
     if (localStorage.getItem("selectedSolicitud") == null)
-      this.idSolicitudAyuda = 0;
+      this.idSolicitudAyuda = 0;*/
     //console.log(localStorage.getItem("selectedEstudiante"))
     this.getDatosEstudiante();
-    this.getEvaluaciones();
     //this.name = localStorage.getItem("selectedEstudiante").dniEstudiante
   },
   data: () => ({
@@ -182,12 +153,6 @@ export default {
   }),
 
   methods: {
-    validate() {
-      this.$refs.form.validate();
-    },
-    reset() {
-      this.$refs.form.reset();
-    },
     async getDatosEstudiante() {
       try {
         const res = await axios.get(
@@ -214,71 +179,6 @@ export default {
       }
     },
 
-    async getEvaluaciones() {
-      try {
-        const res = await axios.get(
-          "https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarEvaluacion/asignar/consulta/obj/evaluaciones"
-        );
-        let codigosObjEvaluacion = res.data.map((a) => a.idObjEvaluacion);
-        let nombresObjEvaluacion = res.data.map((a) => a.nombreObjEvaluacion);
-        this.api_evaluaciones = codigosObjEvaluacion.map((value, i) => ({
-          value,
-          text: nombresObjEvaluacion[i],
-        }));
-        //console.log(res)
-        //console.log(this.api_evaluaciones)
-      } catch (e) {
-        console.error(e);
-      }
-    },
-    async postEvaluacion() {
-      try {
-        const res = await axios.post(
-          "https://sistemadepresivotesisupc.azurewebsites.net/api/wAsignarEvaluacion/asignar/evaluacion",
-          {
-            //crossDomain: true,
-            idEstudiante: this.idEstudiante,
-            descripcion: this.descripcion,
-            idObjEvaluacion: this.selectEvaluacion.value,
-            idTutor: localStorage.userID,
-            idSolicitudAyuda: this.idSolicitudAyuda,
-          }
-        );
-        console.log(res);
-        if (res.status === 200) {
-          let Tasunto = "Nueva evaluación: " + this.selectEvaluacion.value
-          let Ttexto = "Descripción: " + this.descripcion + "\n"
-          this.sendMail(this.correo, Tasunto, Ttexto)
-          this.textDialog = "La evaluación ha sido creada correctamente";
-          localStorage.removeItem("selectedSolicitud");
-          localStorage.removeItem("selectedEstudiante");
-        } else this.textDialog = "Ha ocurrido un problema, intente nuevamente";
-        this.postDialog = true;
-      } catch (e) {
-        console.error(e);
-        this.textDialog = "Ha ocurrido un problema, intente nuevamente";
-        this.postDialog = true;
-      }
-    },
-    onClickOk() {
-      this.$router.push('/evaluaciones')
-    },
-
-    async sendMail(destinatario, asunto, texto){
-      try {
-        const res = await axios.post(
-          "https://us-central1-monitoreoemocionalfb.cloudfunctions.net/METmailer",
-          {
-            to: destinatario,
-            message : texto,
-            subject : asunto,
-          }
-        );
-        console.log(res);
-      } catch (e) {
-        console.error(e)
-      }
-    },
   },
 };
 </script>

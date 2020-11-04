@@ -182,6 +182,7 @@ import { sendNotification } from "../utils/notificationUtil";
 
 export default {
   mounted() {
+    this.idSolicitud = localStorage.getItem("selectedSolicitud");
     this.DNI = localStorage.getItem("selectedEstudiante");
     if (this.DNI !== "") {
       this.getDatosEstudiante();
@@ -231,6 +232,8 @@ export default {
     horas: [],
     idEstudiante: "",
     descripcion: "",
+    correo: "",
+    idSolicitud: "",
   }),
 
   methods: {
@@ -244,10 +247,11 @@ export default {
         const params = {
           idEstudiante: this.idEstudiante,
           idEspecialista: this.selectEspecialista.value,
+          idSolicitudAyuda: this.idSolicitud,
           idEvaluacion: idEvaluacion,
           idTutor: parseInt(localStorage.userID),
           nombre: this.nombreCita,
-          descripcion: this.descripcion,
+          descripcion: this.descripcion,  
           fecha: fecha.toISOString(),
           hora: this.selectHora,
         };
@@ -259,6 +263,11 @@ export default {
           );
           if (res.status == "200") {
             sendNotification("appointment_created", this.idEstudiante);
+              let Tasunto = "Nueva cita: " + this.nombreCita
+              let Ttexto = "Descripción: " + this.descripcion + "\n"
+                      + "Fecha: " + this.fecha.toISOString() + "\n"
+                      + "Hora: " + this.selectHora + "\n"
+              this.sendMail(this.correo, Tasunto, Ttexto)
             this.textDialog = "La cita ha sido creada correctamente";
             localStorage.removeItem("selectedSolicitud");
             localStorage.removeItem("selectedEstudiante");
@@ -377,6 +386,21 @@ export default {
         console.error(e)
       }
     },*/
+      async sendMail(destinatario, asunto, texto){
+      try {
+        const res = await axios.post(
+          "https://us-central1-monitoreoemocionalfb.cloudfunctions.net/METmailer",
+          {
+            to: destinatario,
+            message : texto,
+            subject : asunto,
+          }
+        );
+        console.log(res);
+      } catch (e) {
+        console.error(e)
+      }
+    },
   },
 };
 </script>

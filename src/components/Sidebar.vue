@@ -279,6 +279,7 @@ import { mapActions } from "vuex";
         children: [
           { icon: 'mdi-account-multiple' , text: 'Consultar Pacientes', link:'pacientes' },
           { icon: 'mdi-account-search', text: 'Detalle Paciente' , link: 'paciente_detalle'},
+          { icon: 'mdi-account-plus', text: 'Asignar Paciente' , link: 'paciente_asignar'},
         ],
       },
       {

@@ -1,8 +1,8 @@
 <template>
 <v-container fluid>
-  <v-row><v-col>Total de alumnos</v-col><v-col>Atención de especialistas</v-col></v-row>
+  <v-row><v-col>Tipo de depresión</v-col><v-col>Atención de especialistas</v-col></v-row>
   <v-row>
-    <v-col><pie-chart :data="[['Saludables',180],['Depresivos',120]]"></pie-chart></v-col>
+    <v-col><pie-chart :data="this.api_TipoDepresion"></pie-chart></v-col>
     <v-col><pie-chart :data="[['Gianmarco Chávez',50],['Alvin Gonzáles',37],['Piero Quiroz',24]]"></pie-chart></v-col>
   </v-row>
   <v-row><v-col></v-col></v-row><v-row><v-col></v-col></v-row><v-row><v-col>Alumnos depresivos por colegio</v-col></v-row>
@@ -153,45 +153,40 @@
 </template>
 
 <script>
-
-  const exhale = ms =>
-    new Promise(resolve => setTimeout(resolve, ms))
+import axios from "axios";
 
   export default {
-
+    mounted() {
+      this.getTipoDepresion() 
+    },
     data: () => ({
-      checking: false,
-      heartbeats: [],
+      api_TipoDepresion: [],
     }),
 
-    computed: {
-      avg () {
-        const sum = this.heartbeats.reduce((acc, cur) => acc + cur, 0)
-        const length = this.heartbeats.length
 
-        if (!sum && !length) return 0
-
-        return Math.ceil(sum / length)
-      },
-    },
-
-    created () {
-      this.takePulse(false)
-    },
 
     methods: {
-      heartbeat () {
-        return Math.ceil(Math.random() * (120 - 80) + 40)
-      },
-      async takePulse (inhale = true) {
-        this.checking = true
 
-        inhale && await exhale(1000)
-
-        this.heartbeats = Array.from({ length: 20 }, this.heartbeat)
-
-        this.checking = false
-      },
+     async getTipoDepresion() {
+      try {
+        const res = await axios.get(
+          "https://sistemadepresivotesisupc.azurewebsites.net​/api/wDashboard/consulta/tipo/depresion"
+        )
+        let depres = res.data.map((a) => a.depresion);
+        let nums = res.data.map((a) => a.cont);
+        let aux = depres.map((Tipo_Depresion, i) => ({
+          Tipo_Depresion,
+          Cantidad_Alumnos: nums[i],
+        }));
+        //console.log(aux)
+        this.api_TipoDepresion = (aux).map(Object.values)
+        //console.log(this.api_TipoDepresion)
+        //return datos
+      } catch (e) {
+        console.error(e);
+      }
+      
+    },
       
     },
   }
