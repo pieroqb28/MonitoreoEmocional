@@ -269,9 +269,9 @@ export default {
         const res = await axios.post(
           "https://us-central1-monitoreoemocionalfb.cloudfunctions.net/METmailer",
           {
-            to: this.destinatario,
-            message : this.texto,
-            subject : this.asunto,
+            to: destinatario,
+            message : texto,
+            subject : asunto,
           }
         );
         console.log(res);
