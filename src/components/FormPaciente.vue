@@ -80,6 +80,7 @@
           :disabled="!valid"
           color="success"
           class="mr-4"
+          @click="asignarPaciente()"
         >
           Asignar Paciente  
         </v-btn>
@@ -96,7 +97,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn color="green darken-1" text @click="onClickOk">
+          <v-btn color="green darken-1" text @click="postDialog = false">
             Entendido
           </v-btn>
         </v-card-actions>
@@ -116,7 +117,7 @@ export default {
     if (localStorage.getItem("selectedSolicitud") == null)
       this.idSolicitudAyuda = 0;*/
     //console.log(localStorage.getItem("selectedEstudiante"))
-    this.getDatosEstudiante();
+    //this.getDatosEstudiante();
     //this.name = localStorage.getItem("selectedEstudiante").dniEstudiante
   },
   data: () => ({
@@ -164,7 +165,7 @@ export default {
             },
           }
         );
-        //console.log(res)
+        console.log(res)
         this.name = res.data[0].b.primerNombre
           .concat(" ")
           .concat(res.data[0].b.segundoNombre);
@@ -179,6 +180,32 @@ export default {
       }
     },
 
+    async asignarPaciente() {
+      try {
+        const res = await axios.post(
+          "https://sistemadepresivotesisupc.azurewebsites.net/api/wAgregarPacienteEspecialista/asignar/paciente/especialista", null,{params:
+          {
+            //crossDomain: true,
+            idEstudiante: parseInt(this.idEstudiante),
+            idEspecialista: parseInt(localStorage.userID),
+          }}
+        );
+        console.log(res);
+        if (res.data === "No se asigno al paciente.") {
+          this.textDialog = "No se pudo asignar al paciente.";
+          //localStorage.removeItem("selectedSolicitud");
+          //localStorage.removeItem("selectedEstudiante");
+        } else this.textDialog = "El paciente ha sido asignado correctamente.";
+        this.postDialog = true;
+      } catch (e) {
+        console.error(e);
+        this.textDialog = "Ha ocurrido un problema, intente nuevamente";
+        this.postDialog = true;
+      }
+    },
+   reset() {
+      this.$refs.form.reset();
+    },
   },
 };
 </script>
