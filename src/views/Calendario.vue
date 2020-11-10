@@ -48,6 +48,7 @@
           :events="events"
           :event-color="getEventColor"
           :type="type"
+          :interval-format="intervalFormat"
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
@@ -83,7 +84,7 @@
 </template>
 <script>
 import axios from "axios";
-import moment from 'moment'
+import moment from "moment";
 export default {
   data: () => ({
     focus: "",
@@ -122,6 +123,9 @@ export default {
     this.$refs.calendar.checkChange();
   },
   methods: {
+    intervalFormat(interval) {
+      return interval.time;
+    },
     viewDay({ date }) {
       this.focus = date;
       this.type = "day";
@@ -164,7 +168,7 @@ export default {
       const days = (max.getTime() - min.getTime()) / 86400000;
       const eventCount = this.rnd(days, days + 20);
         */
-        /*
+      /*
       for (let i = 0; i < eventCount; i++) {
         const allDay = this.rnd(0, 3) === 0;
         const firstTimestamp = this.rnd(min.getTime(), max.getTime());
@@ -199,11 +203,17 @@ export default {
         //let nombresSeccion = res.data.map(a => a.nombreSeccion)
         //this.api_secciones = codigosSeccion.map((value,i) => ({value, text: nombresSeccion[i]}));
         const events = res.data.map((cita) => {
-            cita.start = moment(cita.fechaInicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
-            cita.end = cita.start;
-            cita.name = cita.nombre;
-            cita.color = this.colors[this.rnd(0, this.colors.length - 1)];
-            return cita;
+          cita.start = moment(cita.fechaInicio + ` ${cita.horaCita}`).format(
+            "YYYY-DD-MM HH:mm"
+          );
+          cita.end = moment(cita.fechaInicio + ` ${cita.horaCita}`)
+            .add(1, "hours")
+            .format("YYYY-DD-MM HH:mm");
+          console.log(cita.horaCita);
+          console.log(cita.start, cita.end);
+          cita.name = cita.nombre;
+          cita.color = this.colors[this.rnd(0, this.colors.length - 1)];
+          return cita;
         });
         return events;
         //console.log(this.api_estudiantes)
