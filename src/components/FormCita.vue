@@ -243,6 +243,9 @@ export default {
         if (this.$route.query.idEvaluacion) {
           idEvaluacion = this.$route.query.idEvaluacion;
         }
+        if (this.idSolicitud === null){
+          this.idSolicitud = 0;
+        }
         let fecha = new Date(this.date);
         const params = {
           idEstudiante: this.idEstudiante,
