@@ -209,8 +209,6 @@ export default {
           cita.end = moment(cita.fechaInicio + ` ${cita.horaCita}`)
             .add(1, "hours")
             .format("YYYY-DD-MM HH:mm");
-          console.log(cita.horaCita);
-          console.log(cita.start, cita.end);
           cita.name = cita.nombre;
           cita.color = this.colors[this.rnd(0, this.colors.length - 1)];
           return cita;
